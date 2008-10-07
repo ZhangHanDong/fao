@@ -1,0 +1,24 @@
+<h1>Editing staffd</h1>
+
+<% form_for(@staffd) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :staff_id %><br />
+    <%= f.text_field :staff_id %>
+  </p>
+  <p>
+    <%= f.label :danwei %><br />
+    <%= f.text_field :danwei %>
+  </p>
+  <p>
+    <%= f.label :zhiwu %><br />
+    <%= f.text_field :zhiwu %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @staffd %> |
+<%= link_to 'Back', staffds_path %>

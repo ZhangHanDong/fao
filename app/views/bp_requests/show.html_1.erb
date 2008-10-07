@@ -1,0 +1,23 @@
+<p>
+  <b>Envs:</b>
+  <%=h @bp_request.envs %>
+</p>
+
+<p>
+  <b>Params:</b>
+  <%=h @bp_request.params %>
+</p>
+
+<p>
+  <b>Cookies:</b>
+  <%=h @bp_request.cookies %>
+</p>
+
+<p>
+  <b>Sessions:</b>
+  <%=h @bp_request.sessions %>
+</p>
+
+
+<%= link_to 'Edit', edit_bp_request_path(@bp_request) %> |
+<%= link_to 'Back', bp_requests_path %>

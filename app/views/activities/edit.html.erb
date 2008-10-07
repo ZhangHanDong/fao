@@ -1,0 +1,56 @@
+<h1>Editing activity</h1>
+
+<% form_for(@activity) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :sriqi %><br />
+    <%= f.date_select :sriqi %>
+  </p>
+  <p>
+    <%= f.label :dguojia %><br />
+    <%= f.text_field :dguojia %>
+  </p>
+  <p>
+    <%= f.label :renwu %><br />
+    <%= f.text_area :renwu %>
+  </p>
+  <p>
+    <%= f.label :cfshijian %><br />
+    <%= f.date_select :cfshijian %>
+  </p>
+  <p>
+    <%= f.label :tltianshu %><br />
+    <%= f.text_field :tltianshu %>
+  </p>
+  <p>
+    <%= f.label :ztdanwei %><br />
+    <%= f.text_field :ztdanwei %>
+  </p>
+  <p>
+    <%= f.label :yqdanwei %><br />
+    <%= f.text_field :yqdanwei %>
+  </p>
+  <p>
+    <%= f.label :rwpihao %><br />
+    <%= f.text_field :rwpihao %>
+  </p>
+  <p>
+    <%= f.label :hzhaoma %><br />
+    <%= f.text_field :hzhaoma %>
+  </p>
+  <p>
+    <%= f.label :hzghriqi %><br />
+    <%= f.date_select :hzghriqi %>
+  </p>
+  <p>
+    <%= f.label :sync_state %><br />
+    <%= f.text_field :sync_state %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @activity %> |
+<%= link_to 'Back', activities_path %>
