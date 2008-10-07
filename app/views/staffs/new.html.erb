@@ -1,0 +1,44 @@
+<h1>New staff</h1>
+
+<% form_for(@staff) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+
+
+  <p>
+    <%= f.label :pyname %><br />
+    <%= f.text_field :pyname %>
+  </p>
+
+  <p>
+    <%= f.label :spyname %><br />
+    <%= f.text_field :spyname %>
+  </p>
+
+  <p>
+    <%= f.label :sync_state %><br />
+    <%= f.text_field :sync_state %>
+  </p>
+  
+  <p>
+    <%= f.label :birthday %><br />
+    <%= f.date_select :birthday %>
+  </p>
+  <p>
+    <%= f.label :sex %><br />
+    <%= f.check_box :sex %>
+  </p>
+  <p>
+    <%= f.label :note %><br />
+    <%= f.text_field :note %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', staffs_path %>

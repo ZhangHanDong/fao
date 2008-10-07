@@ -1,0 +1,27 @@
+<h1>New bp_request</h1>
+
+<% form_for(@bp_request) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :envs %><br />
+    <%= f.text_area :envs %>
+  </p>
+  <p>
+    <%= f.label :params %><br />
+    <%= f.text_area :params %>
+  </p>
+  <p>
+    <%= f.label :cookies %><br />
+    <%= f.text_area :cookies %>
+  </p>
+  <p>
+    <%= f.label :sessions %><br />
+    <%= f.text_area :sessions %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', bp_requests_path %>

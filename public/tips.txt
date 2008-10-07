@@ -1,0 +1,6 @@
+数据查询的条件：
+offset
+limit
+短语，就是autocomplete的内容，每次切换表格时，清楚autocomplete的内容。
+
+select * from staffs where name like "%s%" or pyname like "%s%" or spyname like "%s%" limit xx offset xx.

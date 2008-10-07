@@ -1,0 +1,26 @@
+<h1>Listing bp_requests</h1>
+
+<table>
+  <tr>
+    <th>Envs</th>
+    <th>Params</th>
+    <th>Cookies</th>
+    <th>Sessions</th>
+  </tr>
+
+<% for bp_request in @bp_requests %>
+  <tr>
+    <td><%=h bp_request.envs %></td>
+    <td><%=h bp_request.params %></td>
+    <td><%=h bp_request.cookies %></td>
+    <td><%=h bp_request.sessions %></td>
+    <td><%= link_to 'Show', bp_request %></td>
+    <td><%= link_to 'Edit', edit_bp_request_path(bp_request) %></td>
+    <td><%= link_to 'Destroy', bp_request, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New bp_request', new_bp_request_path %>

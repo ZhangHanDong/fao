@@ -1,0 +1,25 @@
+<h1>Listing staffds</h1>
+
+<table>
+  <tr>
+    <th>Staff</th>
+    <th>Danwei</th>
+    <th>Zhiwu</th>
+  </tr>
+
+<% for staffd in @staffds %>
+  <tr>
+    <td><%=h staffd.staff_id %></td>
+    <td><%=h staffd.danwei %></td>
+    <td><%=h staffd.zhiwu %></td>
+    <td><%= link_to '活动',staffd_activities_url(staffd) %></td>
+    <td><%= link_to 'Show', staffd %></td>
+    <td><%= link_to 'Edit', edit_staffd_path(staffd) %></td>
+    <td><%= link_to 'Destroy', staffd, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staffd', new_staffd_path %>
