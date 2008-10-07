@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  staff_id: MyString
+  danwei: MyString
+  zhiwu: MyString
+
+two:
+  staff_id: MyString
+  danwei: MyString
+  zhiwu: MyString

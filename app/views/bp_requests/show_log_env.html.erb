@@ -1,0 +1,17 @@
+环境变量：<br/>
+<%@bp_envs.each do |key,value|%>
+<%=  key.to_s + ": " + value.to_s%>
+<br/>
+<%end%>
+<br/><br/><br/>
+参数：<br/>
+<%@bp_params.each do |key,value|%>
+<%=  key.to_s + ": " + value.to_s%>
+<br/>
+<%end%>
+<br/><br/><br/>
+Cookies:<br/>
+<%@bp_cookies.each do |key,value|%>
+<%=  key.to_s + ": " + value.to_s%>
+<br/>
+<%end%>

@@ -1,0 +1,89 @@
+(in D:/Backup/mydoc/NetBeansProjects/fao)
+          abouttoparticipate_staffds GET    /staffds/abouttoparticipate                       {:action=>"abouttoparticipate", :controller=>"staffds"}
+formatted_abouttoparticipate_staffds GET    /staffds/abouttoparticipate.:format               {:action=>"abouttoparticipate", :controller=>"staffds"}
+                             staffds GET    /staffds                                          {:action=>"index", :controller=>"staffds"}
+                   formatted_staffds GET    /staffds.:format                                  {:action=>"index", :controller=>"staffds"}
+                                     POST   /staffds                                          {:action=>"create", :controller=>"staffds"}
+                                     POST   /staffds.:format                                  {:action=>"create", :controller=>"staffds"}
+                          new_staffd GET    /staffds/new                                      {:action=>"new", :controller=>"staffds"}
+                formatted_new_staffd GET    /staffds/new.:format                              {:action=>"new", :controller=>"staffds"}
+                         edit_staffd GET    /staffds/:id/edit                                 {:action=>"edit", :controller=>"staffds"}
+               formatted_edit_staffd GET    /staffds/:id/edit.:format                         {:action=>"edit", :controller=>"staffds"}
+                              staffd GET    /staffds/:id                                      {:action=>"show", :controller=>"staffds"}
+                    formatted_staffd GET    /staffds/:id.:format                              {:action=>"show", :controller=>"staffds"}
+                                     PUT    /staffds/:id                                      {:action=>"update", :controller=>"staffds"}
+                                     PUT    /staffds/:id.:format                              {:action=>"update", :controller=>"staffds"}
+                                     DELETE /staffds/:id                                      {:action=>"destroy", :controller=>"staffds"}
+                                     DELETE /staffds/:id.:format                              {:action=>"destroy", :controller=>"staffds"}
+                   staffd_activities GET    /staffds/:staffd_id/activities                    {:action=>"index", :controller=>"activities"}
+         formatted_staffd_activities GET    /staffds/:staffd_id/activities.:format            {:action=>"index", :controller=>"activities"}
+                                     POST   /staffds/:staffd_id/activities                    {:action=>"create", :controller=>"activities"}
+                                     POST   /staffds/:staffd_id/activities.:format            {:action=>"create", :controller=>"activities"}
+                 new_staffd_activity GET    /staffds/:staffd_id/activities/new                {:action=>"new", :controller=>"activities"}
+       formatted_new_staffd_activity GET    /staffds/:staffd_id/activities/new.:format        {:action=>"new", :controller=>"activities"}
+                edit_staffd_activity GET    /staffds/:staffd_id/activities/:id/edit           {:action=>"edit", :controller=>"activities"}
+      formatted_edit_staffd_activity GET    /staffds/:staffd_id/activities/:id/edit.:format   {:action=>"edit", :controller=>"activities"}
+                     staffd_activity GET    /staffds/:staffd_id/activities/:id                {:action=>"show", :controller=>"activities"}
+           formatted_staffd_activity GET    /staffds/:staffd_id/activities/:id.:format        {:action=>"show", :controller=>"activities"}
+                                     PUT    /staffds/:staffd_id/activities/:id                {:action=>"update", :controller=>"activities"}
+                                     PUT    /staffds/:staffd_id/activities/:id.:format        {:action=>"update", :controller=>"activities"}
+                                     DELETE /staffds/:staffd_id/activities/:id                {:action=>"destroy", :controller=>"activities"}
+                                     DELETE /staffds/:staffd_id/activities/:id.:format        {:action=>"destroy", :controller=>"activities"}
+                          activities GET    /activities                                       {:action=>"index", :controller=>"activities"}
+                formatted_activities GET    /activities.:format                               {:action=>"index", :controller=>"activities"}
+                                     POST   /activities                                       {:action=>"create", :controller=>"activities"}
+                                     POST   /activities.:format                               {:action=>"create", :controller=>"activities"}
+                        new_activity GET    /activities/new                                   {:action=>"new", :controller=>"activities"}
+              formatted_new_activity GET    /activities/new.:format                           {:action=>"new", :controller=>"activities"}
+                       edit_activity GET    /activities/:id/edit                              {:action=>"edit", :controller=>"activities"}
+             formatted_edit_activity GET    /activities/:id/edit.:format                      {:action=>"edit", :controller=>"activities"}
+                            activity GET    /activities/:id                                   {:action=>"show", :controller=>"activities"}
+                  formatted_activity GET    /activities/:id.:format                           {:action=>"show", :controller=>"activities"}
+                                     PUT    /activities/:id                                   {:action=>"update", :controller=>"activities"}
+                                     PUT    /activities/:id.:format                           {:action=>"update", :controller=>"activities"}
+                                     DELETE /activities/:id                                   {:action=>"destroy", :controller=>"activities"}
+                                     DELETE /activities/:id.:format                           {:action=>"destroy", :controller=>"activities"}
+                    activity_staffds GET    /activities/:activity_id/staffds                  {:action=>"index", :controller=>"staffds"}
+          formatted_activity_staffds GET    /activities/:activity_id/staffds.:format          {:action=>"index", :controller=>"staffds"}
+                                     POST   /activities/:activity_id/staffds                  {:action=>"create", :controller=>"staffds"}
+                                     POST   /activities/:activity_id/staffds.:format          {:action=>"create", :controller=>"staffds"}
+                 new_activity_staffd GET    /activities/:activity_id/staffds/new              {:action=>"new", :controller=>"staffds"}
+       formatted_new_activity_staffd GET    /activities/:activity_id/staffds/new.:format      {:action=>"new", :controller=>"staffds"}
+                edit_activity_staffd GET    /activities/:activity_id/staffds/:id/edit         {:action=>"edit", :controller=>"staffds"}
+      formatted_edit_activity_staffd GET    /activities/:activity_id/staffds/:id/edit.:format {:action=>"edit", :controller=>"staffds"}
+                     activity_staffd GET    /activities/:activity_id/staffds/:id              {:action=>"show", :controller=>"staffds"}
+           formatted_activity_staffd GET    /activities/:activity_id/staffds/:id.:format      {:action=>"show", :controller=>"staffds"}
+                                     PUT    /activities/:activity_id/staffds/:id              {:action=>"update", :controller=>"staffds"}
+                                     PUT    /activities/:activity_id/staffds/:id.:format      {:action=>"update", :controller=>"staffds"}
+                                     DELETE /activities/:activity_id/staffds/:id              {:action=>"destroy", :controller=>"staffds"}
+                                     DELETE /activities/:activity_id/staffds/:id.:format      {:action=>"destroy", :controller=>"staffds"}
+                              staffs GET    /staffs                                           {:action=>"index", :controller=>"staffs"}
+                    formatted_staffs GET    /staffs.:format                                   {:action=>"index", :controller=>"staffs"}
+                                     POST   /staffs                                           {:action=>"create", :controller=>"staffs"}
+                                     POST   /staffs.:format                                   {:action=>"create", :controller=>"staffs"}
+                           new_staff GET    /staffs/new                                       {:action=>"new", :controller=>"staffs"}
+                 formatted_new_staff GET    /staffs/new.:format                               {:action=>"new", :controller=>"staffs"}
+                          edit_staff GET    /staffs/:id/edit                                  {:action=>"edit", :controller=>"staffs"}
+                formatted_edit_staff GET    /staffs/:id/edit.:format                          {:action=>"edit", :controller=>"staffs"}
+                               staff GET    /staffs/:id                                       {:action=>"show", :controller=>"staffs"}
+                     formatted_staff GET    /staffs/:id.:format                               {:action=>"show", :controller=>"staffs"}
+                                     PUT    /staffs/:id                                       {:action=>"update", :controller=>"staffs"}
+                                     PUT    /staffs/:id.:format                               {:action=>"update", :controller=>"staffs"}
+                                     DELETE /staffs/:id                                       {:action=>"destroy", :controller=>"staffs"}
+                                     DELETE /staffs/:id.:format                               {:action=>"destroy", :controller=>"staffs"}
+                       staff_staffds GET    /staffs/:staff_id/staffds                         {:action=>"index", :controller=>"staffds"}
+             formatted_staff_staffds GET    /staffs/:staff_id/staffds.:format                 {:action=>"index", :controller=>"staffds"}
+                                     POST   /staffs/:staff_id/staffds                         {:action=>"create", :controller=>"staffds"}
+                                     POST   /staffs/:staff_id/staffds.:format                 {:action=>"create", :controller=>"staffds"}
+                    new_staff_staffd GET    /staffs/:staff_id/staffds/new                     {:action=>"new", :controller=>"staffds"}
+          formatted_new_staff_staffd GET    /staffs/:staff_id/staffds/new.:format             {:action=>"new", :controller=>"staffds"}
+                   edit_staff_staffd GET    /staffs/:staff_id/staffds/:id/edit                {:action=>"edit", :controller=>"staffds"}
+         formatted_edit_staff_staffd GET    /staffs/:staff_id/staffds/:id/edit.:format        {:action=>"edit", :controller=>"staffds"}
+                        staff_staffd GET    /staffs/:staff_id/staffds/:id                     {:action=>"show", :controller=>"staffds"}
+              formatted_staff_staffd GET    /staffs/:staff_id/staffds/:id.:format             {:action=>"show", :controller=>"staffds"}
+                                     PUT    /staffs/:staff_id/staffds/:id                     {:action=>"update", :controller=>"staffds"}
+                                     PUT    /staffs/:staff_id/staffds/:id.:format             {:action=>"update", :controller=>"staffds"}
+                                     DELETE /staffs/:staff_id/staffds/:id                     {:action=>"destroy", :controller=>"staffds"}
+                                     DELETE /staffs/:staff_id/staffds/:id.:format             {:action=>"destroy", :controller=>"staffds"}
+                                            /:controller/:action/:id                          
+                                            /:controller/:action/:id.:format                  

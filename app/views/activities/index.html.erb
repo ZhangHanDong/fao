@@ -1,0 +1,42 @@
+<h1>Listing activities</h1>
+
+<table>
+  <tr>
+    <th>Sriqi</th>
+    <th>Dguojia</th>
+    <th>Renwu</th>
+    <th>Cfshijian</th>
+    <th>Tltianshu</th>
+    <th>Ztdanwei</th>
+    <th>Yqdanwei</th>
+    <th>Rwpihao</th>
+    <th>Hzhaoma</th>
+    <th>Hzghriqi</th>
+    <th>Sync state</th>
+  </tr>
+
+<% for activity in @activities %>
+  <tr>
+    <td><%=h activity.sriqi %></td>
+    <td><%=h activity.dguojia %></td>
+    <td><%=h activity.renwu %></td>
+    <td><%=h activity.cfshijian %></td>
+    <td><%=h activity.tltianshu %></td>
+    <td><%=h activity.ztdanwei %></td>
+    <td><%=h activity.yqdanwei %></td>
+    <td><%=h activity.rwpihao %></td>
+    <td><%=h activity.hzhaoma %></td>
+    <td><%=h activity.hzghriqi %></td>
+    <td><%=h activity.sync_state %></td>
+    <td><%= link_to '参加人员', activity_staffds_url(activity) %></td>
+    <td><%= link_to '参加', abouttoparticipate_staffds_url(:activity_id=>activity.id) %></td>
+    <td><%= link_to 'Show', activity %></td>
+    <td><%= link_to 'Edit', edit_activity_path(activity) %></td>
+    <td><%= link_to 'Destroy', activity, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New activity', new_activity_path %>

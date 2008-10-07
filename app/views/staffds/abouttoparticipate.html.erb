@@ -1,0 +1,23 @@
+<h1>Listing staffds</h1>
+
+<table>
+  <tr>
+    <th>Staff</th>
+    <th>Danwei</th>
+    <th>Zhiwu</th>
+  </tr>
+
+<% for staffd in @staffds %>
+  <tr>
+    <td><%=h staffd.staff_id %></td>
+    <td><%=h staffd.danwei %></td>
+    <td><%=h staffd.zhiwu %></td>
+    <td><%= link_to '参加当前活动',participate_staffd_url(staffd,:activity_id=>@activity.id),:method=>:put %></td>
+        <td><%= link_to '参加当前活动',participate_staffd_url(staffd) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to '返回', activity_staffds_path(@activity) %>

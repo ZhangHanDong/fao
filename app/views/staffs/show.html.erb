@@ -1,0 +1,38 @@
+<p>
+  <b>Name:</b>
+  <%=h @staff.name %>
+</p>
+
+<p>
+  <b>Pyname:</b>
+  <%=h @staff.pyname %>
+</p>
+
+<p>
+  <b>Spyname:</b>
+  <%=h @staff.spyname %>
+</p>
+
+<p>
+  <b>Sync_state:</b>
+  <%=h @staff.sync_state %>
+</p>
+
+<p>
+  <b>Birthday:</b>
+  <%=h @staff.birthday %>
+</p>
+
+<p>
+  <b>Sex:</b>
+  <%=h @staff.sex %>
+</p>
+
+<p>
+  <b>Note:</b>
+  <%=h @staff.note %>
+</p>
+
+
+<%= link_to 'Edit', edit_staff_path(@staff) %> |
+<%= link_to 'Back', staffs_path %>

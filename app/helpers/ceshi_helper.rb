@@ -1,0 +1,2 @@
+module CeshiHelper
+end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  envs: MyText
+  params: MyText
+  cookies: MyText
+  sessions: MyText
+
+two:
+  envs: MyText
+  params: MyText
+  cookies: MyText
+  sessions: MyText

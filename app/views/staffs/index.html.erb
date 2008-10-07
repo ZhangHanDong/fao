@@ -1,0 +1,28 @@
+<h1>Listing staffs</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Birthday</th>
+    <th>Sex</th>
+    <th>Note</th>
+  </tr>
+
+<% for staff in @staffs %>
+  <tr>
+    <td><%=h staff.name %></td>
+    <td><%=h staff.birthday %></td>
+    <td><%=h staff.sex %></td>
+    <td><%=h staff.note %></td>
+    <td><%= link_to '职业生涯',staff_staffds_url(staff) %></td>
+    <td><%= link_to 'add staffd',new_staff_staffd_url(staff) %></td>
+    <td><%= link_to 'Show', staff %></td>
+    <td><%= link_to 'Edit', edit_staff_path(staff) %></td>
+    <td><%= link_to 'Destroy', staff, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staff', new_staff_path %>

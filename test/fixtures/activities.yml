@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sriqi: 2008-08-30
+  dguojia: MyString
+  renwu: MyText
+  cfshijian: 2008-08-30
+  tltianshu: 1
+  ztdanwei: MyString
+  yqdanwei: MyString
+  rwpihao: MyString
+  hzhaoma: MyString
+  hzghriqi: 2008-08-30
+  sync_state: MyString
+
+two:
+  sriqi: 2008-08-30
+  dguojia: MyString
+  renwu: MyText
+  cfshijian: 2008-08-30
+  tltianshu: 1
+  ztdanwei: MyString
+  yqdanwei: MyString
+  rwpihao: MyString
+  hzhaoma: MyString
+  hzghriqi: 2008-08-30
+  sync_state: MyString
