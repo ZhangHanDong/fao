@@ -4,3 +4,4 @@ tmp/*
 .rake_tasks
 config/database.yml
 config/deploy.rb
+config/deploy.rb.svn
