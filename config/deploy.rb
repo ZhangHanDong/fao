@@ -1,12 +1,15 @@
-set :application, "bp"
-set :repository,  "svn://www.51dir.com/fao/trunk"
-set :scm_username, "harry"
-set :scm_password, "fhsdxgt"
-
-
-set :user,"root"
+default_run_options[:pty] = true
+set :application, "bp1"
+set :repository,  "git@github.com:jianglibo/fao.git"
+set :scm, "git"
+set :scm_passphrase, "yjcsxdl"
+set :user, "jianglibo"
+set :scm_verbose,true
+#ssh_options[:forward_agent] = true
+#set :scm_command,"/usr/local/bin/git"
 set :use_sudo,false
-
+set :branch , "master"
+set :deploy_via, :remote_cache
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
