@@ -303,8 +303,16 @@
         }
 
         catch(e){
-            alert("start error");
-            alert(e.message);
+            var re = /no such column: (.*) EXPRESSION/;
+            var result = e.message.match(re);
+            if(result){
+              fao.variables.db.execute("alter table activities add dgjpy varchar(255)");
+              fao.variables.db.execute("alter table activities add dgjspy varchar(255)");
+              alert("数据库表字段更新，请刷新页面，按F5");
+            }else{
+              alert("start error");
+              alert(e.message);
+            }
       }
     }
 
