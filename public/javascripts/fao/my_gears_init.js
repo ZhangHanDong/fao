@@ -2,16 +2,44 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-fao.f.insert_pys = function(){
-    var rs = fao.variables.db.execute("select * from pys limit 1");
-    if(!rs.isValidRow()){
-      alert("start insert pys");
-      for(var i=0;i<pinyin_ary.length;i++){
-        var hanzi_pinyin = pinyin_ary[i].split(",",2);
-        var uuid = new UUID();
-        var uuid_str = uuid.id.replace(/-/g,"").toLowerCase();
-        fao.variables.db.execute("insert into pys (id,hanzi,pys) values (?,?,?)",[uuid_str,hanzi_pinyin[0],hanzi_pinyin[1]]);
+fao.f.setsettings = function(){
+    var ary_extra = function(ary,ele){
+      var new_ary = [];
+      for(var i=0;i<ary.length;i++){
+        if(ary[i] != ele)new_ary.unshift(ele);
       }
+      return new_ary;
+    };
+    //every key in keys,must have an fao.varaibles.
+    var all_keys= ["pinyindb","offline"];
+    var exist_keys = [];
+    fao.variables.pinyindb = false;
+    fao.variables.offline = false;
+
+    var rs = fao.variables.db.execute("select mykey,myvalue from settings");
+    while(rs.isValidRow()){
+      switch(rs.field(0)){
+        case "pinyindb":
+          if(rs.field(1) == "true")fao.variables.pinyindb=true;
+          exist_keys.unshift("pinyindb"); 
+          break;
+        case "offline":
+          if(rs.field(1) == "true")fao.variables.offline=true;
+          exist_keys.unshift("offline"); 
+          break;
+      }
+      rs.next();
+    }
+
+    for(var i=0;i<all_keys.length;i++){
+      var ye = false;
+      for(var j=0;j<exist_keys.length;j++){
+        if(all_keys[i] == exist_keys[j]){
+          ye = true;
+          break;
+        }
+      }
+      if(!ye)fao.variables.db.execute("insert into settings (mykey,myvalue) values (?,?)",[all_keys[i],"false"]);
     }
     rs.close();
 };
@@ -79,12 +107,16 @@ fao.f.my_gear_init = function() {
             ' pys varchar(254),' +
             ' PRIMARY KEY (id))' 
             );
-        fao.f.insert_pys();
         fao.variables.db.execute('create table if not exists linestates' + 
             ' (id varchar(255),' +
             ' state varchar(254),' +
             ' PRIMARY KEY (id))' 
             );
+        fao.variables.db.execute('create table if not exists settings' + 
+            ' (mykey varchar(255),' +
+            ' myvalue varchar(255))' 
+            );
+        fao.f.setsettings();
       }
     } catch (ex) {
       alert(ex.message);
