@@ -364,90 +364,91 @@ else{
     },
 
     testjson: function(){
-      var str = "var ppyy = []";
+      var str = "[1,2,3]";
       JSON.parse(str);
       var Assert = YAHOO.util.Assert;
       Assert.isNotUndefined(ppyy);
     }
     });
 
-//    YAHOO.example.yuitest.regexTestCase = new YAHOO.tool.TestCase({
-//    name : "Regex Tests",
-//    setUp : function(){
-//        this.data = "2008+09-01";
-//    },
-//
-//    tearDown: function(){
-//        delete this.data;
-//    },
-//
-//    testMatch: function(){
-//        var str = "20082008-01-01";
-//        var re = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
-//         var Assert = YAHOO.util.Assert;
-//         var result = str.match(re);
-//         Assert.areequal(1,result.length);
-//         Assert.areequal("2008-01-01",result[0]);
-//    },
-//    testCr:function(){
-//        var str = "a\rb";
-//        var re=/\r\n+|\r+|\n+/
-//        //if re has (),then return string will include delimiters.
-//        var result = str.split(re);
-//        var Assert = YAHOO.util.Assert;
-//        Assert.isarray(result);
-//        Assert.areequal(2,result.length);
-//        Assert.areequal("a",result[0]);
-//        Assert.areequal("b",result[1]);
-//    },
-//
-//    testsTrip:function(){
-//      var str = "a isk dlskks aa";
-//      var s = "a";
-//      var re=new RegExp("^" + s + "*(.*?)" + s + "*$");
-//      var astr = str.replace(re, "$1");
-//      var Assert = YAHOO.util.Assert;
-//      Assert.areequal(" isk dlskks ",astr);
-//    },
-//
-//    testParams:function(){
-//        var f=function(s){
-//            return s;
-//        };
-//      var r = f();
-//      var Assert = YAHOO.util.Assert;
-//      Assert.isundefined(r);
-//      var str = "aa bb aa";
-//      Assert.areequal(" bb ",str.strip("a"));
-//    },
-//    testSplit: function(){
-//        var str = "abc,usk\r\n中国或,isks\r美国 ,试试哦打开\n思考is,sisks\r";
-//        var re=/\r+\n+|\r+|\n+/m
-//        var result = str.split(re);
-//        var Assert = YAHOO.util.Assert;
-//        Assert.isarray(result);
-//        Assert.areequal(4,result.length);
-//        Assert.arenotequal("",result[result.length-1]);
-//        Assert.areequal("abc,usk",result[0]);
-//    },
-//    testSplit1: function(){
-//        var str = "a,b,cd";
-//        var result = str.split(",",2);
-//        var Assert = YAHOO.util.Assert;
-//        Assert.isarray(result);
-//                  Assert.areequal(2,result.length);
-//                  Assert.areequal("b",result[1]);
-//                },
-//    testDate:function(){
-//        var aday = new Date();
-//        aday.setmonth(11,11);
-//        aday.sethours(11, 30, 30, 300);
-//        var Assert = YAHOO.util.Assert;
-//        Assert.areequal(11,aday.gethours());
-//        Assert.areequal(3,aday.getutchours());
-//    }
-//    });
+    YAHOO.example.yuitest.RegexTestCase = new YAHOO.tool.TestCase({
+    name : "Regex Tests",
+    setUp : function(){
+        this.data = "2008+09-01";
+    },
 
+    tearDown: function(){
+        delete this.data;
+    },
+    testMatch: function(){
+        var str = "20082008-01-01";
+        var re = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
+        var Assert = YAHOO.util.Assert;
+        var result = str.match(re);
+        Assert.areEqual(1,result.length);
+        Assert.areEqual("2008-01-01",result[0]);
+    },
+    testCr:function(){
+        var str = "a\rb";
+        var re=/\r\n+|\r+|\n+/
+        //if re has (),then return string will include delimiters.
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual(2,result.length);
+        Assert.areEqual("a",result[0]);
+        Assert.areEqual("b",result[1]);
+    },
+
+    testsTrip:function(){
+      var str = "a isk dlskks aa";
+      var s = "a";
+      var re=new RegExp("^" + s + "*(.*?)" + s + "*$");
+      var astr = str.replace(re, "$1");
+      var Assert = YAHOO.util.Assert;
+      Assert.areEqual(" isk dlskks ",astr);
+    },
+
+    testParams:function(){
+        var f=function(s){
+            return s;
+        };
+      var r = f();
+      var Assert = YAHOO.util.Assert;
+      Assert.isUndefined(r);
+      var str = "aa bb aa";
+      Assert.areEqual(" bb ",str.strip("a"));
+    },
+
+    testSplit: function(){
+        var str = "abc,usk\r\n中国或,isks\r美国 ,试试哦打开\n思考is,sisks\r";
+        var re=/\r+\n+|\r+|\n+/m
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual(4,result.length);
+        Assert.areNotEqual("",result[result.length-1]);
+        Assert.areEqual("abc,usk",result[0]);
+    },
+
+    testSplit1: function(){
+        var str = "a,b,cd";
+        var result = str.split(",",2);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual(2,result.length);
+        Assert.areEqual("b",result[1]);
+    },
+
+    testDate:function(){
+        var aday = new Date();
+        aday.setMonth(11,11);
+        aday.setHours(11, 30, 30, 300);
+        var Assert = YAHOO.util.Assert;
+        Assert.areEqual(11,aday.getHours());
+        Assert.areEqual(3,aday.getUTCHours());
+    }
+    });
 
     YAHOO.example.yuitest.DataTestCase = new YAHOO.tool.TestCase({
 
@@ -566,7 +567,7 @@ else{
     YAHOO.example.yuitest.ExampleSuite = new YAHOO.tool.TestSuite("Example Suite");
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.DataTestCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.ArrayTestCase);
-    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.regexTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.RegexTestCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.jsonTestCase);
 
     Event.onDOMReady(function (){
