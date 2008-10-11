@@ -122,7 +122,7 @@ fao.classes.DialogStaff = function() {
               var birthday = oData.birthday;
               Dom.get("birthday_sf_dlg").value = birthday.getFullYear() + "-" + birthday.getMonth() +  "-" + birthday.getDate();
 //              alert(oData.birthday instanceof Date);
-              Dom.get("sex_sf_dlg").checked = oData.sex;
+              Dom.get("sex_sf_dlg").checked = oData.sex == "false" ? false : true;
               Dom.get("note_sf_dlg").value = oData.note;
             }
             catch(e){

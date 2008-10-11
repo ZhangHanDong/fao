@@ -30,8 +30,8 @@ namespace :deploy do
 end
 
 task :restart_mongrel_cluster do
-  run "mongrel_rails cluster::stop -C /srv/www/vhosts/rails/bp/current/config/fao_mongrel_cluster.yml"
-  run "mongrel_rails cluster::start -C /srv/www/vhosts/rails/bp/current/config/fao_mongrel_cluster.yml"
+  run "mongrel_rails cluster::stop -C /srv/www/vhosts/rails/bp1/current/config/fao_mongrel_cluster.yml"
+  run "mongrel_rails cluster::start -C /srv/www/vhosts/rails/bp1/current/config/fao_mongrel_cluster.yml"
 end
 
 #task :set_showtime_img_permission do

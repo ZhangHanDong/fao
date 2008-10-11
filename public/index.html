@@ -179,7 +179,6 @@
       fao.doms.activity_tab = Dom.get("activity_tab");
       fao.doms.staff_tab = Dom.get("staff_tab");
       fao.doms.staff_radio = Dom.get("staff_radio");
-      alert('hi activity radio');
       fao.doms.activity_radio = Dom.get("activity_radio");
       fao.doms.ac_input=Dom.get("ac_input");
       fao.doms.staff_panel_tab = Dom.get("staff_panel_container");
@@ -304,8 +303,16 @@
         }
 
         catch(e){
-            alert("start error");
-            alert(e.message);
+            var re = /no such column: (.*) EXPRESSION/;
+            var result = e.message.match(re);
+            if(result){
+              fao.variables.db.execute("alter table activities add dgjpy varchar(255)");
+              fao.variables.db.execute("alter table activities add dgjspy varchar(255)");
+              alert("数据库表字段更新，请刷新页面，按F5");
+            }else{
+              alert("start error");
+              alert(e.message);
+            }
       }
     }
 
