@@ -2,6 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+fao.f.insert_pys = function(){
+    var rs = fao.variables.db.execute("select * from pys limit 1");
+    if(!rs.isValidRow()){
+      alert("start insert pys");
+      for(var i=0;i<pinyin_ary.length;i++){
+        var hanzi_pinyin = pinyin_ary[i].split(",",2);
+        var uuid = new UUID();
+        var uuid_str = uuid.id.replace(/-/g,"").toLowerCase();
+        fao.variables.db.execute("insert into pys (id,hanzi,pys) values (?,?,?)",[uuid_str,hanzi_pinyin[0],hanzi_pinyin[1]]);
+      }
+    }
+    rs.close();
+};
 fao.f.my_gear_init = function() {
   if (window.google && google.gears) {
     try {
@@ -60,6 +73,13 @@ fao.f.my_gear_init = function() {
                    ' updated_at datetime,' +
                    ' PRIMARY KEY (id))'
            );
+        fao.variables.db.execute('create table if not exists pys' + 
+            ' (id varchar(255),' +
+            ' hanzi varchar(254),' +
+            ' pys varchar(254),' +
+            ' PRIMARY KEY (id))' 
+            );
+        fao.f.insert_pys();
         fao.variables.db.execute('create table if not exists linestates' + 
             ' (id varchar(255),' +
             ' state varchar(254),' +
