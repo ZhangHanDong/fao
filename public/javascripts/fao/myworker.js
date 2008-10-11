@@ -1,13 +1,4 @@
 var x = new function(){
-//  var request = google.gears.factory.create('beta.httprequest');
-//  request.open('GET', '/index.html');
-//  request.onreadystatechange = function() {
-//    if (request.readyState == 4) {
-//      //console.write(request.responseText);
-//    }
-//  };
-//  request.send();
-
   this.message = "";
   var wp = google.gears.workerPool;
   var sy = function(){
