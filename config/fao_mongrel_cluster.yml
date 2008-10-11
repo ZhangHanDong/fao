@@ -1,9 +1,9 @@
 ---
-user: wwwrun
-cwd: /srv/www/vhosts/rails/bp/current
+#user: wwwrun
+cwd: /srv/www/vhosts/rails/bp1/current
 port: "3000"
 environment: production
-group: www
+#group: www
 address: 127.0.0.1
 pid_file: log/movieshowtimes_mongrel.pid
 servers: 1
