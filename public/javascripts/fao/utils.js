@@ -55,14 +55,25 @@
       this.pyc = [];
       this.pyd = [];
 
-      this.find_pinyin = function(c){
+      this.find_pinyin111= function(c){
         for(var i=0;i<pinyin_ary.length;i++){
           var py = pinyin_ary[i].split(",");
           if(py[0] == c){
             return py[1];
+          }else{
+            false;
           }
         }
       };
+     this.find_pinyin = function(c){
+       var rs = fao.variables.db.execute("select pys from pys where hanzi=?",[c]);
+       if(rs.isValidRow()){
+         return rs.field(0);
+       }else{
+         return false;
+       }
+       if(rs)rs.close();
+     }; 
 
       this.find_pystr = function(str){
         try{
