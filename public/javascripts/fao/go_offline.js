@@ -33,53 +33,32 @@ fao.classes.OffStore = function(){
   // URLs to capture. It can be relative to the current page, or an
   // absolute URL.
   this.MANIFEST_FILENAME = "../../../faomanifest.json";
-
   this.localServer = google.gears.factory.create("beta.localserver");
 
+  this.store = this.localServer.openManagedStore(this.STORE_NAME);
 //  // Called onload to initialize local server and store variables
-//  this.offline_init= function() {
-//    if (!window.google || !google.gears) {
-//      this.textOut("NOTE:  You must install Gears first.");
-//    } else {
-//      localServer = google.gears.factory.create("beta.localserver");
-//      store = localServer.createManagedStore(STORE_NAME);
-//  //    this.textOut("Yeay, Gears is already installed.");
-//    }
-//  }
-
-  this.switch_state = function(state){
+  this.switch_state = function(){
     //if offline ,now start online.
-    if(state){
-      if(state == "online"){
-        this.offline_removeStore();
-      }else{
-        this.offline_createStore();
-      }
-    }else{
-      if(fao.variables.offline) {
-          this.offline_removeStore();
-      }else{
-        this.offline_createStore();
-      }
-    }
+    this.store.enabled = this.store.enabled ? false : true
+    alert("offline?" + this.store.enabled);
   };
   
-  this.switch_state111 = function(){
+  var switch_state111 = function(){
     var sqlstmt = 'select * from linestates'; 
     var rs = fao.variables.db.execute(sqlstmt);
     if(rs.isValidRow()) {
       var curstate = rs.fieldByName("state");
       if(curstate == "offline"){
-        this.offline_removeStore();
+        offline_removeStore();
         fao.variables.db.execute("update linestates set state='online'");
         fao.doms.switch_btn.innerHTML="go offline!";
       }else{
-        this.offline_createStore();
+        offline_createStore();
         fao.variables.db.execute("update linestates set state='offline'");
         fao.doms.switch_btn.innerHTML="go online!";
       }
     }else{
-      this.offline_createStore();
+      offline_createStore();
       fao.variables.db.execute("insert into linestates (state) values (?)",["offline"]);
       fao.doms.switch_btn.innerHTML="go offline!";
     }
@@ -93,20 +72,9 @@ fao.classes.OffStore = function(){
       alert("You must install Gears first.");
       return;
     }
-      fao.variables.db.execute("update settings set myvalue ='true' where mykey = ?",["offline"]);
-      fao.variables.offline = true;
-      fao.doms.switch_btn.innerHTML="now offline,click to go online!";
-//    var sqlstmt = 'select * from linestates'; 
-//    var rs = fao.variables.db.execute(sqlstmt);
-//    if(rs.isValidRow()) {
-//      fao.variables.db.execute("update linestates set state='offline'");
-//    }else{
-//      fao.variables.db.execute("insert into linestates (state) values (?)",["offline"]);
-//    }
-//
-//    if(rs){
-//      rs.close();
-//    }
+    fao.variables.db.execute("update settings set myvalue ='true' where mykey = ?",["offline"]);
+    fao.variables.offline = true;
+    fao.doms.switch_btn.innerHTML="now offline,click to go online!";
     this.store = this.localServer.createManagedStore(this.STORE_NAME);
     this.store.manifestUrl = this.MANIFEST_FILENAME;
     this.store.checkForUpdate();
@@ -119,17 +87,12 @@ fao.classes.OffStore = function(){
         window.clearInterval(timerId);
         fao.variables.db.execute("update settings set myvalue = 'false' where mykey = ?",["firstrun"]);
         fao.variables.offstore.textOut("(" +fao.variables.offstore.store.currentVersion + ")");
-  //      this.textOut("The documents are now available offline.\n" +
-  //              "With your browser offline, load the document at " +
-  //              "its normal online URL to see the locally stored " +
-  //			        "version. The version stored is: " +
-  //              store.currentVersion);
       } else if (fao.variables.offstore.store.updateStatus == 3) {
         fao.variables.offstore.textOut("Error: " +fao.variables.offstore.store.lastErrorMessage);
       }
     }, 500);
   }
-
+//   offline_createStore();
   // Remove the managed resource store.
   this.offline_removeStore=function() {
     if (!window.google || !google.gears) {
@@ -139,17 +102,6 @@ fao.classes.OffStore = function(){
         fao.variables.db.execute("update settings set myvalue ='false' where mykey = ?",["offline"]);
         fao.variables.offline = false;
         fao.doms.switch_btn.innerHTML="now online,click to go offline!";
-//    var sqlstmt = 'select * from linestates'; 
-//    var rs = fao.variables.db.execute(sqlstmt);
-//    if(rs.isValidRow()) {
-//      fao.variables.db.execute("update linestates set state='online'");
-//    }else{
-//      fao.variables.db.execute("insert into linestates (state) values (?)",["online"]);
-//    }
-//
-//    if(rs){
-//      rs.close();
-//    }
     this.localServer.removeManagedStore(this.STORE_NAME);
     this.textOut("Done. The local store has been removed." +
             "You will now see online versions of the documents.");
@@ -163,4 +115,4 @@ fao.classes.OffStore = function(){
     }
     elm.appendChild(document.createTextNode(s));
   }
-}
+};
