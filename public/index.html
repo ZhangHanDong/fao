@@ -353,6 +353,56 @@ else{
 
     YAHOO.namespace("example.yuitest");
 
+    YAHOO.example.yuitest.equalCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+        this.data = "";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+    //    In JavaScript, numbers, strings, and boolean values are compared by value
+    //On the other hand, objects, arrays, and functions are compared by reference,This means that two variables are equal only if they refer to the same object.
+// If the two values have different types, they are not identical.
+    //
+
+    testT1: function(){
+      var Assert = YAHOO.util.Assert;
+      Assert.isTrue(false == "");
+      Assert.isTrue(false == 0);
+      Assert.isTrue(false == 0.0);
+      Assert.isTrue(false == " ");
+      Assert.isFalse(false === "");
+
+      Assert.isFalse(undefined === false);
+      Assert.isFalse(false == 0.1);
+      Assert.isFalse(false == "1");
+      }
+    });
+
+    YAHOO.example.yuitest.AssociativeArraysCase= new YAHOO.tool.TestCase({
+    name : "Associative Arrays Tests",
+    setUp : function(){
+        this.data = "";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+
+    testT1: function(){
+      var aa = {};
+      aa["p1"] = 55;
+      aa["p2"] = 66;
+      var Assert = YAHOO.util.Assert;
+      Assert.areEqual(55,aa.p1);
+      for(ps in aa){
+        Assert.isTrue(ps == "p1" || ps == "p2");
+      }
+      }
+    });
+
     YAHOO.example.yuitest.jsonTestCase= new YAHOO.tool.TestCase({
     name : "Json Tests",
     setUp : function(){
@@ -367,7 +417,7 @@ else{
       var str = "[1,2,3]";
       JSON.parse(str);
       var Assert = YAHOO.util.Assert;
-      Assert.isNotUndefined(ppyy);
+      Assert.isNotUndefined("ppyy");
     }
     });
 
@@ -569,6 +619,8 @@ else{
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.ArrayTestCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.RegexTestCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.jsonTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.AssociativeArraysCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.equalCase);
 
     Event.onDOMReady(function (){
         //create the logger
