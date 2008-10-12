@@ -4,8 +4,10 @@
  */
 
 fao.f.setsettings = function(){
+    //init values,real value will get from db.
     var settings = {pinyindb:false,
-                    offline:false
+                    offline:true,
+                    firstrun:true
     };
 
     for(ps in settings){
@@ -15,14 +17,18 @@ fao.f.setsettings = function(){
     while(rs.isValidRow()){
       switch(rs.field(0)){
         case "pinyindb":
-          if(rs.field(1) == "true")fao.variables.pinyindb=true;
+          fao.variables.pinyindb = rs.field(1) == "true" ? true :false
           settings.pinyindb = undefined;
           break;
         case "offline":
-          if(rs.field(1) == "true")fao.variables.offline=true;
+          fao.variables.offline= rs.field(1) == "true" ? true :false
           settings.offline = undefined;
           break;
-      }
+        case "firstrun":
+          fao.variables.firstrun= rs.field(1) == "true" ? true :false
+          settings.firstrun= undefined;
+          break;
+     }
       rs.next();
     }
 
