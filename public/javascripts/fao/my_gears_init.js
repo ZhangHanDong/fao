@@ -2,7 +2,41 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 fao.f.setsettings = function(){
+    var settings = {pinyindb:false,
+                    offline:false
+    };
+
+    for(ps in settings){
+      fao.variables[ps] = settings[ps];
+    }
+    var rs = fao.variables.db.execute("select mykey,myvalue from settings");
+    while(rs.isValidRow()){
+      switch(rs.field(0)){
+        case "pinyindb":
+          if(rs.field(1) == "true")fao.variables.pinyindb=true;
+          settings.pinyindb = undefined;
+          break;
+        case "offline":
+          if(rs.field(1) == "true")fao.variables.offline=true;
+          settings.offline = undefined;
+          break;
+      }
+      rs.next();
+    }
+
+    for(ps in settings){
+      if(settings[ps] !== undefined){
+        fao.variables.db.execute("insert into settings (mykey,myvalue) values (?,?)",[ps , settings[ps] + ""]);
+      }
+    }
+    rs.close();
+};
+
+
+
+fao.f.setsettings1 = function(){
     var ary_extra = function(ary,ele){
       var new_ary = [];
       for(var i=0;i<ary.length;i++){
