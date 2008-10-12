@@ -1,6 +1,6 @@
 {
   "betaManifestVersion": 1,
-  "version": "version 1.000021",
+  "version": "version 1.000022",
   "entries": [
       { "url": "/tools/webcachetool.html"},
       { "url": "/tools/dbquery.html"},

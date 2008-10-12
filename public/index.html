@@ -276,9 +276,11 @@
 //          Dom.get("mycontent").style.display = "block";
 //          Dom.get("loading_content").style.display = "none";
           fao.variables.offstore = new fao.classes.OffStore();
-
-          if(fao.variables.firstrun)fao.variables.offstore.switch_state("offline");
-          if(fao.variables.offline){
+          if(!fao.variables.offstore.store){
+            fao.variables.offstore.offline_createStore();
+          }
+//          if(fao.variables.firstrun)fao.variables.offstore.switch_state("offline");
+          if(fao.variables.offstore.store.enabled){
             fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
           }else{
             fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
