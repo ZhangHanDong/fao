@@ -276,21 +276,27 @@
 //          Dom.get("mycontent").style.display = "block";
 //          Dom.get("loading_content").style.display = "none";
           fao.variables.offstore = new fao.classes.OffStore();
-          var sqlstmt = 'select * from linestates'; 
-          var rs = fao.variables.db.execute(sqlstmt);
-          if(!rs.isValidRow()){ 
-            fao.variables.offstore.switch_state();
-            alert("程序自动进入离线工作状态，即使电脑没有联网也可以正常工作。");
+
+          if(fao.variables.firstrun)fao.variables.offstore.switch_state("offline");
+          if(fao.variables.offline){
+            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
           }else{
-            var st = rs.fieldByName("state");
-            if(st == "offline"){
-              fao.doms.switch_btn.innerHTML = "go online!";
-//              fao.doms.fao_version.innerHTML = fao.variables.offstore.store.panelcurrentVersion;
-            }else{
-              fao.doms.switch_btn.innerHTML = "go offline!";
-            }
+            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
           }
-          rs.close();
+//          var sqlstmt = 'select * from linestates'; 
+//          var rs = fao.variables.db.execute(sqlstmt);
+//          if(!rs.isValidRow()){ 
+//            fao.variables.offstore.switch_state();
+//            alert("程序自动进入离线工作状态，即使电脑没有联网也可以正常工作。");
+//          }else{
+//            var st = rs.fieldByName("state");
+//            if(st == "offline"){
+//              fao.doms.switch_btn.innerHTML = "go online!";
+//            }else{
+//              fao.doms.switch_btn.innerHTML = "go offline!";
+//            }
+//          }
+//          rs.close();
           fao.variables.mysync = new fao.classes.MySync();
 //          fao.variables.offstore.offline_createStore();
 //          var request = google.gears.factory.create('beta.httprequest');
@@ -341,7 +347,7 @@ else{
 
   <div id="ft">
     <br/><br/>
-  奉化市政府外事办管理系统<span id="fao_version"></span><button name="gear_desktop" id="gear_desktop">Create desktop shortcut</button><button onclick="fao.variables.offstore.switch_state();" id="switch_btn">go online!</button>
+  奉化市政府外事办管理系统<span id="fao_version"></span><button name="gear_desktop" id="gear_desktop">Create desktop shortcut</button><button onclick="fao.variables.offstore.switch_state();" id="switch_btn">now offline,click to go online!</button>
  <div id="textOut"></div></div>
 </div>
 <!--END SOURCE CODE FOR EXAMPLE =============================== -->
@@ -352,6 +358,36 @@ else{
 <script type="text/javascript">
 
     YAHOO.namespace("example.yuitest");
+
+    YAHOO.example.yuitest.shiliCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+    },
+
+    tearDown: function(){
+    },
+    testT1: function(){
+      var Assert = YAHOO.util.Assert;
+      }
+    });
+
+    YAHOO.example.yuitest.fnCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+    },
+
+    tearDown: function(){
+    },
+    testT1: function(){
+      var f= function(ap){
+        return ap;
+      };
+      var Assert = YAHOO.util.Assert;
+
+      Assert.isUndefined(f());
+      Assert.isNull(f(null));
+      }
+    });
 
     YAHOO.example.yuitest.equalCase= new YAHOO.tool.TestCase({
     name : "equal Tests",
@@ -621,6 +657,8 @@ else{
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.jsonTestCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.AssociativeArraysCase);
     YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.equalCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.fnCase);
+
 
     Event.onDOMReady(function (){
         //create the logger
