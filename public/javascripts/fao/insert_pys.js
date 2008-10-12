@@ -632,8 +632,7 @@ var x = new function(){
         var i = 0;
         db.execute("delete from pys");
         wp.sendMessage(["a","b",{text:"即将把" + pinyin_ary.length + "条汉字记录插入到数据库中，这是一个可能持续10-60分钟的过程（结束的时候会有对话框出来提醒你！），但不会影响你的工作，只是你不要中途关闭浏览器即可。注意，这种情况只需执行一次。",action:"popup"}], x.message.sender);
-//        for(i=0;i<pinyin_ary.length;i++){
-        for(i=0;i<20;i++){
+        for(i=0;i<pinyin_ary.length;i++){
           var hanzi_pinyin = pinyin_ary[i].split(",",2);
           var uuid = new UUID();
           var uuid_str = uuid.id.replace(/-/g,"").toLowerCase();
