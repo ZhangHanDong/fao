@@ -1,6 +1,7 @@
 log/*
 tmp/*
 *~
+*.swp
 .rake_tasks
 config/database.yml
 config/deploy.rb
