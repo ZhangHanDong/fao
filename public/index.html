@@ -41,7 +41,6 @@
 
 <script type="text/javascript" src="/javascripts/uuid.js"></script>
 <script type="text/javascript" src="/javascripts/myutils/string.js"></script>
-<script type="text/javascript" src="/javascripts/pinyin_ary.js"></script>
 <script type="text/javascript" src="/javascripts/fao/json2.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/stylesheets/mycss.css">
@@ -189,7 +188,6 @@
       fao.doms.textout = Dom.get("textOut");
       fao.doms.indicator= Dom.get("indicator");
     }
-    
     fao.variables = {
       cur_table : 1,
       db : null,
@@ -202,47 +200,8 @@
 <script type="text/javascript"  src="/javascripts/gears_init.js"></script>
 <script type="text/javascript"  src="/javascripts/fao/my_gears_init.js"></script>
 <script type="text/javascript" src="/javascripts/fao/go_offline.js"></script>
-<script type="text/javascript">
-  fao.classes.AutoComp = function(){
-    var textboxKeyHandler = function(sType,oArgs){
-      if(!fao.doms.ac_input.value && (oArgs[1] == 8 || oArgs[1] == 46)){
-          if(fao.variables.cur_table == 1)
-              fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
-          else
-              fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
-      }
-    }
-    var getResults = function(query) {
-      if(fao.variables.cur_table == 1){
-          fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
-      }
-      else{
-          fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
-      }
-    };
-    var oACDS = new YAHOO.widget.DS_JSFunction(getResults);
-    var oAutoComp = new YAHOO.widget.AutoComplete("ac_input","dt_ac_container", oACDS);
-    oAutoComp.textboxKeyEvent.subscribe(textboxKeyHandler);
-  }
-</script>
-
-<script>
-      fao.classes.StaffPanel = function(){
-              this.panel = new YAHOO.widget.Panel("staff_panel", { visible:false,
-                                                                    constraintoviewport: true,
-                                                                    close:true,
-                                                                    draggable:true,
-                                                                    context:["staffDataTable","tl","tr"]});
-                                                                   //context,then panel's corner,then context corner.
-              this.panel.render();
-              var staffdHideHandler = function(){
-                  fao.doms.staff_panel_tab.style.display = "none";
-                  fao.doms.activity_radio.click();
-              }
-              this.panel.hideEvent.subscribe(staffdHideHandler);
-      };
-</script>
 <!--event listener-->
+<script src="/javascripts/fao/myautocomplete.js" type="text/javascript"></script>
 <script src="/javascripts/fao/staff.js" type="text/javascript"></script>
 <script src="/javascripts/fao/staffd.js" type="text/javascript"></script>
 <script src="/javascripts/fao/activity.js" type="text/javascript"></script>
@@ -288,31 +247,7 @@
           }else{
             fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
           }
-//          var sqlstmt = 'select * from linestates'; 
-//          var rs = fao.variables.db.execute(sqlstmt);
-//          if(!rs.isValidRow()){ 
-//            fao.variables.offstore.switch_state();
-//            alert("程序自动进入离线工作状态，即使电脑没有联网也可以正常工作。");
-//          }else{
-//            var st = rs.fieldByName("state");
-//            if(st == "offline"){
-//              fao.doms.switch_btn.innerHTML = "go online!";
-//            }else{
-//              fao.doms.switch_btn.innerHTML = "go offline!";
-//            }
-//          }
-//          rs.close();
           fao.variables.mysync = new fao.classes.MySync();
-//          fao.variables.offstore.offline_createStore();
-//          var request = google.gears.factory.create('beta.httprequest');
-//          var getstr =  '/ceshi/testpost' + '?a=5&b=6';
-//          request.open('GET',getstr);
-//          request.onreadystatechange = function() {
-//            if (request.readyState == 4) {
-//              alert(request.responseText);
-//            }
-//          };
-//          request.send();
         }
 
         catch(e){

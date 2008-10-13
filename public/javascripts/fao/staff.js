@@ -353,13 +353,8 @@ fao.classes.DialogStaff = function() {
     //context is datatable self.
     var onRowClick = function(oArgs){
         this.onEventSelectRow(oArgs);
-//        alert(m3958.utils.DisplayPropertyNames(oArgs));
-//        alert(Event.getTarget(oArgs.event).tagName + "kkk");
-
         var targetRow = oArgs.target;
-        var targetRecordDate = this.getRecord(targetRow).getData();
-//        alert(m3958.utils.DisplayPropertyNames(targetRow));
-//        alert(m3958.utils.DisplayPropertyNames(this.getTrEl(targetRow)));
+        var targetRecordData = this.getRecord(targetRow).getData();
         if(targetRow.isDD){
 //            alert("already dd");
         }
@@ -424,21 +419,20 @@ fao.classes.DialogStaff = function() {
 //        }
         var targetEl = Event.getTarget(oArgs.event);
 
-//        alert(targetEl.id);
         if(targetEl.tagName.toUpperCase() == "BUTTON" && targetEl.innerHTML == "删除"){
             var answer =  confirm("真的要删除？");
 //            alert(answer);
             if(answer){
                 this.deleteRow(targetRow);
 //                this.render();
+//                alert(targetRecordData.id);
                 fao.variables.db.execute("delete from staffs where id = ?", [targetRecordData.id]);
+                fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
             }
         }
     };
     this.datatable.subscribe('rowClickEvent', onRowClick,this.datatable,true);
     this.datatable.subscribe('rowDblclickEvent', onRowDblClick,this.datatable,true);
-//    this.datatable.subscribe('rowMousedownEvent', onRowMouseDown,this.datatable,true);
-//    this.datatable.subscribe('renderEvent', onRender,this.datatable,true);
 
 //-------------------------------------------------------------------------------------------
   }
