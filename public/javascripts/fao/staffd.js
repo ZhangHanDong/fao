@@ -261,7 +261,6 @@ fao.classes.Staffd = function(data){
         };
 
         var buildQueryString = function(state,dt){
-            alert("paged");
             return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
         };
         var dataTableConfig = {
