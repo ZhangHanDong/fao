@@ -6,6 +6,9 @@ fao.classes.MySync = function(){
       case 'popup':
         alert(message.body[2].text);
         break;
+      case 'indicator':
+        fao.doms.indicator.innerHTML =  message.body[2].text;
+        break;
       default:
         fao.doms.textout.innerHTML = message.body[2].text;
     }
