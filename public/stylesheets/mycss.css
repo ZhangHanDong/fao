@@ -1,0 +1,12 @@
+#indicator {
+	background-color: #663366;
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #FFFFFF;
+	z-index: 100;
+	height: auto;
+	width: auto;
+        margin-top: 0;
+        margin-right: 0px;
+}

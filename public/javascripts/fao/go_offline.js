@@ -40,7 +40,12 @@ fao.classes.OffStore = function(){
   this.switch_state = function(){
     //if offline ,now start online.
     this.store.enabled = this.store.enabled ? false : true
-    alert("offline?" + this.store.enabled);
+//    alert("offline?" + this.store.enabled);
+          if(fao.variables.offstore.store.enabled){
+            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
+          }else{
+            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
+          }
   };
   
   var switch_state111 = function(){
@@ -66,6 +71,10 @@ fao.classes.OffStore = function(){
       rs.close();
     }
   };
+  var offline_onprogress = function(details){
+    var percent = Math.round(details.filesComplete/details.filesTotal*100);
+    fao.doms.indicator.innerHTML = "离线下载完成" + percent + "%";
+  }
   // Create the managed resource store
   this.offline_createStore = function() {
     if (!window.google || !google.gears) {
@@ -78,6 +87,7 @@ fao.classes.OffStore = function(){
     this.store = this.localServer.createManagedStore(this.STORE_NAME);
     this.store.manifestUrl = this.MANIFEST_FILENAME;
     this.store.checkForUpdate();
+    this.store.onprogress = offline_onprogress;
 // if download error occur,this function will display a note.
     var timerId = window.setInterval(function() {
       // When the currentVersion property has a value, all of the resources
@@ -86,7 +96,8 @@ fao.classes.OffStore = function(){
       if (fao.variables.offstore.store.currentVersion) {
         window.clearInterval(timerId);
         fao.variables.db.execute("update settings set myvalue = 'false' where mykey = ?",["firstrun"]);
-        fao.variables.offstore.textOut("(" +fao.variables.offstore.store.currentVersion + ")");
+        fao.doms.indicator.innerHTML = "";
+        fao.doms.fao_version.innerHTML = "(" +fao.variables.offstore.store.currentVersion + ")";
       } else if (fao.variables.offstore.store.updateStatus == 3) {
         fao.variables.offstore.textOut("Error: " +fao.variables.offstore.store.lastErrorMessage);
       }
@@ -109,7 +120,7 @@ fao.classes.OffStore = function(){
 
   // Utility function to output some status text.
   this.textOut =function(s) {
-   var elm = document.getElementById("fao_version");
+   var elm = document.getElementById("textOut");
     while (elm.firstChild) {
       elm.removeChild(elm.firstChild);
     }

@@ -46,9 +46,7 @@
     Event.addListener(fao.doms.activity_radio,"click",activity_radio_handler);
 
     var my_gear_desktop = function(){
-      alert("ya");
       var desktop = google.gears.factory.create('beta.desktop');
-      alert(desktop);
       try{
         desktop.createShortcut('FengHua fao',
                            '/index.html',
@@ -63,4 +61,14 @@
       }
     };
     Event.addListener("gear_desktop","click",my_gear_desktop);
+
+    var my_switch_btn= function(){
+      fao.variables.offstore.switch_state(); 
+    };
+    Event.addListener("switch_btn","click",my_switch_btn);
+
+    var my_dbl_switch_btn = function(){
+      fao.variables.offstore.offline_removeStore();
+    }
+    Event.addListener("switch_btn","dblclick",my_dbl_switch_btn);
   };
