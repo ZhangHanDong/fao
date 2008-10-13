@@ -642,6 +642,7 @@ var x = new function(){
           }
         }
         db.execute("update settings set myvalue = ? where mykey = ?",["true","pinyindb"]);
+            wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.sender);
 //        wp.sendMessage(["a","b",{text:"插入数据库的汉字拼音总数是：" + pinyin_ary.length,action:"popup"}], x.message.sender);
       }
     };
