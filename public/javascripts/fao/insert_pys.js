@@ -637,9 +637,12 @@ var x = new function(){
           var uuid = new UUID();
           var uuid_str = uuid.id.replace(/-/g,"").toLowerCase();
           db.execute("insert into pys (id,hanzi,pys) values (?,?,?)",[uuid_str,hanzi_pinyin[0],hanzi_pinyin[1]]);
+          if(i % 25== 0){
+            wp.sendMessage(["a","b",{text:"插入数据库的汉字拼音数：" + i + "/" + pinyin_ary.length, action:"indicator"}], x.message.sender);
+          }
         }
         db.execute("update settings set myvalue = ? where mykey = ?",["true","pinyindb"]);
-        wp.sendMessage(["a","b",{text:"插入数据库的汉字拼音总数是：" + pinyin_ary.length,action:"popup"}], x.message.sender);
+//        wp.sendMessage(["a","b",{text:"插入数据库的汉字拼音总数是：" + pinyin_ary.length,action:"popup"}], x.message.sender);
       }
     };
     request.send();
