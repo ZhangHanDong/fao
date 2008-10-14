@@ -204,6 +204,7 @@
           fao.variables.dialog_staffd = new fao.classes.DialogStaffd();
           fao.variables.auto_comp = new fao.classes.AutoComp();
           fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
+          fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
           fao.variables.activities_datatable = new fao.classes.ActivitiesDataTable();
           fao.variables.staffds_datatable = new fao.classes.StaffdsDataTable();
           fao.variables.staff_panel = new fao.classes.StaffPanel();
