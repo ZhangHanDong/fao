@@ -177,7 +177,8 @@ fao.classes.DialogStaff = function() {
                 else
                      staff.save();
 
-                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
+//                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
+                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -208,9 +209,8 @@ fao.classes.DialogStaff = function() {
   fao.classes.StaffsDataTable = function(){
     this.datasource = null;
     this.datatable = null;
-    this.initTable = function(){
-//      fao.
-    }
+    this.paginator = new YAHOO.widget.Paginator({rowsPerPage:4});
+
 //    this.initializeTable = function( sRequest , oResponse , oPayload ){
 //        this.datatable.onDataReturnInitializeTable(sRequest , oResponse , oPayload);
 //        var fte = this.datatable.getFirstTrEl();
@@ -239,6 +239,7 @@ fao.classes.DialogStaff = function() {
         {key:"note",label:"备注"},
         {key:"id",label:"删除",formatter:fao.utils.formatDeleteButton}
     ];
+
     var dsfunc= function(condi){
       var offset = condi ? (condi.offset || 0) : 0;
       var rowspp = condi ? (condi.rowspp || 4) : 4;
@@ -269,20 +270,10 @@ fao.classes.DialogStaff = function() {
       rs = fao.variables.db.execute("select count(*) from staffs where name like ? or pyname like ? or spyname like ?",[phrase,phrase,phrase]);
       if(rs.isValidRow())count = rs.field(0);
       rs.close();
-//          alert(count);
       results.totalRecords = count;
-//      alert("num:" + results.staffs.length);
       return results;
     };
 
-//    try{
-//        dsfunc();
-//    }
-//    catch(e){
-//        alert(e.message);
-//    }
-
-//    this.datasource = new YAHOO.util.DataSource(dsfunc);
     this.datasource = new YAHOO.util.FunctionDataSource(dsfunc);
     this.datasource.responseType = YAHOO.util.FunctionDataSource.TYPE_JSON;
     this.datasource.responseSchema = {
@@ -306,8 +297,8 @@ fao.classes.DialogStaff = function() {
     };
 
     var buildQueryString = function(state,dt){
-        alert(fao.variables.staffs_datatable.datatable.get("paginator").getState().page);
-        alert(state);
+        alert(fao.variables.staffs_datatable.paginator.getState().page);
+        alert(state.currentPage);
         var offset = state.pagination.recordOffset;
         var rowspp = state.pagination.rowsPerPage;
         return {offset:offset,rowspp:rowspp};
@@ -316,10 +307,11 @@ fao.classes.DialogStaff = function() {
         initialRequest:"",
         initialLoad:true,
         dynamicData:true,
-        paginator: new YAHOO.widget.Paginator({
-            rowsPerPage:4,
-            totalRecords:20
-        }),
+        paginator : this.paginator,
+//        paginator: new YAHOO.widget.Paginator({
+//            rowsPerPage:4,
+//            totalRecords:20
+//        }),
         generateRequest : buildQueryString
 //        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
@@ -328,15 +320,25 @@ fao.classes.DialogStaff = function() {
     this.datatable = new YAHOO.widget.DataTable("staffDataTable", columnDefs,
         this.datasource, dataTableConfig);
 
-    
+    var dsCallbackfn = function(sRequest,oResponse,oPayload){
+      alert(oPayload);
+      fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable(sRequest,oResponse,oPayload);
+    };
+
+    this.dsRequestCallback = {
+        success : this.dsCallbackfn,
+        failure : this.dsCallbackfn,
+        scope : this.datatable
+    };
+//    we cann't do that,because we will sendRequest out datatable.    
 //    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 //            alert(oRequest);
 //            alert(oResponse);
 //            alert(oPayload);
 //            oPayload.totalRecords = oResponse.meta.totalRecords;
 //            return oPayload;
-//        }
-
+//        };
+//
 //    this.datatable.set("selectionMode","single");
 //    this.datatable.selectRow(this.datatable.getTrEl(0));
 
@@ -415,11 +417,11 @@ fao.classes.DialogStaff = function() {
                     }
                 }
 
-                var callback = {
-                    success : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
-                    failure : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
-                    scope : this.datatable
-                };
+//                var callback = {
+//                    success : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
+//                    failure : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
+//                    scope : this.datatable
+//                };
                 
                 fao.variables.staffds_datatable.datasource.sendRequest('', fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffds_datatable.datatable);
 //                fao.variables.staffds_datatable.datasource.sendRequest('', callback);
