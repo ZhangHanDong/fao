@@ -11,7 +11,14 @@ fao.classes.AutoComp = function(){
 
   var getResults = function(query) {
     if(fao.variables.cur_table == 1){
-        fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
+//        fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
+//                for( name in fao.variables.staffs_datatable.dsRequestCallback){
+//                  alert(name);
+//                  alert(fao.variables.staffs_datatable.dsRequestCallback[name]);
+//                }
+//                               alert(fao.variables.staffs_datatable.dsRequestCallback.success);   
+                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
+                 
     }
     else{
         fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
