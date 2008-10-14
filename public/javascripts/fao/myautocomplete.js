@@ -15,7 +15,8 @@
           fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
       }
     };
-    var oACDS = new YAHOO.widget.DS_JSFunction(getResults);
+//    var oACDS = new YAHOO.widget.DS_JSFunction(getResults);
+    var oACDS = new YAHOO.util.FunctionDataSource(getResults); 
     var oAutoComp = new YAHOO.widget.AutoComplete("ac_input","dt_ac_container", oACDS);
     oAutoComp.textboxKeyEvent.subscribe(textboxKeyHandler);
   }
