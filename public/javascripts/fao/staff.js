@@ -179,6 +179,7 @@ fao.classes.DialogStaff = function() {
 
 //                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
                  fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
+                 alert(fao.variables.staffs_datatable.dsRequestCallback);
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -271,10 +272,12 @@ fao.classes.DialogStaff = function() {
       if(rs.isValidRow())count = rs.field(0);
       rs.close();
       results.totalRecords = count;
+//      this.mypaginator.setTotalRecords(count);
       return results;
     };
 
     this.datasource = new YAHOO.util.FunctionDataSource(dsfunc);
+//    this.datasource.mypaginator = this.paginator;
     this.datasource.responseType = YAHOO.util.FunctionDataSource.TYPE_JSON;
     this.datasource.responseSchema = {
         resultsList : 'staffs',
@@ -297,15 +300,15 @@ fao.classes.DialogStaff = function() {
     };
 
     var buildQueryString = function(state,dt){
-        alert(fao.variables.staffs_datatable.paginator.getState().page);
-        alert(state.currentPage);
+//        alert(fao.variables.staffs_datatable.paginator.getState().page);
+//        alert(state.currentPage);
         var offset = state.pagination.recordOffset;
         var rowspp = state.pagination.rowsPerPage;
         return {offset:offset,rowspp:rowspp};
     };
     var dataTableConfig = {
-        initialRequest:"",
-        initialLoad:true,
+//        initialLoad: {request:'',argument:"12345"},
+        initialLoad: false,
         dynamicData:true,
         paginator : this.paginator,
 //        paginator: new YAHOO.widget.Paginator({
@@ -321,24 +324,37 @@ fao.classes.DialogStaff = function() {
         this.datasource, dataTableConfig);
 
     var dsCallbackfn = function(sRequest,oResponse,oPayload){
-      alert(oPayload);
       fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable(sRequest,oResponse,oPayload);
+//      fao.variables.staffs_datatable.paginator.set('totalRecords',oResponse.meta.totalRecords);
+//      alert(fao.variables.staffs_datatable.paginator);
+//      alert(oResponse.meta.totalRecords);
+//      fao.variables.staffs_datatable.paginator.setTotal
+//      for(name in oResponse){
+//        alert(name);
+//      }
     };
 
     this.dsRequestCallback = {
-        success : this.dsCallbackfn,
-        failure : this.dsCallbackfn,
+        success : dsCallbackfn, 
+        failure : dsCallbackfn,
         scope : this.datatable
     };
+
 //    we cann't do that,because we will sendRequest out datatable.    
-//    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-//            alert(oRequest);
-//            alert(oResponse);
-//            alert(oPayload);
-//            oPayload.totalRecords = oResponse.meta.totalRecords;
-//            return oPayload;
-//        };
-//
+    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+            if(!oPayload){
+              oPayload = this.get("paginator").getState();
+            }
+            oPayload.totalRecords = oResponse.meta.totalRecords;
+            return oPayload;
+        };
+//      this.datatable.doBeforeLoadData = function(sRequest, oResponse, oPayload) {
+//          // When response returns, oPayload is "12345"
+//          // and available in the doBeforeLoadData customizable method
+//          alert(oPayload);
+//          return true;
+//      };
+
 //    this.datatable.set("selectionMode","single");
 //    this.datatable.selectRow(this.datatable.getTrEl(0));
 
