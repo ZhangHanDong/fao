@@ -208,6 +208,9 @@ fao.classes.DialogStaff = function() {
   fao.classes.StaffsDataTable = function(){
     this.datasource = null;
     this.datatable = null;
+    this.initTable = function(){
+//      fao.
+    }
 //    this.initializeTable = function( sRequest , oResponse , oPayload ){
 //        this.datatable.onDataReturnInitializeTable(sRequest , oResponse , oPayload);
 //        var fte = this.datatable.getFirstTrEl();
@@ -279,8 +282,9 @@ fao.classes.DialogStaff = function() {
 //        alert(e.message);
 //    }
 
-    this.datasource = new YAHOO.util.DataSource(dsfunc);
-    this.datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+//    this.datasource = new YAHOO.util.DataSource(dsfunc);
+    this.datasource = new YAHOO.util.FunctionDataSource(dsfunc);
+    this.datasource.responseType = YAHOO.util.FunctionDataSource.TYPE_JSON;
     this.datasource.responseSchema = {
         resultsList : 'staffs',
         fields: [
@@ -302,23 +306,36 @@ fao.classes.DialogStaff = function() {
     };
 
     var buildQueryString = function(state,dt){
-//            alert("paged");
+        alert(fao.variables.staffs_datatable.datatable.get("paginator").getState().page);
+        alert(state);
         var offset = state.pagination.recordOffset;
         var rowspp = state.pagination.rowsPerPage;
         return {offset:offset,rowspp:rowspp};
     };
     var dataTableConfig = {
         initialRequest:"",
+        initialLoad:true,
+        dynamicData:true,
         paginator: new YAHOO.widget.Paginator({
-            rowsPerPage:4
+            rowsPerPage:4,
+            totalRecords:20
         }),
-        generateRequest : buildQueryString,
-        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
+        generateRequest : buildQueryString
+//        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
     };
 
     this.datatable = new YAHOO.widget.DataTable("staffDataTable", columnDefs,
         this.datasource, dataTableConfig);
+
+    
+//    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+//            alert(oRequest);
+//            alert(oResponse);
+//            alert(oPayload);
+//            oPayload.totalRecords = oResponse.meta.totalRecords;
+//            return oPayload;
+//        }
 
 //    this.datatable.set("selectionMode","single");
 //    this.datatable.selectRow(this.datatable.getTrEl(0));
@@ -397,7 +414,16 @@ fao.classes.DialogStaff = function() {
                         alert(staff.name + "已经在列表中！");
                     }
                 }
+
+                var callback = {
+                    success : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
+                    failure : fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable,
+                    scope : this.datatable
+                };
+                
                 fao.variables.staffds_datatable.datasource.sendRequest('', fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffds_datatable.datatable);
+//                fao.variables.staffds_datatable.datasource.sendRequest('', callback);
+
                 fao.variables.staffds_datatable.datatable.render();
 //                alert(fao.variables.staffs_datatable.datatable.getSelectedRows()[0]l);
 //                alert(fao.variables.staffs_datatable.datatable.getRecord(fao.variables.staffs_datatable.datatable.getSelectedRows()[0]).getData().id);
