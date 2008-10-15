@@ -4,23 +4,23 @@
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Individual YUI CSS files -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/reset-fonts-grids/reset-fonts-grids.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/autocomplete/assets/skins/sam/autocomplete.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/paginator/assets/skins/sam/paginator.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/logger/assets/skins/sam/logger.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/yuitest/assets/skins/sam/yuitest.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/reset-fonts-grids/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/logger/assets/skins/sam/logger.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/yuitest/assets/skins/sam/yuitest.css">
 <!-- Individual YUI JS files -->
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/utilities/utilities.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/datasource/datasource-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/autocomplete/autocomplete-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/container/container-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/datatable/datatable-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/json/json-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/logger/logger-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/yuitest/yuitest-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/utilities/utilities.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/autocomplete/autocomplete-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/container/container-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/json/json-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/logger/logger-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/yuitest/yuitest-min.js"></script>
 
 
 
@@ -206,7 +206,9 @@
           fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
           fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
           fao.variables.activities_datatable = new fao.classes.ActivitiesDataTable();
+          fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.dsRequestCallback);
           fao.variables.staffds_datatable = new fao.classes.StaffdsDataTable();
+          fao.variables.staffds_datatable.datasource.sendRequest('',fao.variables.staffds_datatable.dsRequestCallback);
           fao.variables.staff_panel = new fao.classes.StaffPanel();
           fao.doms.staff_panel_tab.style.display = "none";
           //because activity_id is null at init,so staffd_datatable are empty.
@@ -222,7 +224,9 @@
 //          Dom.get("mycontent").style.display = "block";
 //          Dom.get("loading_content").style.display = "none";
           fao.variables.offstore = new fao.classes.OffStore();
+//          alert(fao.variables.offstore.store.enabled);
           if(!fao.variables.offstore.store){
+//            alert("create store");
             fao.variables.offstore.offline_createStore();
           }else{
             fao.doms.fao_version.innerHTML = "(" +fao.variables.offstore.store.currentVersion + ")";
@@ -391,6 +395,15 @@ else{
     tearDown: function(){
         delete this.data;
     },
+
+    testMatchWord: function(){
+        var str = "_";
+        var re = /^[\w{1}]$/;
+        var Assert = YAHOO.util.Assert;
+        var result = str.match(re);
+        Assert.areEqual(1,result.length);
+        Assert.areEqual(str,result[0]);
+    },
     testMatch: function(){
         var str = "20082008-01-01";
         var re = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
@@ -431,15 +444,25 @@ else{
       Assert.areEqual(" bb ",str.strip("a"));
     },
 
+    testSplit0: function(){
+        var str = "a,b,c,d,";
+        var re=/,/m
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual("a",result[0]);
+        Assert.areEqual("d",result[result.length-1]);
+        Assert.areEqual(4,result.length);
+    },
     testSplit: function(){
         var str = "abc,usk\r\n中国或,isks\r美国 ,试试哦打开\n思考is,sisks\r";
         var re=/\r+\n+|\r+|\n+/m
         var result = str.split(re);
         var Assert = YAHOO.util.Assert;
         Assert.isArray(result);
-        Assert.areEqual(4,result.length);
-        Assert.areNotEqual("",result[result.length-1]);
         Assert.areEqual("abc,usk",result[0]);
+        Assert.areNotEqual("",result[result.length-1]);
+        Assert.areEqual(4,result.length);
     },
 
     testSplit1: function(){

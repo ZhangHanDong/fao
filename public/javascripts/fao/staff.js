@@ -179,7 +179,6 @@ fao.classes.DialogStaff = function() {
 
 //                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
                  fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
-                 alert(fao.variables.staffs_datatable.dsRequestCallback);
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -325,13 +324,6 @@ fao.classes.DialogStaff = function() {
 
     var dsCallbackfn = function(sRequest,oResponse,oPayload){
       fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable(sRequest,oResponse,oPayload);
-//      fao.variables.staffs_datatable.paginator.set('totalRecords',oResponse.meta.totalRecords);
-//      alert(fao.variables.staffs_datatable.paginator);
-//      alert(oResponse.meta.totalRecords);
-//      fao.variables.staffs_datatable.paginator.setTotal
-//      for(name in oResponse){
-//        alert(name);
-//      }
     };
 
     this.dsRequestCallback = {
@@ -340,7 +332,6 @@ fao.classes.DialogStaff = function() {
         scope : this.datatable
     };
 
-//    we cann't do that,because we will sendRequest out datatable.    
     this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
             if(!oPayload){
               oPayload = this.get("paginator").getState();

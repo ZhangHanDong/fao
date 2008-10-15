@@ -264,12 +264,14 @@ fao.classes.Staffd = function(data){
             return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
         };
         var dataTableConfig = {
-            initialRequest:"",
+            initialRequest : "",
+            initialLoad : false,
+            dynamicData : true,
             paginator: new YAHOO.widget.Paginator({
                 rowsPerPage:4
             }),
             generateRequest : buildQueryString,
-            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination,
+//            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination,
             caption : fao.variables.curactivity.dguojia
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
         };
@@ -279,6 +281,23 @@ fao.classes.Staffd = function(data){
 
         this.datatable.set("selectionMode","single");
 //        this.datatable.selectRow(this.datatable.getTrEl(0));
+
+    var dsCallbackfn = function(sRequest,oResponse,oPayload){
+      fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable(sRequest,oResponse,oPayload);
+    };
+    this.dsRequestCallback = {
+        success : dsCallbackfn, 
+        failure : dsCallbackfn,
+        scope : this.datatable
+    };
+
+    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+            if(!oPayload){
+              oPayload = this.get("paginator").getState();
+            }
+            oPayload.totalRecords = oResponse.meta.totalRecords;
+            return oPayload;
+        };
 
     var onRowDblClick = function(oArgs){
 

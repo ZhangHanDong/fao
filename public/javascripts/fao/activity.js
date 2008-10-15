@@ -259,12 +259,14 @@ fao.classes.Activity = function(data){
         };
 
         var dataTableConfig = {
-            initialRequest:"",
+            initialRequest : "",
+            initialLoad : false,
+            dynamicData : true,
             paginator: new YAHOO.widget.Paginator({
                 rowsPerPage:4
             }),
-            generateRequest : buildQueryString,
-            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
+            generateRequest : buildQueryString
+//            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
         };
 
@@ -272,6 +274,22 @@ fao.classes.Activity = function(data){
             this.datasource, dataTableConfig);
         this.datatable.set("selectionMode","single");
 
+    var dsCallbackfn = function(sRequest,oResponse,oPayload){
+      fao.variables.activities_datatable.datatable.onDataReturnInitializeTable(sRequest,oResponse,oPayload);
+    };
+    this.dsRequestCallback = {
+        success : dsCallbackfn, 
+        failure : dsCallbackfn,
+        scope : this.datatable
+    };
+
+    this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+            if(!oPayload){
+              oPayload = this.get("paginator").getState();
+            }
+            oPayload.totalRecords = oResponse.meta.totalRecords;
+            return oPayload;
+        };
     var onRowDblClick = function(oArgs){
 //        alert("dbl");
         try{
