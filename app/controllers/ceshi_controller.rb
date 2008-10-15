@@ -36,6 +36,9 @@ class CeshiController < ApplicationController
     require 'find'
     Find.find(d) do |f|
       Find.prune if  f =~ /\/\./
+      Find.prune if  f =~ /README/
+      Find.prune if  f =~ /-debug/
+      Find.prune if  f =~ /~$/
       Find.prune if f.empty?
 #      a << f
       b = f.split(d,2)[1]
@@ -47,7 +50,7 @@ class CeshiController < ApplicationController
     end
 #    a = a.select {|x|File.ftype(x) == "file"}
     File.open(File.join(d,"faomanifest.json"),"w") do |f|
-      v = "1.0"
+      v = "0.000000"
       f.write("{")
       f.write("\n")
       f.write(%Q!  "betaManifestVersion": 1,!)
