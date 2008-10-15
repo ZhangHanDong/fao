@@ -66,6 +66,9 @@
         }
       };
      this.find_pinyin = function(c){
+       if(c.match(/^\w{1}$/)){
+           return c;
+       };
        var rs = fao.variables.db.execute("select pys from pys where hanzi=?",[c]);
        if(rs.isValidRow()){
          return rs.field(0);
