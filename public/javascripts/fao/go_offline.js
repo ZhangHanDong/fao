@@ -118,6 +118,16 @@ fao.classes.OffStore = function(){
             "You will now see online versions of the documents.");
   }
 
+  this.hardly_removeStore=function() {
+    if (!window.google || !google.gears) {
+      alert("You must install Gears first.");
+      return;
+    }
+    alert("remove local store now");
+    this.localServer.removeManagedStore(this.STORE_NAME);
+    alert("local store has moved");
+  }
+
   // Utility function to output some status text.
   this.textOut =function(s) {
    var elm = document.getElementById("textOut");
