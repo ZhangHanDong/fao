@@ -30,10 +30,12 @@ fao.classes.Staff =  function(data){
             this.id = data.id;
         }
         this.name = data.name;
-        this.danwei = data.danwei,
-        this.zhiwu = data.zhiwu,
-        this.hzhaoma = data.hzhaoma,
-        this.hzghriqi = data.hzghriqi,
+        this.danwei = data.danwei;
+        this.zhiwu = data.zhiwu;
+        this.hzhaoma = data.hzhaoma;
+        this.hzfzriqi = fao.utils.convertDate(data.hzfzriqi);
+        this.hzyxq = fao.utils.convertDate(data.hzyxq);
+        this.hzghriqi = fao.utils.convertDate(data.hzghriqi);
         this.pyname = fao.utils.ch2py.find_pystr(this.name)[0].join(",");
         this.spyname = fao.utils.ch2py.find_pystr(this.name)[1].join(",");
         this.sex = data.sex;
@@ -43,13 +45,13 @@ fao.classes.Staff =  function(data){
         var curTime = new Date().getTime();
         this.save = function(){
             fao.variables.db.execute("insert into staffs " +
-                " (id,name,danwei,zhiwu,hzhaoma,hzghriqi,pyname,spyname,sex,birthday,note,sync_state,created_at,updated_at) " +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,this.sync_state,curTime,curTime]);
+                " (id,name,danwei,zhiwu,hzhaoma,hzfzriqi,hzyxq,hzghriqi,pyname,spyname,sex,birthday,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,this.sync_state,curTime,curTime]);
         };
         this.update = function(){
             fao.variables.db.execute("update staffs set" +
-                " name = ?,danwei =?,zhiwu=?,hzhaoma=?,hzghriqi=?,pyname=?,spyname =?,sex=?,birthday=?,note=?,sync_state=?,updated_at=? where id = ?",
-            [this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,'changed',curTime,this.id]);
+                " name = ?,danwei =?,zhiwu=?,hzhaoma=?,hzfzriqi=?,hzyxq=?,hzghriqi=?,pyname=?,spyname =?,sex=?,birthday=?,note=?,sync_state=?,updated_at=? where id = ?",
+            [this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,'changed',curTime,this.id]);
         };
       };
 
@@ -96,6 +98,8 @@ fao.classes.DialogStaff = function() {
               Dom.get("danwei_sf_dlg").value = "";
               Dom.get("zhiwu_sf_dlg").value = "";
               Dom.get("hzhaoma_sf_dlg").value = "";
+              Dom.get("hzfzriqi_sf_dlg").value = "";
+              Dom.get("hzyxq_sf_dlg").value = "";
               Dom.get("hzghriqi_sf_dlg").value = "";
 //              Dom.get("pyname_sf_dlg").value = "";
 //              Dom.get("spyname_sf_dlg").value = "";
@@ -116,7 +120,9 @@ fao.classes.DialogStaff = function() {
               Dom.get("danwei_sf_dlg").value = oData.danwei;
               Dom.get("zhiwu_sf_dlg").value = oData.zhiwu;
               Dom.get("hzhaoma_sf_dlg").value = oData.hzhaoma;
-              Dom.get("hzghriqi_sf_dlg").value = oData.hzghriqi;
+              Dom.get("hzfzriqi_sf_dlg").value = oData.hzfzriqi.getFullYear() + "-" + oData.hzfzriqi.getMonth() +  "-" + oData.hzfzriqi.getDate();;
+              Dom.get("hzyxq_sf_dlg").value = oData.hzyxq.getFullYear() + "-" + oData.hzyxq.getMonth() +  "-" + oData.hzyxq.getDate();
+              Dom.get("hzghriqi_sf_dlg").value = oData.hzghriqi.getFullYear() + "-" + oData.hzghriqi.getMonth() +  "-" + oData.hzghriqi.getDate();
 //              Dom.get("pyname_sf_dlg").value = oData.pyname;
 //              Dom.get("spyname_sf_dlg").value = oData.spyname;
               var birthday = oData.birthday;
@@ -126,7 +132,7 @@ fao.classes.DialogStaff = function() {
               Dom.get("note_sf_dlg").value = oData.note;
             }
             catch(e){
-                alert(e.message);
+                alert("from staff.js" + e.message);
             }
         };
 
@@ -223,7 +229,10 @@ fao.classes.DialogStaff = function() {
         {key:"name",label:"名字",sortable:true},
         {key:"danwei",label:"单位"},
         {key:"zhiwu",label:"职务"},
-        {key:"hzhaoma",label:"护照"},
+        {key:"hzhaoma",label:"护照号码"},
+        {key:"hzfzriqi",label:"发照日期",formatter:fao.utils.formatDate},
+        {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate},
+        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate},
 //        {key:"pyname",label:"名字拼音"},
 //        {key:"spyname",label:"名字首拼音"},
         {key:"age",label:"年龄"},
@@ -254,7 +263,9 @@ fao.classes.DialogStaff = function() {
             danwei:rs.fieldByName("danwei"),
             zhiwu:rs.fieldByName("zhiwu"),
             hzhaoma:rs.fieldByName("hzhaoma"),
-            hzghriqi:rs.fieldByName("hzghriqi"),
+            hzfzriqi:new Date(rs.fieldByName("hzfzriqi")),
+            hzyxq:new Date(rs.fieldByName("hzyxq")),
+            hzghriqi:new Date(rs.fieldByName("hzghriqi")),
             pyname:rs.fieldByName("pyname"),
             spyname:rs.fieldByName("spyname"),
             sex:rs.fieldByName("sex"),
@@ -286,6 +297,8 @@ fao.classes.DialogStaff = function() {
             "danwei",
             "zhiwu",
             "hzhaoma",
+            "hzfzriqi",
+            "hzyxq",
             "hzghriqi",
             "pyname",
             "spyname",
