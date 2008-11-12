@@ -3,6 +3,10 @@ class CreateStaffs < ActiveRecord::Migration
     create_table :staffs,:id=>false,:options => 'ENGINE=InnoDB DEFAULT CHARSET=utf8' do |t|
       t.string :id,:null=>false
       t.string :name,:null=>false
+      t.string :danwei
+      t.string :zhiwu
+      t.string :hzhaoma
+      t.date :hzghriqi
       t.string :pyname,:spyname
       t.string  :sync_state,:default=>'new'
       t.date :birthday

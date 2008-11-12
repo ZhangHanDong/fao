@@ -2,16 +2,14 @@ class CreateActivities < ActiveRecord::Migration
   def self.up
     create_table :activities,:id=>false,:options => 'ENGINE=InnoDB DEFAULT CHARSET=utf8'  do |t|
       t.string :id,:null=>false
-      t.date :sriqi
-      t.string :dguojia
+      t.date :sqriqi
+      t.string :dguojia,:dgjpy,:dgjspy
       t.text :renwu
       t.date :cfshijian
       t.integer :tltianshu
       t.string :ztdanwei
       t.string :yqdanwei
       t.string :rwpihao
-      t.string :hzhaoma
-      t.date :hzghriqi
       t.text :note
       t.string :sync_state,:default=>'new'
 
