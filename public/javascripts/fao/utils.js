@@ -15,7 +15,8 @@
             return date.getTime();
         }
         else{
-            return 0;
+            var today = new Date();
+            return today.getTime();
         }
       },
       convertAge : function(nDatetimes){

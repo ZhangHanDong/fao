@@ -13,13 +13,12 @@ class CeshiController < ApplicationController
   end
 
   def formauthenticitytoken
-    debugger if ENV["RAILS_ENV"] == "development"
     render :text=>form_authenticity_token
   end
 
   def testpost
     r = params
-    render :text=>request.raw_post
+    render :json=>request.raw_post
   end
 
   def testdb
