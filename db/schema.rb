@@ -12,27 +12,23 @@
 ActiveRecord::Schema.define(:version => 20080908124316) do
 
   create_table "activities", :force => true do |t|
-    t.date     "sriqi"
+    t.date     "sqriqi"
     t.string   "dguojia"
+    t.string   "dgjpy"
+    t.string   "dgjspy"
     t.text     "renwu"
     t.date     "cfshijian"
     t.integer  "tltianshu",  :limit => 11
     t.string   "ztdanwei"
     t.string   "yqdanwei"
     t.string   "rwpihao"
-    t.string   "hzhaoma"
-    t.date     "hzghriqi"
+    t.text     "note"
     t.string   "sync_state",               :default => "new"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "activities", ["id"], :name => "index_activities_on_id", :unique => true
-
-  create_table "activities_staffds", :id => false, :force => true do |t|
-    t.string "activity_id"
-    t.string "staffd_id"
-  end
 
   create_table "bp_requests", :force => true do |t|
     t.text     "envs"
@@ -44,22 +40,33 @@ ActiveRecord::Schema.define(:version => 20080908124316) do
   end
 
   create_table "staffds", :force => true do |t|
-    t.string   "staff_id",   :null => false
+    t.string   "staff_id",                                     :null => false
+    t.string   "activity_id",                                  :null => false
     t.string   "danwei"
     t.string   "zhiwu"
+    t.integer  "isreturned",  :limit => 11
+    t.string   "hzhaoma"
+    t.date     "hzghriqi"
+    t.text     "note"
+    t.string   "sync_state",                :default => "new"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "staffds", ["id"], :name => "index_staffds_on_id", :unique => true
+  add_index "staffds", ["staff_id", "activity_id"], :name => "index_staffds_on_staff_id_and_activity_id", :unique => true
 
   create_table "staffs", :force => true do |t|
-    t.string   "name",                          :null => false
+    t.string   "name",                                        :null => false
+    t.string   "danwei"
+    t.string   "zhiwu"
+    t.string   "hzhaoma"
+    t.date     "hzghriqi"
     t.string   "pyname"
     t.string   "spyname"
-    t.string   "sync_state", :default => "new"
+    t.string   "sync_state",               :default => "new"
     t.date     "birthday"
-    t.boolean  "sex"
+    t.integer  "sex",        :limit => 11
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -3,17 +3,35 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>danwei</th>
+    <th>zhiwu</th>
+    <th>hzhaoma</th>
+    <th>hzghriqi</th>
+    <th>pyname</th>
+    <th>spyname</th>
     <th>Birthday</th>
     <th>Sex</th>
     <th>Note</th>
+    <th>sync_state</th>
+    <th>a</th>
+    <th>b</th>
+    <th>c</th>
+    <th>d</th>
   </tr>
 
 <% for staff in @staffs %>
   <tr>
     <td><%=h staff.name %></td>
+    <td><%=h staff.danwei%></td>
+    <td><%=h staff.zhiwu%></td>
+    <td><%=h staff.hzhaoma%></td>
+    <td><%=h staff.hzghriqi%></td>
+    <td><%=h staff.pyname%></td>
+    <td><%=h staff.spyname %></td>
     <td><%=h staff.birthday %></td>
     <td><%=h staff.sex %></td>
     <td><%=h staff.note %></td>
+    <td><%=h staff.sync_state%></td>
     <td><%= link_to '职业生涯',staff_staffds_url(staff) %></td>
     <td><%= link_to 'add staffd',new_staff_staffd_url(staff) %></td>
     <td><%= link_to 'Show', staff %></td>
