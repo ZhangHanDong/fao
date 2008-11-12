@@ -18,7 +18,7 @@ fao.classes.MySync = function(){
     this.workerPool.sendMessage(["3..2..", 1, {}],this.insertpyWorkerId);
   }
 
-//  this.syncDataWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/sync_data_worker.js');
-//  this.authenticityWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/authenticity_token_worker.js');
-//  this.workerPool.sendMessage(["3..2..", 1, {syncWorkerId: this.syncDataWorkerId}], this.authenticityWorkerId);
+  this.syncDataWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/sync_data_worker.js');
+  this.authenticityWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/authenticity_token_worker.js');
+  this.workerPool.sendMessage(["3..2..", 1, {syncWorkerId: this.syncDataWorkerId}], this.authenticityWorkerId);
 };

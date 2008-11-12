@@ -51,9 +51,7 @@
 	<label for="name">名字：</label><input type="textbox" name="name" id="name_sf_dlg" />
         <label for="danwei">单位：</label><input type="textbox" name="danwei" id="danwei_sf_dlg"/>
         <label for="zhiwu">职务：</label><input type="textbox" name="zhiwu" id="zhiwu_sf_dlg"/>
-        <label for="hzhaoma">护照号码：</label><input type="textbox" name="hzhaoma" id="hzhaoma_sf_dlg"/>
-        <label for="hzfzriqi">发照日期：</label><input type="textbox" name="hzfzriqi" id="hzfzriqi_sf_dlg"/>
-        <label for="hzyxq">护照有效期：</label><input type="textbox" name="hzyxq" id="hzyxq_sf_dlg"/>
+        <label for="hzhaoma">护照：</label><input type="textbox" name="hzhaoma" id="hzhaoma_sf_dlg"/>
         <label for="hzghriqi">归还日期：</label><input type="textbox" name="hzghriqi" id="hzghriqi_sf_dlg"/>
         <!--
         <label for="pyname">名字拼音：</label><input type="textbox" name="pyname" id="pyname_sf_dlg"/>
@@ -198,64 +196,12 @@
 //    YAHOO.util.Event.addListener("myelementid", "click", fnCallback2, mydata, myobj);
 //events usage. fncallback get two arguments:event object,mydata.
     function faoinit(){
-        try{
           fao.f.init_doms();
           fao.f.my_gear_init();
-          fao.variables.dialog_staff = new fao.classes.DialogStaff();
-          fao.variables.dialog_activity = new fao.classes.DialogActivity();
-          fao.variables.dialog_staffd = new fao.classes.DialogStaffd();
-          fao.variables.auto_comp = new fao.classes.AutoComp();
-          fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
-          fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
-          fao.variables.activities_datatable = new fao.classes.ActivitiesDataTable();
-          fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.dsRequestCallback);
-          fao.variables.staffds_datatable = new fao.classes.StaffdsDataTable();
-          fao.variables.staffds_datatable.datasource.sendRequest('',fao.variables.staffds_datatable.dsRequestCallback);
-          fao.variables.staff_panel = new fao.classes.StaffPanel();
-          fao.doms.staff_panel_tab.style.display = "none";
-          //because activity_id is null at init,so staffd_datatable are empty.
-          fao.f.event_handlers();
-          fao.doms.ac_input.focus();
-//          alert(fao.utils.ch2py.find_pystr("我爱你"));
-          new YAHOO.util.DDTarget("staff_panel");
-//          alert(Dom.getRegion("staffDataTable"));
-//          var testFunc = function(){
-//            fao.variables.staffs_datatable.datatable.get("paginator").setPage(2);
-//          };
-//          Event.addListener("test_button","click",testFunc);
-//          Dom.get("mycontent").style.display = "block";
-//          Dom.get("loading_content").style.display = "none";
           fao.variables.offstore = new fao.classes.OffStore();
-//          alert(fao.variables.offstore.store.enabled);
-          if(!fao.variables.offstore.store){
-//            alert("create store");
-            fao.variables.offstore.offline_createStore();
-          }else{
-            fao.doms.fao_version.innerHTML = "(" +fao.variables.offstore.store.currentVersion + ")";
-          }
-          if(fao.variables.offstore.store.enabled){
-            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
-          }else{
-            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
-          }
-          fao.variables.mysync = new fao.classes.MySync();
-        }
-
-        catch(e){
-            var re = /no such column: (.*) EXPRESSION/;
-            var result = e.message.match(/no such column: (.*) EXPRESSION/) || e.message.match(/Field name not found/) ;
-            if(result){
-//              fao.variables.db.execute("alter table activities add dgjpy varchar(255)");
-//             fao.variables.db.execute("alter table activities add dgjspy varchar(255)");
-              alert("ya");
-              fao.variables.db.execute("alter table staffs add hzfzriqi date");
-              fao.variables.db.execute("alter table staffs add hzyxq date");
-              alert("数据库表字段已经更新，请刷新页面，按F5");
-            }else{
-              alert("start error");
-              alert(e.message);
-            }
-      }
+          alert('ha');
+alert(fao.variables.offstore.hardly_removeStore);
+      fao.variables.offstore.hardly_removeStore();
     }
 
 if (!window.google || !window.google.gears) {

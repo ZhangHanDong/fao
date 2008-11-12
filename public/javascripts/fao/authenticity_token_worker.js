@@ -10,7 +10,7 @@ var x = new function(){
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
         //console.write(request.responseText);
-        wp.sendMessage({authenticity_token:request.responseText,fatherWorkerId:x.message.sender}, x.syncWorkerId);
+        wp.sendMessage(["a","b",{authenticity_token:request.responseText,fatherWorkerId:x.message.sender}], x.syncWorkerId);
       }
     };
     request.send();
