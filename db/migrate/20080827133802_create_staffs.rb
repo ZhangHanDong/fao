@@ -6,7 +6,9 @@ class CreateStaffs < ActiveRecord::Migration
       t.string :danwei
       t.string :zhiwu
       t.string :hzhaoma
-      t.date :hzghriqi
+      t.date :hzfzriqi
+      t.date :hzyxq
+      t.string :hzghriqi
       t.string :pyname,:spyname
       t.string  :sync_state,:default=>'new'
       t.date :birthday

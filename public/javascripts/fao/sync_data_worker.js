@@ -617,7 +617,7 @@ var x = new function(){
   var wp = google.gears.workerPool;
 
   var dsfunc= function(offset,limit){
-    var sqlstmt = "select * from staffs where sync_state != 'synchronized'  order by created_at limit ? offset ?";
+    var sqlstmt = "select * from staffs where sync_state != 'synchronized' and sync_state !='sync_error' order by created_at limit ? offset ?";
     var rs = x.db.execute(sqlstmt,[limit,offset]);
     var results = {staffs:[]};
     while(rs.isValidRow()) {
@@ -641,7 +641,7 @@ var x = new function(){
     }
     rs.close();
     var count = 0;
-    rs =x.db.execute("select count(*) from staffs where sync_state != 'synchronized'",[]);
+    rs =x.db.execute("select count(*) from staffs where sync_state != 'synchronized' and sync_state != 'sync_error'",[]);
     if(rs.isValidRow())count = rs.field(0);
     rs.close();
     results.totalRecords = count;
@@ -650,25 +650,36 @@ var x = new function(){
 
   this.sy = function(){
     var request = google.gears.factory.create('beta.httprequest');
-    request.open('POST', '/ceshi/testpost');
+    request.open('POST', '/staffs/syncreate');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
+//          wp.sendMessage(["a","b",{text:request.responseText, action:"indicator"}], x.message.body[2].fatherWorkerId);
         //console.write(request.responseText);
-        var rt=JSON.parse(request.responseText);
+        try{
+          var rt=JSON.parse(request.responseText);
+        }catch(e){
+          wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"indicator"}], x.message.body[2].fatherWorkerId);
+          rt={};
+          rt.staffs = null;
+          rt.msg = "服务器返回未知消息"
+        }
         if(rt.staffs && rt.staffs.length==1){
           x.db.execute("update staffs set sync_state='synchronized' where id = ?",[rt.staffs[0].id]);
-          wp.sendMessage(["a","b",{text:rt.staffs[0].id, action:"indicator"}], x.message.body[2].fatherWorkerId);
+          wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.message.body[2].fatherWorkerId);
         }else{
-          wp.sendMessage(["a","b",{text:"error occured", action:"indicator"}], x.message.body[2].fatherWorkerId);
+          x.db.execute("update staffs set sync_state='sync_error' where id = ?",[x.currentId]);
+          wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.message.body[2].fatherWorkerId);
         }
       }
     };
     var staffs = dsfunc(0,1);
     if(staffs.staffs.length>0){
-      wp.sendMessage(["a","b",{text:"正在与服务器同步数据....", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      x.currentId = staffs.staffs[0].id 
+      wp.sendMessage(["a","b",{text:staffs.totalRecords + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
       request.send(JSON.stringify(staffs));
+    }else{
+      wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
     }
-    wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
 //    request.send("a=4&b=5&authenticity_token=" + x.message.body[2].authenticity_token);
   };
 

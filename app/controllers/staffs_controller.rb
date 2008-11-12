@@ -54,6 +54,61 @@ class StaffsController < ApplicationController
     end
   end
 
+
+  # POST /staffs
+  # POST /staffs.xml
+  def syncreate
+    require 'json'
+    debugger
+    json_staff = request.raw_post
+    staff_data = JSON.parse(json_staff)
+    mystaff = staff_data["staffs"][0]
+    mystaff["hzfzriqi"] = mint2time(mystaff["hzfzriqi"]) if mystaff["hzfzriqi"]
+    mystaff["hzyxq"] = mint2time(mystaff["hzyxq"]) if mystaff["hzyxq"]
+    #mystaff["hzghriqi"] = mint2time(mystaff["hzghriqi"]) if mystaff["hzghriqi"]
+    mystaff["birthday"] = mint2time(mystaff["birthday"]) if mystaff["birthday"]
+
+    debugger
+    case mystaff["sync_state"]
+    when "changed"
+      @staff = Staff.find_by_id(mystaff["id"])
+      if @staff
+        mystaff["sync_state"] = "synchronized"
+        if @staff.update_attributes(mystaff)
+            render :text=>json_staff 
+        else
+            render :json=>{"staffs"=>[],"msg"=>"保存失败"}
+        end
+      else
+        @staff = Staff.new(mystaff)
+        @staff.id = mystaff["id"]
+        @staff.sync_state = "synchronized"
+        begin
+          if @staff.save
+            render :text=>json_staff 
+          else
+            render :json=>{"staffs"=>[],"msg"=>"保存失败"}
+          end
+        rescue
+            render :json=>{"staffs"=>[],"msg"=>"插入异常"}
+        end
+      end
+    else 
+      @staff = Staff.new(mystaff)
+      @staff.id = mystaff["id"]
+      @staff.sync_state = "synchronized"
+      begin
+        if @staff.save
+          render :text=>json_staff 
+        else
+          render :json=>{"staffs"=>[],"msg"=>"保存失败"}
+        end
+      rescue
+          render :json=>{"staffs"=>[],"msg"=>"插入异常"}
+      end
+    end
+  end
+
   # PUT /staffs/1
   # PUT /staffs/1.xml
   def update
@@ -82,4 +137,11 @@ class StaffsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  protected
+  
+  def mint2time(i)
+    Time.at(i/1000,i%1000)
+  end
+
 end

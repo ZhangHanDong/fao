@@ -15,8 +15,9 @@
             return date.getTime();
         }
         else{
-            var today = new Date();
-            return today.getTime();
+//            var today = new Date();
+//            return today.getTime();
+          return ""
         }
       },
       convertAge : function(nDatetimes){
@@ -25,13 +26,21 @@
           return(thisyear.getFullYear() - date.getFullYear());
       },
       formatDate : function(elCell, oRecord, oColumn, oData){
-          var date =oData;
-          var y = date.getFullYear();
-          var m = date.getMonth();
-          var d = date.getDate();
-          m = m < 10 ? "0"+ m : m;
-          d = d < 10 ? "0"+ d : d;
-          elCell.innerHTML = y + "-" + m + "-" + d;
+          var mydate = oData;
+          if(mydate == ""){
+            elCell.innerHTML = ""; 
+          }else{ 
+            try{
+              var y = mydate.getFullYear();
+              var m = mydate.getMonth();
+              var d = mydate.getDate();
+              m = m < 10 ? "0"+ m : m;
+              d = d < 10 ? "0"+ d : d;
+              elCell.innerHTML = y + "-" + m + "-" + d;
+            }catch(e){
+              elCell.innerHTML = ""; 
+            }
+          }
       },
       formatDeleteButton : function(el, oRecord, oColumn, oData) {
         el.innerHTML = "<button type=\"button\">删除</button>";
