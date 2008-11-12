@@ -35,7 +35,7 @@ fao.classes.Staff =  function(data){
         this.hzhaoma = data.hzhaoma;
         this.hzfzriqi = fao.utils.convertDate(data.hzfzriqi);
         this.hzyxq = fao.utils.convertDate(data.hzyxq);
-        this.hzghriqi = fao.utils.convertDate(data.hzghriqi);
+        this.hzghriqi = data.hzghriqi;
         this.pyname = fao.utils.ch2py.find_pystr(this.name)[0].join(",");
         this.spyname = fao.utils.ch2py.find_pystr(this.name)[1].join(",");
         this.sex = data.sex;
@@ -122,7 +122,7 @@ fao.classes.DialogStaff = function() {
               Dom.get("hzhaoma_sf_dlg").value = oData.hzhaoma;
               Dom.get("hzfzriqi_sf_dlg").value = oData.hzfzriqi.getFullYear() + "-" + oData.hzfzriqi.getMonth() +  "-" + oData.hzfzriqi.getDate();;
               Dom.get("hzyxq_sf_dlg").value = oData.hzyxq.getFullYear() + "-" + oData.hzyxq.getMonth() +  "-" + oData.hzyxq.getDate();
-              Dom.get("hzghriqi_sf_dlg").value = oData.hzghriqi.getFullYear() + "-" + oData.hzghriqi.getMonth() +  "-" + oData.hzghriqi.getDate();
+              Dom.get("hzghriqi_sf_dlg").value = oData.hzghriqi;
 //              Dom.get("pyname_sf_dlg").value = oData.pyname;
 //              Dom.get("spyname_sf_dlg").value = oData.spyname;
               var birthday = oData.birthday;
@@ -232,7 +232,7 @@ fao.classes.DialogStaff = function() {
         {key:"hzhaoma",label:"护照号码"},
         {key:"hzfzriqi",label:"发照日期",formatter:fao.utils.formatDate},
         {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate},
-        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate},
+        {key:"hzghriqi",label:"护照归还日期"},
 //        {key:"pyname",label:"名字拼音"},
 //        {key:"spyname",label:"名字首拼音"},
         {key:"age",label:"年龄"},
@@ -265,7 +265,7 @@ fao.classes.DialogStaff = function() {
             hzhaoma:rs.fieldByName("hzhaoma"),
             hzfzriqi:new Date(rs.fieldByName("hzfzriqi")),
             hzyxq:new Date(rs.fieldByName("hzyxq")),
-            hzghriqi:new Date(rs.fieldByName("hzghriqi")),
+            hzghriqi:rs.fieldByName("hzghriqi"),
             pyname:rs.fieldByName("pyname"),
             spyname:rs.fieldByName("spyname"),
             sex:rs.fieldByName("sex"),
