@@ -6,6 +6,7 @@ class CreateStaffds < ActiveRecord::Migration
       t.string :activity_id,:null=>false
       t.string :danwei
       t.string :zhiwu
+      t.integer :isreturned
       t.string :hzhaoma
       t.date :hzghriqi
       t.text :note
