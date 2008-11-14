@@ -610,6 +610,15 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
     }
 })();
 
+var  milliseconds2datestr = function(milliseconds){
+                var oDate = new Date(milliseconds);
+//                   if(oDate.getFullYear() == 3008){
+//                     return "";
+//                   }else{
+                     return oDate.getFullYear() + "-" + oDate.getMonth() + "-" + oDate.getDate();
+//                   }
+     };
+
 var x = new function(){
   this.db = google.gears.factory.create('beta.database');
   this.db.open('database-fao');
@@ -627,13 +636,13 @@ var x = new function(){
           danwei:rs.fieldByName("danwei"),
           zhiwu:rs.fieldByName("zhiwu"),
           hzhaoma:rs.fieldByName("hzhaoma"),
-          hzfzriqi:rs.fieldByName("hzfzriqi"),
-          hzyxq:rs.fieldByName("hzyxq"),
+          hzfzriqi:milliseconds2datestr(rs.fieldByName("hzfzriqi")),
+          hzyxq:milliseconds2datestr(rs.fieldByName("hzyxq")),
           hzghriqi:rs.fieldByName("hzghriqi"),
           pyname:rs.fieldByName("pyname"),
           spyname:rs.fieldByName("spyname"),
           sex:rs.fieldByName("sex"),
-          birthday:rs.fieldByName("birthday"),
+          birthday:milliseconds2datestr(rs.fieldByName("birthday")),
           note:rs.fieldByName("note"),
           sync_state:rs.fieldByName("sync_state"),
       });

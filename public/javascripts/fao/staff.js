@@ -33,14 +33,14 @@ fao.classes.Staff =  function(data){
         this.danwei = data.danwei;
         this.zhiwu = data.zhiwu;
         this.hzhaoma = data.hzhaoma;
-        this.hzfzriqi = fao.utils.convertDate(data.hzfzriqi);
-        this.hzyxq = fao.utils.convertDate(data.hzyxq);
-        this.hzghriqi = data.hzghriqi;
+        this.hzfzriqi = fao.utils.datestr2milliseconds(data.hzfzriqi);
+        this.hzyxq = fao.utils.datestr2milliseconds(data.hzyxq);
+        this.hzghriqi = fao.utils.datestr2milliseconds(data.hzghriqi);
         this.pyname = fao.utils.ch2py.find_pystr(this.name)[0].join(",");
         this.spyname = fao.utils.ch2py.find_pystr(this.name)[1].join(",");
         this.sex = data.sex;
         this.sync_state = 'new';
-        this.birthday = fao.utils.convertDate(data.birthday);
+        this.birthday = fao.utils.datestr2milliseconds(data.birthday);
         this.note = data.note;
         var curTime = new Date().getTime();
         this.save = function(){
@@ -120,13 +120,13 @@ fao.classes.DialogStaff = function() {
               Dom.get("danwei_sf_dlg").value = oData.danwei;
               Dom.get("zhiwu_sf_dlg").value = oData.zhiwu;
               Dom.get("hzhaoma_sf_dlg").value = oData.hzhaoma;
-              Dom.get("hzfzriqi_sf_dlg").value = oData.hzfzriqi.getFullYear() + "-" + oData.hzfzriqi.getMonth() +  "-" + oData.hzfzriqi.getDate();;
-              Dom.get("hzyxq_sf_dlg").value = oData.hzyxq.getFullYear() + "-" + oData.hzyxq.getMonth() +  "-" + oData.hzyxq.getDate();
-              Dom.get("hzghriqi_sf_dlg").value = oData.hzghriqi;
+              Dom.get("hzfzriqi_sf_dlg").value = fao.utils.date2str(oData.hzfzriqi);
+              Dom.get("hzyxq_sf_dlg").value = fao.utils.date2str(oData.hzyxq);
+              Dom.get("hzghriqi_sf_dlg").value = fao.utils.date2str(oData.hzghriqi);
 //              Dom.get("pyname_sf_dlg").value = oData.pyname;
 //              Dom.get("spyname_sf_dlg").value = oData.spyname;
               var birthday = oData.birthday;
-              Dom.get("birthday_sf_dlg").value = birthday.getFullYear() + "-" + birthday.getMonth() +  "-" + birthday.getDate();
+              Dom.get("birthday_sf_dlg").value =  fao.utils.date2str(oData.birthday);
 //              alert(oData.birthday instanceof Date);
               Dom.get("sex_sf_dlg").checked = oData.sex == "false" ? false : true;
               Dom.get("note_sf_dlg").value = oData.note;
@@ -160,23 +160,25 @@ fao.classes.DialogStaff = function() {
             try{
 		var data = this.getData();
 		if (data.name == "") {
-			alert("请输入完整的资料.");
+			alert("名字是必须填写的");
 			return false;
 		}
-                var ymd = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
-                var result = data.birthday.match(ymd);
-                if(!result){
-                  result = data.birthday.match(/\d{8}/);
-                }
-                if(!result){
-                    alert("日期的格式是：2008-08-08 或者20080808");
-                    return false;
-                }else{
-                    data.birthday = result[0];
-                }
-                //save new staff.
-//                alert(data.id);
+//                var ymd = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
+//                var result = data.birthday.match(ymd);
+//                if(!result){
+//                  result = data.birthday.match(/\d{8}/);
+//                }
+//                if(!result){
+//                    alert("日期的格式是：2008-08-08 或者20080808");
+//                    return false;
+//                }else{
+//                    data.birthday = result[0];
+//                }
+
                 var staff = new fao.classes.Staff(this.getData());
+//                alert(this.getData().hzghriqi);
+//                alert(this.getData().hzfzriqi);
+
 
                 if(data.id)
                     staff.update();
@@ -232,7 +234,7 @@ fao.classes.DialogStaff = function() {
         {key:"hzhaoma",label:"护照号码"},
         {key:"hzfzriqi",label:"发照日期",formatter:fao.utils.formatDate},
         {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate},
-        {key:"hzghriqi",label:"护照归还日期"},
+        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate},
 //        {key:"pyname",label:"名字拼音"},
 //        {key:"spyname",label:"名字首拼音"},
         {key:"age",label:"年龄"},
@@ -263,16 +265,16 @@ fao.classes.DialogStaff = function() {
             danwei:rs.fieldByName("danwei"),
             zhiwu:rs.fieldByName("zhiwu"),
             hzhaoma:rs.fieldByName("hzhaoma"),
-            hzfzriqi:fao.utils.convertDate(rs.fieldByName("hzfzriqi")),
-            hzyxq:fao.utils.convertDate(rs.fieldByName("hzyxq")),
-            hzghriqi:rs.fieldByName("hzghriqi"),
+            hzfzriqi:fao.utils.milliseconds2date(rs.fieldByName("hzfzriqi")),
+            hzyxq:fao.utils.milliseconds2date(rs.fieldByName("hzyxq")),
+            hzghriqi:fao.utils.milliseconds2date(rs.fieldByName("hzghriqi")),
             pyname:rs.fieldByName("pyname"),
             spyname:rs.fieldByName("spyname"),
             sex:rs.fieldByName("sex"),
-            birthday:fao.utils.convertDate(rs.fieldByName("birthday")),
+            birthday:fao.utils.milliseconds2date(rs.fieldByName("birthday")),
             note:rs.fieldByName("note"),
             sync_state:rs.fieldByName("sync_state"),
-            age : fao.utils.convertAge(rs.fieldByName("birthday"))
+            age : fao.utils.milliseconds2age(rs.fieldByName("birthday"))
         });
         rs.next();
       }
