@@ -95,6 +95,8 @@ fao.f.my_gear_init = function() {
                    ' danwei varchar(255),' +
                    ' zhiwu varchar(255),' +
                    ' hzhaoma varchar(255),' +
+                   ' hzfzriqi date,' +
+                   ' hzyxq date,' +
                    ' hzghriqi date,' +
                    ' pyname varchar(255),' +
                    ' spyname varchar(255),' +

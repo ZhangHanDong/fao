@@ -4,7 +4,9 @@
  */
 
     fao.utils = {
-      convertDate : function(date_str){
+      datestr2milliseconds : function(date_str){
+//        alert(YAHOO.lang.isString(date_str));
+//        alert(date_str);
         var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
         var result = date_str.match(ymd);
         if(!result){
@@ -13,34 +15,52 @@
         if(result){
             var date = new Date(result[1],result[2],result[3],1,1,1,1);
             return date.getTime();
-        }
-        else{
-//            var today = new Date();
-//            return today.getTime();
-          return ""
+        } else{
+          return 32758707661001
         }
       },
-      convertAge : function(nDatetimes){
+      milliseconds2date : function(milliseconds){
+        var ms = parseInt(milliseconds);
+        if(isNaN(ms)){
+          ms =  32758707661001;
+        }
+        var aDate = new Date(ms);
+//        alert(YAHOO.lang.isNumber(milliseconds) + "" + YAHOO.lang.isString(milliseconds));
+//        alert(aDate);
+        return aDate;
+      },
+      milliseconds2age : function(nDatetimes){
           var date = new Date(nDatetimes);
           var thisyear = new Date();
-          return(thisyear.getFullYear() - date.getFullYear());
+          if(date.getFullYear() == 3008){
+            return "";
+          }else{
+            return(thisyear.getFullYear() - date.getFullYear());
+          }
       },
+      date2str : function(oDate){
+                   if(oDate.getFullYear() == 3008){
+                     return "";
+                   }else{
+                     return oDate.getFullYear() + "-" + (oDate.getMonth()+1) + "-" + oDate.getDate();
+                   }
+                 },
       formatDate : function(elCell, oRecord, oColumn, oData){
           var mydate = oData;
-          if(mydate == ""){
-            elCell.innerHTML = ""; 
-          }else{ 
             try{
               var y = mydate.getFullYear();
-              var m = mydate.getMonth();
+              var m = mydate.getMonth()+1;
               var d = mydate.getDate();
               m = m < 10 ? "0"+ m : m;
               d = d < 10 ? "0"+ d : d;
-              elCell.innerHTML = y + "-" + m + "-" + d;
+              if(y==3008){
+                elCell.innerHTML = ""; 
+              }else{
+                elCell.innerHTML = y + "-" + m + "-" + d;
+              }
             }catch(e){
               elCell.innerHTML = ""; 
             }
-          }
       },
       formatDeleteButton : function(el, oRecord, oColumn, oData) {
         el.innerHTML = "<button type=\"button\">删除</button>";
@@ -51,7 +71,7 @@
       chDate : function(oDate){
           var date =oDate;
           var y = date.getFullYear();
-          var m = date.getMonth();
+          var m = date.getMonth()+1;
           var d = date.getDate();
           m = m < 10 ? "0"+ m : m;
           d = d < 10 ? "0"+ d : d;

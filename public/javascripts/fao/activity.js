@@ -27,12 +27,12 @@ fao.classes.Activity = function(data){
         }else{
             this.id = data.id;
         }
-        this.sqriqi = fao.utils.convertDate(data.sqriqi);
+        this.sqriqi = fao.utils.datestr2milliseconds(data.sqriqi);
         this.dguojia = data.dguojia;
         this.dgjpy = fao.utils.ch2py.find_pystr(this.dguojia)[0].join(",");
         this.dgjspy = fao.utils.ch2py.find_pystr(this.dguojia)[1].join(",");
         this.renwu = data.renwu;
-        this.cfshijian = fao.utils.convertDate(data.cfshijian);
+        this.cfshijian = fao.utils.datestr2milliseconds(data.cfshijian);
         this.tltianshu = data.tltianshu;
         this.ztdanwei = data.ztdanwei;
         this.yqdanwei = data.yqdanwei;
