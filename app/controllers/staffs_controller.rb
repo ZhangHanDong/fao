@@ -59,16 +59,14 @@ class StaffsController < ApplicationController
   # POST /staffs.xml
   def syncreate
     require 'json'
-    debugger
     json_staff = request.raw_post
     staff_data = JSON.parse(json_staff)
     mystaff = staff_data["staffs"][0]
-    mystaff["hzfzriqi"] = mint2time(mystaff["hzfzriqi"]) if mystaff["hzfzriqi"]
-    mystaff["hzyxq"] = mint2time(mystaff["hzyxq"]) if mystaff["hzyxq"]
-    #mystaff["hzghriqi"] = mint2time(mystaff["hzghriqi"]) if mystaff["hzghriqi"]
-    mystaff["birthday"] = mint2time(mystaff["birthday"]) if mystaff["birthday"]
+#    mystaff["hzfzriqi"] = mint2time(mystaff["hzfzriqi"]) if mystaff["hzfzriqi"]
+#    mystaff["hzyxq"] = mint2time(mystaff["hzyxq"]) if mystaff["hzyxq"]
+#    mystaff["hzghriqi"] = mint2time(mystaff["hzghriqi"]) if mystaff["hzghriqi"]
+#    mystaff["birthday"] = mint2time(mystaff["birthday"]) if mystaff["birthday"]
 
-    debugger
     case mystaff["sync_state"]
     when "changed"
       @staff = Staff.find_by_id(mystaff["id"])
