@@ -13,7 +13,7 @@
           result = date_str.match(/(\d{4})(\d{2})(\d{2})/);
         }
         if(result){
-            var date = new Date(result[1],result[2],result[3],1,1,1,1);
+            var date = new Date(result[1],parseInt(result[2]) - 1,result[3],1,1,1,1);
             return date.getTime();
         } else{
           return 32758707661001
@@ -25,10 +25,20 @@
           ms =  32758707661001;
         }
         var aDate = new Date(ms);
-//        alert(YAHOO.lang.isNumber(milliseconds) + "" + YAHOO.lang.isString(milliseconds));
-//        alert(aDate);
         return aDate;
       },
+      milliseconds2datestr : function(milliseconds){
+        var ms = parseInt(milliseconds);
+        if(isNaN(ms)){
+          ms =  32758707661001;
+        }
+        var oDate = new Date(ms);
+       if(oDate.getFullYear() == 3008){
+         return "";
+       }else{
+         return oDate.getFullYear() + "-" + (oDate.getMonth()+1) + "-" + oDate.getDate();
+       }
+     },
       milliseconds2age : function(nDatetimes){
           var date = new Date(nDatetimes);
           var thisyear = new Date();
@@ -45,6 +55,7 @@
                      return oDate.getFullYear() + "-" + (oDate.getMonth()+1) + "-" + oDate.getDate();
                    }
                  },
+
       formatDate : function(elCell, oRecord, oColumn, oData){
           var mydate = oData;
             try{

@@ -44,4 +44,4 @@ production:
   database: fao_production
   username: faouser
   password: 131415
-  socket: /var/lib/mysql/mysql.sock
+  socket: /tmp/mysql.sock

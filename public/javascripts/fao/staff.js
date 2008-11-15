@@ -414,7 +414,6 @@ fao.classes.DialogStaff = function() {
             }
 
             ddRow.onDragDrop = function(ev) {
-//                alert(ev.type);
 //                alert(Event.getTarget(ev));
 //                alert(m3958.utils.DisplayPropertyNames(ev));
                 YAHOO.util.DragDropMgr.stopDrag(ev,true);
@@ -424,11 +423,11 @@ fao.classes.DialogStaff = function() {
                     var staff = fao.variables.staffs_datatable.datatable.getRecord(selectedRowIds[i]).getData();
                     var staffd = new fao.classes.Staffd({
                         staff_id : staff.id,
-                        activity_id :fao.variables.curactivity.id,
+                        activity_id : fao.variables.curactivity.id,
                         danwei : staff.danwei,
                         zhiwu : staff.zhiwu,
                         hzhaoma : staff.hzhaoma,
-                        hzghriqi : staff.hzghriqi,
+                        hzghriqi : fao.utils.date2str(staff.hzghriqi),
                         note : ""
                     });
                     try{
