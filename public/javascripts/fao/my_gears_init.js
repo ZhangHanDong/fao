@@ -2,6 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+fao.f.reset_sync_error = function(){
+  fao.variables.db.execute("update staffs set sync_state='retry' where sync_state = 'sync_error'");
+};
+
 
 fao.f.setsettings = function(){
     //init values,real value will get from db.
