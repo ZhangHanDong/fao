@@ -625,12 +625,12 @@ var x = new function(){
   this.message = "";
   var wp = google.gears.workerPool;
 
-  var dsfunc= function(offset,limit){
-    var sqlstmt = "select * from staffs where sync_state != 'synchronized' and sync_state !='sync_error' order by created_at limit ? offset ?";
-    var rs = x.db.execute(sqlstmt,[limit,offset]);
-    var results = {staffs:[]};
-    while(rs.isValidRow()) {
-      results.staffs.push({
+  var dsfunc= function(table){
+    var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error' order by created_at limit 1";
+    var rs = x.db.execute(sqlstmt);
+    var sd = {item:null,count:0};
+    if(rs.isValidRow()) {
+      sd.item = {
           id:rs.fieldByName("id"),
           name:rs.fieldByName("name"),
           danwei:rs.fieldByName("danwei"),
@@ -645,16 +645,17 @@ var x = new function(){
           birthday:milliseconds2datestr(rs.fieldByName("birthday")),
           note:rs.fieldByName("note"),
           sync_state:rs.fieldByName("sync_state"),
-      });
-      rs.next();
+          otype : table
+      };
     }
     rs.close();
     var count = 0;
-    rs =x.db.execute("select count(*) from staffs where sync_state != 'synchronized' and sync_state != 'sync_error'",[]);
+    var sqlstmt1 = "select count(*) from " + table + " where sync_state != 'synchronized' and sync_state != 'sync_error'";
+    rs =x.db.execute(sqlstmt1,[]);
     if(rs.isValidRow())count = rs.field(0);
     rs.close();
-    results.totalRecords = count;
-    return results;
+    sd.count = count;
+    return sd;
   };
 
   this.sy = function(){
@@ -662,30 +663,33 @@ var x = new function(){
     request.open('POST', '/staffs/syncreate');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
-//          wp.sendMessage(["a","b",{text:request.responseText, action:"indicator"}], x.message.body[2].fatherWorkerId);
+//          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.message.body[2].fatherWorkerId);
         //console.write(request.responseText);
         try{
           var rt=JSON.parse(request.responseText);
         }catch(e){
           wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"indicator"}], x.message.body[2].fatherWorkerId);
           rt={};
-          rt.staffs = null;
+          rt.item = null;
           rt.msg = "服务器返回未知消息"
         }
-        if(rt.staffs && rt.staffs.length==1){
-          x.db.execute("update staffs set sync_state='synchronized' where id = ?",[rt.staffs[0].id]);
+        if(rt.item){
+          var sqlstmt2 ="update " + rt.item.otype + " set sync_state='synchronized' where id = ?"; 
+          x.db.execute(sqlstmt2,[rt.item.id]);
           wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.message.body[2].fatherWorkerId);
         }else{
-          x.db.execute("update staffs set sync_state='sync_error' where id = ?",[x.currentId]);
+          var sqlstmt3 ="update "+ x.currentTable +" set sync_state='sync_error' where id = ?"; 
+          x.db.execute(sqlstmt3,[x.currentId]);
           wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.message.body[2].fatherWorkerId);
         }
       }
     };
-    var staffs = dsfunc(0,1);
-    if(staffs.staffs.length>0){
-      x.currentId = staffs.staffs[0].id 
-      wp.sendMessage(["a","b",{text:staffs.totalRecords + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
-      request.send(JSON.stringify(staffs));
+    var sd = dsfunc("staffs");
+    if(sd.item){
+      x.currentId = sd.item.id;
+      x.currentTable = sd.item.otype;
+      wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      request.send(JSON.stringify(sd));
     }else{
       wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
     }

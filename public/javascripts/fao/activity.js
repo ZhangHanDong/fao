@@ -70,12 +70,10 @@ fao.classes.Activity = function(data){
         this.setData = function(oData){
             try{
               Dom.get("id_ay_dlg").value = oData.id;
-              var sqriqi = oData.sqriqi;
-              Dom.get("sqriqi_ay_dlg").value = sqriqi.getFullYear() + "-" + sqriqi.getMonth() +  "-" + sqriqi.getDate();
+              Dom.get("sqriqi_ay_dlg").value = fao.utils.date2str(oData.sqriqi);
               Dom.get("dguojia_ay_dlg").value = oData.dguojia;
               Dom.get("renwu_ay_dlg").value = oData.renwu;
-              var cfshijian = oData.cfshijian;
-              Dom.get("cfshijian_ay_dlg").value = cfshijian.getFullYear() + "-" + cfshijian.getMonth() +  "-" + cfshijian.getDate();
+              Dom.get("cfshijian_ay_dlg").value = fao.utils.date2str(oData.cfshijian);
               Dom.get("tltianshu_ay_dlg").value = oData.tltianshu;
               Dom.get("ztdanwei_ay_dlg").value = oData.ztdanwei;
               Dom.get("yqdanwei_ay_dlg").value = oData.yqdanwei;
@@ -118,35 +116,28 @@ fao.classes.Activity = function(data){
 		var data = this.getData();
 //                alert(data.sqriqi);
 		if (data.dguojia == "") {
-			alert("请输入完整的资料.");
+			alert("出访国家必须填写！");
 			return false;
 		}
-                var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
-                var result = data.sqriqi.match(ymd);
-                if(!result){
-                  result = data.sqriqi.match(/\d{8}/);
-                }
-                if(!result){
-                    alert("申请日期的格式是：2008-08-08.");
-                    return false;
-                }
-//                else{
-//                    data.sqriqi = result[1] + "-" + result[2] + "-" +result[3];
-//                    alert(data.sqriqi);
+//                var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
+//                var result = data.sqriqi.match(ymd);
+//                if(!result){
+//                  result = data.sqriqi.match(/\d{8}/);
 //                }
-
-                result = data.cfshijian.match(ymd);
-                if(!result){
-                  result = data.cfshijian.match(/\d{8}/);
-                }
-                if(!result){
-                    alert("出访日期的格式是：2008-08-08.");
-                    return false;
-                }
-//                else{
-//                    data.cfshijian = result[1] + "-" + result[2] + "-" +result[3];
+//                if(!result){
+//                    alert("申请日期的格式是：2008-08-08.");
+//                    return false;
 //                }
-
+//
+//                result = data.cfshijian.match(ymd);
+//                if(!result){
+//                  result = data.cfshijian.match(/\d{8}/);
+//                }
+//                if(!result){
+//                    alert("出访日期的格式是：2008-08-08.");
+//                    return false;
+//                }
+//
                 //save new staff.
                  var activity = new fao.classes.Activity(this.getData());
                  if(data.id)
@@ -202,10 +193,10 @@ fao.classes.Activity = function(data){
           while(rs.isValidRow()) {
             results.activities.push({
                 id:rs.fieldByName("id"),
-                sqriqi:new Date(rs.fieldByName("sqriqi")),
+                sqriqi:fao.utils.milliseconds2date(rs.fieldByName("sqriqi")),
                 dguojia:rs.fieldByName("dguojia"),
                 renwu:rs.fieldByName("renwu"),
-                cfshijian:new Date(rs.fieldByName("cfshijian")),
+                cfshijian:fao.utils.milliseconds2date(rs.fieldByName("cfshijian")),
                 tltianshu:rs.fieldByName("tltianshu"),
                 ztdanwei:rs.fieldByName("ztdanwei"),
                 yqdanwei:rs.fieldByName("yqdanwei"),

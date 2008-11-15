@@ -165,16 +165,6 @@ fao.classes.Staffd = function(data){
             el.innerHTML = '<input type="checkbox" disabled/>';
     };
     
-    var formatDate = function(elCell, oRecord, oColumn, oData){
-        var date =oData;
-        var y = date.getFullYear();
-        var m = date.getMonth();
-        var d = date.getDate();
-        m = m < 10 ? "0"+ m : m;
-        d = d < 10 ? "0"+ d : d;
-        elCell.innerHTML = y + "-" + m + "-" + d;
-    };
-    
     var formatDelete = function(el, oRecord, oColumn, oData) {
         el.innerHTML = "<button type=\"button\">删除</button>";
     };
@@ -184,7 +174,7 @@ fao.classes.Staffd = function(data){
         { key:"danwei",label:"单位"},
         {key:"zhiwu",label:"职务"},
         {key:"hzhaoma",label:"护照号码"},
-        {key:"hzghriqi",label:"归还日期",formatter : formatDate},
+        {key:"hzghriqi",label:"归还日期",formatter : fao.utils.formatDate},
         {key:"isreturned",label:"护照归还",formatter:formathzgh,sortable:true},
         {key:"note",label:"备注"},
         {key:"id",label:"删除",formatter:formatDelete}
@@ -217,7 +207,7 @@ fao.classes.Staffd = function(data){
                 zhiwu:rs.fieldByName("zhiwu"),
                 note:rs.fieldByName("note"),
                 hzhaoma:rs.fieldByName("hzhaoma"),
-                hzghriqi:new Date(rs.fieldByName("hzghriqi")),
+                hzghriqi:fao.utils.milliseconds2date(rs.fieldByName("hzghriqi")),
                 isreturned:rs.fieldByName("isreturned"),
                 sync_state:rs.fieldByName("sync_state")
             });

@@ -88,5 +88,4 @@ class CeshiController < ApplicationController
     end
    render :text=>s1
   end
-
 end
