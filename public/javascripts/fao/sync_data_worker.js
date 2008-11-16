@@ -611,12 +611,12 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 })();
 
 var  milliseconds2datestr = function(milliseconds){
-                var oDate = new Date(milliseconds);
-//                   if(oDate.getFullYear() == 3008){
-//                     return "";
-//                   }else{
-                     return oDate.getFullYear() + "-" + oDate.getMonth() + "-" + oDate.getDate();
-//                   }
+        var ms = parseInt(milliseconds);
+        if(isNaN(ms)){
+          ms =  32758707661001;
+        }
+      var oDate = new Date(ms);
+      return oDate.getFullYear() + "-" + oDate.getMonth() + "-" + oDate.getDate();
      };
 
 var x = new function(){
@@ -626,27 +626,62 @@ var x = new function(){
   var wp = google.gears.workerPool;
 
   var dsfunc= function(table){
-    var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error' order by created_at limit 1";
+    var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error'  order by created_at limit 1";
     var rs = x.db.execute(sqlstmt);
     var sd = {item:null,count:0};
     if(rs.isValidRow()) {
-      sd.item = {
-          id:rs.fieldByName("id"),
-          name:rs.fieldByName("name"),
-          danwei:rs.fieldByName("danwei"),
-          zhiwu:rs.fieldByName("zhiwu"),
-          hzhaoma:rs.fieldByName("hzhaoma"),
-          hzfzriqi:milliseconds2datestr(rs.fieldByName("hzfzriqi")),
-          hzyxq:milliseconds2datestr(rs.fieldByName("hzyxq")),
-          hzghriqi:rs.fieldByName("hzghriqi"),
-          pyname:rs.fieldByName("pyname"),
-          spyname:rs.fieldByName("spyname"),
-          sex:rs.fieldByName("sex"),
-          birthday:milliseconds2datestr(rs.fieldByName("birthday")),
-          note:rs.fieldByName("note"),
-          sync_state:rs.fieldByName("sync_state"),
-          otype : table
-      };
+      if(table=="staffs"){      
+        sd.item = {
+            id:rs.fieldByName("id"),
+            name:rs.fieldByName("name"),
+            danwei:rs.fieldByName("danwei"),
+            zhiwu:rs.fieldByName("zhiwu"),
+            hzhaoma:rs.fieldByName("hzhaoma"),
+            hzfzriqi:milliseconds2datestr(rs.fieldByName("hzfzriqi")),
+            hzyxq:milliseconds2datestr(rs.fieldByName("hzyxq")),
+            hzghriqi:milliseconds2datestr(rs.fieldByName("hzghriqi")),
+            pyname:rs.fieldByName("pyname"),
+            spyname:rs.fieldByName("spyname"),
+            sex:rs.fieldByName("sex"),
+            birthday:milliseconds2datestr(rs.fieldByName("birthday")),
+            note:rs.fieldByName("note"),
+            sync_state:rs.fieldByName("sync_state"),
+            otype : table
+        };
+      }
+      else if(table == "activities"){
+        sd.item = {
+            id:rs.fieldByName("id"),
+            sqriqi:milliseconds2datestr(rs.fieldByName("sqriqi")),
+            dguojia:rs.fieldByName("dguojia"),
+            dgjpy:rs.fieldByName("dgjpy"),
+            dgjspy:rs.fieldByName("dgjspy"),
+            renwu:(rs.fieldByName("renwu")),
+            cfshijian:milliseconds2datestr(rs.fieldByName("cfshijian")),
+            tltianshu:rs.fieldByName("tltianshu"),
+            ztdanwei:rs.fieldByName("ztdanwei"),
+            yqdanwei:rs.fieldByName("yqdanwei"),
+            rwpihao:rs.fieldByName("rwpihao"),
+            note:rs.fieldByName("note"),
+            sync_state:rs.fieldByName("sync_state"),
+            otype : table
+        };
+      }
+      else if(table == "staffds"){
+          sd.item = {
+            id:rs.fieldByName("id"),
+            staff_id:rs.fieldByName("staff_id"),
+            activity_id:rs.fieldByName("activity_id"),
+            danwei:rs.fieldByName("danwei"),
+            zhiwu:rs.fieldByName("zhiwu"),
+            hzhaoma:rs.fieldByName("hzhaoma"),
+            hzghriqi:milliseconds2datestr(rs.fieldByName("hzghriqi")),
+            note:rs.fieldByName("note"),
+            sync_state:rs.fieldByName("sync_state"),
+            otype : table
+          };
+      }
+      else{}
     }
     rs.close();
     var count = 0;
@@ -674,24 +709,39 @@ var x = new function(){
           rt.msg = "服务器返回未知消息"
         }
         if(rt.item){
-          var sqlstmt2 ="update " + rt.item.otype + " set sync_state='synchronized' where id = ?"; 
-          x.db.execute(sqlstmt2,[rt.item.id]);
+          if(rt.item.sync_state == "deleted"){
+            var rs = x.db.execute("delete from " +rt.item.otype+ " where id = ?",[rt.item.id]);
+            rs.close();
+          }else{
+            var sqlstmt2 ="update " + rt.item.otype + " set sync_state='synchronized' where id = ?"; 
+            var rs = x.db.execute(sqlstmt2,[rt.item.id]);
+            rs.close();
+          }
           wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.message.body[2].fatherWorkerId);
         }else{
           var sqlstmt3 ="update "+ x.currentTable +" set sync_state='sync_error' where id = ?"; 
-          x.db.execute(sqlstmt3,[x.currentId]);
+          var rs = x.db.execute(sqlstmt3,[x.currentId]);
+          rs.close();
           wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.message.body[2].fatherWorkerId);
         }
       }
     };
     var sd = dsfunc("staffs");
+    if(!sd.item){
+      sd=dsfunc("activities");
+    }
+    if(!sd.item){
+      sd = dsfunc("staffds");
+    }
     if(sd.item){
+      x.clearMsg = false;
       x.currentId = sd.item.id;
       x.currentTable = sd.item.otype;
       wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
       request.send(JSON.stringify(sd));
     }else{
-      wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      x.clearMsg = true;
     }
 //    request.send("a=4&b=5&authenticity_token=" + x.message.body[2].authenticity_token);
   };

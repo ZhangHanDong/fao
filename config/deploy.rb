@@ -33,6 +33,11 @@ task :restart_mongrel_cluster do
   run "mongrel_rails cluster::start -C /usr/local/www/vhosts/rails/bp1/current/config/fao_mongrel_cluster.yml"
 end
 
+task :copy_secret_files do
+  run "cp /usr/local/www/vhosts/secrets/#{application}/database.yml /usr/local/www/vhosts/rails/#{application}/current/config/"
+  run "cp /usr/local/www/vhosts/secrets/#{application}/version_succ.rb /usr/local/www/vhosts/rails/#{application}/current/myutils/"
+end
+
 #task :set_showtime_img_permission do
 #  run "chown -R wwwrun:www /usr/local/www/vhosts/rails/movieshowtimes/current/public/showtimeimgs"
 #  run "chown -R wwwrun:www /usr/local/www/vhosts/rails/movieshowtimes/current/tmp"
@@ -41,11 +46,15 @@ end
 #  
 #end
 
-#task :remove_test_code do
-#  run "/usr/local/bin/ruby /usr/local/www/vhosts/rails/movieshowtimes/current/myutils/cut_test_code.rb"
-#end
+task :remove_test_code do
+  run "/usr/local/bin/ruby /usr/local/www/vhosts/rails/#{application}/current/myutils/cut_test_code.rb"
+end
 
-#after "deploy:restart", :restart_mongrel_cluster
+task :fao_version_succ do
+  run "/usr/local/bin/ruby /usr/local/www/vhosts/rails/#{application}/current/myutils/version_succ.rb"
+end
+
+after "deploy:restart",:copy_secret_files, :remove_test_code,:fao_version_succ
 
 # after "deploy:update" do
 #    run "cp #{current_path}/config/deploy.rb #{current_path}/config/deploy.rb.bak"

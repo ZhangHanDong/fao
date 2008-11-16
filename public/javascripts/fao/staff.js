@@ -77,9 +77,8 @@ fao.classes.DialogStaff = function() {
           if(fao.variables.dialog_staff.validate_pass){
             fao.variables.dialog_staff.clearData();
           }
-//          alert("here");
-//          alert("here");
         };
+
 	var handleCancel = function() {
 		this.cancel();
 	};
@@ -156,7 +155,7 @@ fao.classes.DialogStaff = function() {
 
 	// Validate the entries in the form to require that both first and last name are entered
 	this.dialog.validate = function() {
-//            alert("validate");
+             fao.variables.dialog_staff.validate_pass = false;
             try{
 		var data = this.getData();
 		if (data.name == "") {
@@ -175,10 +174,7 @@ fao.classes.DialogStaff = function() {
 //                    data.birthday = result[0];
 //                }
 
-                var staff = new fao.classes.Staff(this.getData());
-//                alert(this.getData().hzghriqi);
-//                alert(this.getData().hzfzriqi);
-
+                var staff = new fao.classes.Staff(data);
 
                 if(data.id)
                     staff.update();
@@ -255,8 +251,8 @@ fao.classes.DialogStaff = function() {
       var offset = condi ? (condi.offset || 0) : 0;
       var rowspp = condi ? (condi.rowspp || 4) : 4;
       var phrase = "%" + fao.doms.ac_input.value + "%";
-      var sqlstmt = 'select * from staffs where name like ? or pyname like ? or spyname like ? order by created_at desc limit ? offset ?';
-      var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,rowspp,offset]);
+      var sqlstmt = 'select * from staffs where (name like ? or pyname like ? or spyname like ?) and sync_state != ? order by created_at desc limit ? offset ?';
+      var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
       var results = {staffs:[]};
       while(rs.isValidRow()) {
         results.staffs.push({
@@ -475,8 +471,9 @@ fao.classes.DialogStaff = function() {
                 this.deleteRow(targetRow);
 //                this.render();
 //                alert(targetRecordData.id);
-                fao.variables.db.execute("delete from staffs where id = ?", [targetRecordData.id]);
-                fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
+//                fao.variables.db.execute("delete from staffs where id = ?", [targetRecordData.id]);
+                fao.variables.db.execute("update staffs set sync_state = 'deleted' where id = ?", [targetRecordData.id]);
+//                fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
             }
         }
     };
