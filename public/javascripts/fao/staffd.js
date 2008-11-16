@@ -17,7 +17,7 @@
 </form>
 </div>
 </div>
- */
+*/
 
 fao.classes.Staffd = function(data){
         if(!data.id){
@@ -73,8 +73,7 @@ fao.classes.Staffd = function(data){
               Dom.get("danwei_sfd_dlg").value = oData.danwei;
               Dom.get("zhiwu_sfd_dlg").value = oData.zhiwu;
               Dom.get("hzhaoma_sfd_dlg").value = oData.hzhaoma;
-              var hzghriqi = oData.hzghriqi;
-              Dom.get("hzghriqi_sfd_dlg").value = hzghriqi.getFullYear() + "-" + hzghriqi.getMonth() +  "-" + hzghriqi.getDate();
+              Dom.get("hzghriqi_sfd_dlg").value = fao.utils.date2str(oData.hzghriqi);
 //              alert(oData.birthday instanceof Date);
               Dom.get("isreturned_sfd_dlg").checked = oData.isreturned;
               Dom.get("note_sfd_dlg").value = oData.note;
@@ -104,25 +103,22 @@ fao.classes.Staffd = function(data){
 
 	// Validate the entries in the form to require that both first and last name are entered
 	this.dialog.validate = function() {
-//            alert("validate");
             try{
 		var data = this.getData();
-		if (data.name == "" || data.pyname =="" || data.spyname == "") {
-			alert("请输入完整的资料.");
-			return false;
-		}
-                var ymd = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
-                var result = data.hzghriqi.match(ymd);
-                if(!result && data.hzghriqi){
-                    alert("日期的格式是：2008-08-08.");
-                    return false;
-                }else{
-                    data.hzghriqi = result[0];
-                }
-                //save new staff.
-//                alert(data.id);
+//		if(!data.name || !data.pyname || !data.spyname) {
+//			alert("请输入完整的资料.");
+//			return false;
+//		}
+//                var ymd = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
+//                var result = data.hzghriqi.match(ymd);
+//                if(!result && data.hzghriqi){
+//                    alert("日期的格式是：2008-08-08.");
+//                    return false;
+//                }else{
+//                    data.hzghriqi = result[0];
+//                }
+//
                 var staffd = new fao.classes.Staffd(this.getData());
-//                alert(data.id);
                 if(data.id)
                     staffd.update();
                 else
@@ -186,8 +182,8 @@ fao.classes.Staffd = function(data){
           var rowspp = condi ? (condi.rowspp || 4) : 4;
 //          var phrase = fao.doms.ac_input.value + "%";
           var activity_id = fao.variables.curactivity.id;
-          var sqlstmt = 'select * from staffds where activity_id = ? order by created_at desc limit ? offset ?';
-          var rs = fao.variables.db.execute(sqlstmt,[activity_id,rowspp,offset]);
+          var sqlstmt = 'select * from staffds where activity_id = ? and sync_state != ? order by created_at desc limit ? offset ?';
+          var rs = fao.variables.db.execute(sqlstmt,[activity_id,'deleted',rowspp,offset]);
           var results = {staffds:[]};
           while(rs.isValidRow()) {
             var staffname = null;
@@ -327,7 +323,8 @@ fao.classes.Staffd = function(data){
   //            alert(answer);
               if(answer){
                   this.deleteRow(targetRow);
-                  fao.variables.db.execute("delete from staffds where id = ?", [targetRecordData.id]);
+//                  fao.variables.db.execute("delete from staffds where id = ?", [targetRecordData.id]);
+                  fao.variables.db.execute("update staffds set sync_state = 'deleted' where id = ?", [targetRecordData.id]);
               }
             }
             else if(targetEl.innerHTML == "人员"){

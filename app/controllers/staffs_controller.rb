@@ -62,8 +62,9 @@ class StaffsController < ApplicationController
     sd_raw = request.raw_post
     sd = JSON.parse(sd_raw)
     item = sd["item"]
-    item.delete("otype")
-    debugger
+    table = item.delete("otype")
+    case table
+    when "staffs"
       case item["sync_state"]
       when "new" 
         @staff = Staff.new(item)
@@ -78,6 +79,10 @@ class StaffsController < ApplicationController
         rescue
             render :json=>{"item"=>"","msg"=>"插入异常"}
         end
+      when "deleted"
+        @staff = Staff.find_by_id(item["id"]);
+        @staff.destroy if @staff
+        render :text=>sd_raw
       else
         @staff = Staff.find_by_id(item["id"])
         if @staff
@@ -102,6 +107,95 @@ class StaffsController < ApplicationController
           end
         end
       end
+    when "activities"
+      case item["sync_state"]
+      when "new" 
+        @activity = Activity.new(item)
+        @activity.id = item["id"]
+        @activity.sync_state = "synchronized"
+        begin
+          if @activity.save
+            render :text=>sd_raw 
+          else
+            render :json=>{"item"=>"","msg"=>"保存失败"}
+          end
+        rescue
+            render :json=>{"item"=>"","msg"=>"插入异常"}
+        end
+      when "deleted"
+        @activity = Activity.find_by_id(item["id"]);
+        @activity.destroy if @activity
+        render :text=>sd_raw
+      else
+        @activity = Activity.find_by_id(item["id"])
+        if @activity
+          item["sync_state"] = "synchronized"
+          if @activity.update_attributes(item)
+            render :text=>sd_raw 
+          else
+              render :json=>{"item"=>"","msg"=>"保存失败"}
+          end
+        else
+          @activity = Activity.new(item)
+          @activity.id = item["id"]
+          @activity.sync_state = "synchronized"
+          begin
+            if @activity.save
+              render :text=>sd_raw 
+            else
+              render :json=>{"item"=>"","msg"=>"保存失败"}
+            end
+          rescue
+              render :json=>{"item"=>"","msg"=>"插入异常"}
+          end
+        end
+      end
+    when "staffds"
+      case item["sync_state"]
+      when "new" 
+        @staffd = Staffd.new(item)
+        @staffd.id = item["id"]
+        @staffd.sync_state = "synchronized"
+        begin
+          if @staffd.save
+            render :text=>sd_raw 
+          else
+            render :json=>{"item"=>"","msg"=>"保存失败"}
+          end
+        rescue
+            render :json=>{"item"=>"","msg"=>"插入异常"}
+        end
+      when "deleted"
+        @staffd = Staffd.find_by_id(item["id"]);
+        @staffd.destroy if @staffd
+        render :text=>sd_raw
+      else
+        @staffd = Staffd.find_by_id(item["id"])
+        if @staffd
+          item["sync_state"] = "synchronized"
+          if @staffd.update_attributes(item)
+            render :text=>sd_raw 
+          else
+              render :json=>{"item"=>"","msg"=>"保存失败"}
+          end
+        else
+          @staffd = Staffd.new(item)
+          @staffd.id = item["id"]
+          @staffd.sync_state = "synchronized"
+          begin
+            if @staffd.save
+              render :text=>sd_raw 
+            else
+              render :json=>{"item"=>"","msg"=>"保存失败"}
+            end
+          rescue
+              render :json=>{"item"=>"","msg"=>"插入异常"}
+          end
+        end
+      end
+    else
+      render :json=>{"item"=>"","msg"=>"尝试插入未知对象错误！"}
+    end
   end
 
   # PUT /staffs/1

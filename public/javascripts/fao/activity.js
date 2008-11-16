@@ -53,10 +53,19 @@ fao.classes.Activity = function(data){
       }
     fao.classes.DialogActivity = function(){
 	// Define various event handlers for Dialog
+        this.validate_pass = false;
 	var handleSubmit = function() {
-//            alert("submit");
-            this.submit();
+          this.submit();
+          if(fao.variables.dialog_activity.validate_pass){
+            this.hide();
+          }
 	};
+        var handleAndHandle = function(){
+          this.submit();
+          if(fao.variables.dialog_activity.validate_pass){
+            fao.variables.dialog_activity.clearData();
+          }
+        };
 	var handleCancel = function() {
 		this.cancel();
 	};
@@ -67,6 +76,24 @@ fao.classes.Activity = function(data){
 	var handleFailure = function(o) {
 		alert("Submission failed: " + o.status);
 	};
+        this.clearData = function(oData){
+            try{
+              Dom.get("id_ay_dlg").value = "";
+              Dom.get("sqriqi_ay_dlg").value = "";
+              Dom.get("dguojia_ay_dlg").value = "";
+              Dom.get("renwu_ay_dlg").value = "";
+              Dom.get("cfshijian_ay_dlg").value = "";
+              Dom.get("tltianshu_ay_dlg").value =  "";
+              Dom.get("ztdanwei_ay_dlg").value =  "";
+              Dom.get("yqdanwei_ay_dlg").value =  "";
+              Dom.get("rwpihao_ay_dlg").value =  "";
+              Dom.get("note_sf_dlg").value =  "";
+            }
+            catch(e){
+                alert(e.message);
+            }
+        };
+
         this.setData = function(oData){
             try{
               Dom.get("id_ay_dlg").value = oData.id;
@@ -85,7 +112,6 @@ fao.classes.Activity = function(data){
             }
         };
 
-
 	// Instantiate the Dialog
         try{
 	this.dialog = new YAHOO.widget.Dialog("addActivityDialog",
@@ -95,8 +121,10 @@ fao.classes.Activity = function(data){
 							  visible : false,
 							  constraintoviewport : true,
                                                           postmethod: "none",
+                                                          hideaftersubmit : false,
 							  buttons : [ { text:"添加", handler:handleSubmit, isDefault:true },
-								      { text:"取消", handler:handleCancel } ]
+								      { text:"取消", handler:handleCancel }, 
+								      { text:"添加继续", handler:handleAndHandle} ]
 							});
         }catch(e){
             alert(e);
@@ -110,41 +138,21 @@ fao.classes.Activity = function(data){
 	// Validate the entries in the form to require that both first and last name are entered
 
 	this.dialog.validate = function() {
-//            alert("validate");
-
+             fao.variables.dialog_activity.validate_pass = false;
             try{
 		var data = this.getData();
-//                alert(data.sqriqi);
 		if (data.dguojia == "") {
 			alert("出访国家必须填写！");
 			return false;
 		}
-//                var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
-//                var result = data.sqriqi.match(ymd);
-//                if(!result){
-//                  result = data.sqriqi.match(/\d{8}/);
-//                }
-//                if(!result){
-//                    alert("申请日期的格式是：2008-08-08.");
-//                    return false;
-//                }
-//
-//                result = data.cfshijian.match(ymd);
-//                if(!result){
-//                  result = data.cfshijian.match(/\d{8}/);
-//                }
-//                if(!result){
-//                    alert("出访日期的格式是：2008-08-08.");
-//                    return false;
-//                }
-//
-                //save new staff.
-                 var activity = new fao.classes.Activity(this.getData());
+                //save new activity.
+                 var activity = new fao.classes.Activity(data);
                  if(data.id)
                      activity.update();
                  else
                      activity.save();
                  fao.variables.activities_datatable.datasource.sendRequest('', fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
+                 fao.variables.dialog_activity.validate_pass = true;
                  return true;
             }
             catch(e){
@@ -159,8 +167,13 @@ fao.classes.Activity = function(data){
 
 	// Render the Dialog
 	this.dialog.render();
-//        alert(fao.addStaffDialog.cfg.getProperty("postmethod"));
-	Event.addListener("addActivityBtn", "click", this.dialog.show, this.dialog, true);
+        var addActivityBtnClick = function(){
+            Dom.get("id_ay_dlg").value = "";
+            this.dialog.cfg.setProperty("buttons",[ { text:"添加", handler:handleSubmit, isDefault:true },
+								      { text:"取消", handler:handleCancel },{ text:"添加继续", handler:handleAndHandle}]);
+            this.dialog.show();
+        };
+	Event.addListener("addActivityBtn", "click", addActivityBtnClick , this, true);
 //	Event.addListener("hide", "click", fao.addStaffDialog.hide, fao.addStaffDialog, true);
 }
 
@@ -182,13 +195,11 @@ fao.classes.Activity = function(data){
       ];
 
         var dsfunc= function(condi){
-//          alert("argument one:" + arguments[0]);
-//          alert("staffsfunc is called!");
           var offset = condi ? (condi.offset || 0) : 0;
           var rowspp = condi ? (condi.rowspp || 4) : 4;
           var phrase = "%" + fao.doms.ac_input.value + "%";
-          var sqlstmt = 'select * from activities where dguojia like ? or dgjpy like ? or dgjspy like ? order by created_at desc limit ? offset ?';
-          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,rowspp,offset]);
+          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
+          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
           var results = {activities:[]};
           while(rs.isValidRow()) {
             results.activities.push({
@@ -211,7 +222,6 @@ fao.classes.Activity = function(data){
           rs = fao.variables.db.execute("select count(*) from activities where dguojia like ?",[phrase]);
           if(rs.isValidRow())count = rs.field(0);
           rs.close();
-//          alert(count);
           results.totalRecords = count;
           return results;
         };
@@ -245,7 +255,6 @@ fao.classes.Activity = function(data){
         };
 
         var buildQueryString = function(state,dt){
-//            alert("paged");
             return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
         };
 
@@ -282,11 +291,9 @@ fao.classes.Activity = function(data){
             return oPayload;
         };
     var onRowDblClick = function(oArgs){
-//        alert("dbl");
         try{
           var targetRow = oArgs.target;
           var targetRecordData = this.getRecord(targetRow).getData();
-//          alert(targetRecordData.birthday);
           fao.variables.dialog_activity.setData(targetRecordData);
           fao.variables.dialog_activity.setButtons();
 //          var buttons = fao.variables.dialog_staff.dialog.cfg.setProperty("buttons",
@@ -301,26 +308,20 @@ fao.classes.Activity = function(data){
 
 //        this.datatable.selectRow(this.datatable.getTrEl(0));
     var onRowClick = function(oArgs){
-//        alert(m3958.utils.DisplayPropertyNames(oArgs));
-//        alert(Event.getTarget(oArgs.event).tagName + "kkk");
         this.onEventSelectRow(oArgs);
         var targetRow = oArgs.target;
         var targetRecordData = this.getRecord(targetRow).getData();
-//        alert(targetRecord);
-//        alert(targetRow.id);
         var targetEl = Event.getTarget(oArgs.event);
-//        alert(targetEl.id);
         if(targetEl.tagName.toUpperCase() == "BUTTON"){
             if(targetEl.innerHTML == "删除"){
               var answer =  confirm("真的要删除？");
-  //            alert(answer);
               if(answer){
                   this.deleteRow(targetRow);
-                  fao.variables.db.execute("delete from activities where id = ?", [targetRecordData.id]);
+                  fao.variables.db.execute("update activities set sync_state = 'deleted' where id = ?", [targetRecordData.id]);
+//                  fao.variables.db.execute("delete from activities where id = ?", [targetRecordData.id]);
               }
             }
             else if(targetEl.innerHTML == "人员"){
-//                alert(targetRecordData.id);
                 fao.variables.curactivity = targetRecordData;
                 fao.doms.staff_radio.click();
                 fao.variables.staffds_datatable.datatable.set("caption",fao.utils.chDate(fao.variables.curactivity.cfshijian) + "出访" + fao.variables.curactivity.dguojia  + "的人员列表");
@@ -334,9 +335,6 @@ fao.classes.Activity = function(data){
             }
         }
 
-//        alert("htmlid:" + oArgs.target.id);
-//        alert("yuiRecordId:"+oArgs.target.yuiRecordId);
-//        alert("recordindex:"+this.datatable.getRecordIndex(0));
         };
         this.datatable.subscribe('rowClickEvent', onRowClick,this.datatable,true);
         this.datatable.subscribe('rowDblclickEvent', onRowDblClick,this.datatable,true);
