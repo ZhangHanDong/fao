@@ -4,6 +4,8 @@
  */
 fao.f.reset_sync_error = function(){
   fao.variables.db.execute("update staffs set sync_state='retry' where sync_state = 'sync_error'");
+  fao.variables.db.execute("update activities set sync_state='retry' where sync_state = 'sync_error'");
+  fao.variables.db.execute("update staffds set sync_state='retry' where sync_state = 'sync_error'");
 };
 
 
@@ -54,7 +56,7 @@ fao.f.setsettings1 = function(){
       }
       return new_ary;
     };
-    //every key in keys,must have an fao.varaibles.
+    //every key in keys,must have an fao.variables.
     var all_keys= ["pinyindb","offline"];
     var exist_keys = [];
     fao.variables.pinyindb = false;
@@ -163,6 +165,11 @@ fao.f.my_gear_init = function() {
             ' myvalue varchar(255))' 
             );
         fao.f.setsettings();
+//        var rrs = fao.variables.db.execute("update staffs set sync_state = 'abc'");
+//        alert(rrs);
+//        alert(rrs.isValidRow());
+//        rrs.close();
+
       }
     } catch (ex) {
       alert(ex.message);

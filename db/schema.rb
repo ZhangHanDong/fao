@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(:version => 20081114145212) do
     t.string   "hzhaoma"
     t.date     "hzfzriqi"
     t.date     "hzyxq"
-    t.string   "hzghriqi"
+    t.date     "hzghriqi"
     t.string   "pyname"
     t.string   "spyname"
     t.string   "sync_state",               :default => "new"
