@@ -1,5 +1,5 @@
 class StaffsController < ApplicationController
-  before_filter :i_own_it
+  before_filter :i_own_it,:only=>[:sync_downstream]
   # GET /staffs
   # GET /staffs.xml
   def index
@@ -67,19 +67,19 @@ class StaffsController < ApplicationController
     case table
     when "staffs"
       case item["sync_state"]
-      when "new" 
-        @staff = Staff.new(item)
-        @staff.id = item["id"]
-        @staff.sync_state = "synchronized"
-        begin
-          if @staff.save
-            render :text=>sd_raw 
-          else
-            render :json=>{"item"=>"","msg"=>"保存失败"}
-          end
-        rescue
-            render :json=>{"item"=>"","msg"=>"插入异常"}
-        end
+#      when "new" 
+#        @staff = Staff.new(item)
+#        @staff.id = item["id"]
+#        @staff.sync_state = "synchronized"
+#        begin
+#          if @staff.save
+#            render :text=>sd_raw 
+#          else
+#            render :json=>{"item"=>"","msg"=>"保存失败"}
+#          end
+#        rescue
+#            render :json=>{"item"=>"","msg"=>"插入异常"}
+#        end
       when "deleted"
         @staff = Staff.find_by_id(item["id"]);
         @staff.destroy if @staff
@@ -110,19 +110,19 @@ class StaffsController < ApplicationController
       end
     when "activities"
       case item["sync_state"]
-      when "new" 
-        @activity = Activity.new(item)
-        @activity.id = item["id"]
-        @activity.sync_state = "synchronized"
-        begin
-          if @activity.save
-            render :text=>sd_raw 
-          else
-            render :json=>{"item"=>"","msg"=>"保存失败"}
-          end
-        rescue
-            render :json=>{"item"=>"","msg"=>"插入异常"}
-        end
+#      when "new" 
+#        @activity = Activity.new(item)
+#        @activity.id = item["id"]
+#        @activity.sync_state = "synchronized"
+#        begin
+#          if @activity.save
+#            render :text=>sd_raw 
+#          else
+#            render :json=>{"item"=>"","msg"=>"保存失败"}
+#          end
+#        rescue
+#            render :json=>{"item"=>"","msg"=>"插入异常"}
+#        end
       when "deleted"
         @activity = Activity.find_by_id(item["id"]);
         @activity.destroy if @activity
@@ -153,19 +153,19 @@ class StaffsController < ApplicationController
       end
     when "staffds"
       case item["sync_state"]
-      when "new" 
-        @staffd = Staffd.new(item)
-        @staffd.id = item["id"]
-        @staffd.sync_state = "synchronized"
-        begin
-          if @staffd.save
-            render :text=>sd_raw 
-          else
-            render :json=>{"item"=>"","msg"=>"保存失败"}
-          end
-        rescue
-            render :json=>{"item"=>"","msg"=>"插入异常"}
-        end
+#      when "new" 
+#        @staffd = Staffd.new(item)
+#        @staffd.id = item["id"]
+#        @staffd.sync_state = "synchronized"
+#        begin
+#          if @staffd.save
+#            render :text=>sd_raw 
+#          else
+#            render :json=>{"item"=>"","msg"=>"保存失败"}
+#          end
+#        rescue
+#            render :json=>{"item"=>"","msg"=>"插入异常"}
+#        end
       when "deleted"
         @staffd = Staffd.find_by_id(item["id"]);
         @staffd.destroy if @staffd

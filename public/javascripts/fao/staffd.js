@@ -38,8 +38,8 @@ fao.classes.Staffd = function(data){
         var curTime = new Date().getTime();
         this.save = function(){
             fao.variables.db.execute("insert into staffds " +
-                " (id,staff_id,activity_id,danwei,zhiwu,hzhaoma,hzghriqi,isreturned,note,sync_state,created_at,updated_at) " +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.staff_id,this.activity_id,this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.isreturned,this.note,this.sync_state,curTime,curTime]);
+                " (id,userhash,staff_id,activity_id,danwei,zhiwu,hzhaoma,hzghriqi,isreturned,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,fao.variables.userhash,this.staff_id,this.activity_id,this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.isreturned,this.note,this.sync_state,curTime,curTime]);
         };
         this.update = function(){
             fao.variables.db.execute("update staffds set " +

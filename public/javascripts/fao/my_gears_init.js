@@ -11,9 +11,12 @@ fao.f.reset_sync_error = function(){
 
 fao.f.setsettings = function(){
     //init values,real value will get from db.
+    var uuid =new UUID();
+    var userhash = uuid.id.replace(/-/g,"").toLowerCase();
     var settings = {pinyindb:false,
                     offline:true,
-                    firstrun:true
+                    firstrun:true,
+                    userhash:userhash
     };
 
     for(ps in settings){
@@ -34,6 +37,10 @@ fao.f.setsettings = function(){
           fao.variables.firstrun= rs.field(1) == "true" ? true :false
           settings.firstrun= undefined;
           break;
+        case "userhash":
+          fao.variables.userhash= rs.field(1)
+          settings.userhash= undefined;
+          break;
      }
       rs.next();
     }
@@ -47,48 +54,6 @@ fao.f.setsettings = function(){
 };
 
 
-
-fao.f.setsettings1 = function(){
-    var ary_extra = function(ary,ele){
-      var new_ary = [];
-      for(var i=0;i<ary.length;i++){
-        if(ary[i] != ele)new_ary.unshift(ele);
-      }
-      return new_ary;
-    };
-    //every key in keys,must have an fao.variables.
-    var all_keys= ["pinyindb","offline"];
-    var exist_keys = [];
-    fao.variables.pinyindb = false;
-    fao.variables.offline = false;
-
-    var rs = fao.variables.db.execute("select mykey,myvalue from settings");
-    while(rs.isValidRow()){
-      switch(rs.field(0)){
-        case "pinyindb":
-          if(rs.field(1) == "true")fao.variables.pinyindb=true;
-          exist_keys.unshift("pinyindb"); 
-          break;
-        case "offline":
-          if(rs.field(1) == "true")fao.variables.offline=true;
-          exist_keys.unshift("offline"); 
-          break;
-      }
-      rs.next();
-    }
-
-    for(var i=0;i<all_keys.length;i++){
-      var ye = false;
-      for(var j=0;j<exist_keys.length;j++){
-        if(all_keys[i] == exist_keys[j]){
-          ye = true;
-          break;
-        }
-      }
-      if(!ye)fao.variables.db.execute("insert into settings (mykey,myvalue) values (?,?)",[all_keys[i],"false"]);
-    }
-    rs.close();
-};
 fao.f.my_gear_init = function() {
   if (window.google && google.gears) {
     try {
@@ -97,6 +62,7 @@ fao.f.my_gear_init = function() {
         fao.variables.db.open('database-fao');
         fao.variables.db.execute('create table if not exists staffs' +
                    ' (id varchar(255),' +
+                   ' userhash varchar(255),' +
                    ' name varchar(255),' +
                    ' danwei varchar(255),' +
                    ' zhiwu varchar(255),' +
@@ -117,6 +83,7 @@ fao.f.my_gear_init = function() {
 
         fao.variables.db.execute('create table if not exists staffds' +
                    ' (id varchar(255),'  +
+                   ' userhash varchar(255),' +
                    ' staff_id varchar(255),'  +
                    ' activity_id varchar(255),'  +
                    ' danwei varchar(255),' +
@@ -133,6 +100,7 @@ fao.f.my_gear_init = function() {
         );
         fao.variables.db.execute('create table if not exists activities' +
                    ' (id varchar(255),' +
+                   ' userhash varchar(255),' +
                    ' sqriqi date,' +
                    ' dguojia varchar(255),' +
                    ' dgjpy varchar(255),' +
@@ -165,13 +133,26 @@ fao.f.my_gear_init = function() {
             ' myvalue varchar(255))' 
             );
         fao.f.setsettings();
-//        var rrs = fao.variables.db.execute("update staffs set sync_state = 'abc'");
-//        alert(rrs);
-//        alert(rrs.isValidRow());
-//        rrs.close();
-
+        var rrs = fao.variables.db.execute("select myvalue from settings where mykey = 'userhash'");
+        var userhash = ""
+        if(rrs.isValidRow()){
+          userhash = rrs.fieldByName("myvalue");
+        }
+        rrs.close();
+        if(userhash){
+          fao.variables.db.execute("update staffs set userhash = ?",[userhash]);
+          fao.variables.db.execute("update staffds set userhash = ?",[userhash]);
+          fao.variables.db.execute("update activities set userhash = ?",[userhash]);
+        }
       }
     } catch (ex) {
+      fao.variables.db.execute("alter table staffs add userhash varchar(255)");
+      fao.variables.db.execute("alter table staffds add userhash varchar(255)");
+      fao.variables.db.execute("alter table activities add userhash varchar(255)");
+      fao.variables.db.execute("update activities set sync_state='changed'");
+      fao.variables.db.execute("update staffs set sync_state='changed'");
+      fao.variables.db.execute("update staffds set sync_state='changed'");
+      alert("数据库表字段已经更新，请刷新页面，按F5");
       alert(ex.message);
     }
   }
