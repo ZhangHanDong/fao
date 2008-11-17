@@ -1,0 +1,24 @@
+<h1>Editing bb_auth_user</h1>
+
+<% form_for(@bb_auth_user) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :displayname %><br />
+    <%= f.text_field :displayname %>
+  </p>
+  <p>
+    <%= f.label :userhash %><br />
+    <%= f.text_field :userhash %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @bb_auth_user %> |
+<%= link_to 'Back', bb_auth_users_path %>

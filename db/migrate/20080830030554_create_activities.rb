@@ -2,6 +2,7 @@ class CreateActivities < ActiveRecord::Migration
   def self.up
     create_table :activities,:id=>false,:options => 'ENGINE=InnoDB DEFAULT CHARSET=utf8'  do |t|
       t.string :id,:null=>false
+      t.string :userhash,:null=>false
       t.date :sqriqi
       t.string :dguojia,:dgjpy,:dgjspy
       t.text :renwu

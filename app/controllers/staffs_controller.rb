@@ -1,4 +1,5 @@
 class StaffsController < ApplicationController
+  before_filter :i_own_it
   # GET /staffs
   # GET /staffs.xml
   def index

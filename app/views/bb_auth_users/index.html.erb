@@ -1,0 +1,24 @@
+<h1>Listing bb_auth_users</h1>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Displayname</th>
+    <th>Userhash</th>
+  </tr>
+
+<% for bb_auth_user in @bb_auth_users %>
+  <tr>
+    <td><%=h bb_auth_user.email %></td>
+    <td><%=h bb_auth_user.displayname %></td>
+    <td><%=h bb_auth_user.userhash %></td>
+    <td><%= link_to 'Show', bb_auth_user %></td>
+    <td><%= link_to 'Edit', edit_bb_auth_user_path(bb_auth_user) %></td>
+    <td><%= link_to 'Destroy', bb_auth_user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New bb_auth_user', new_bb_auth_user_path %>
