@@ -10,3 +10,14 @@
         margin-top: 0;
         margin-right: 0px;
 }
+
+#lt_menu {
+	position: absolute;
+	top: 0;
+	left: 0.5em;
+	z-index: 100;
+	height: auto;
+	width: auto;
+        margin-top: 0;
+        margin-right: 0px;
+}

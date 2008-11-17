@@ -633,6 +633,7 @@ var x = new function(){
       if(table=="staffs"){      
         sd.item = {
             id:rs.fieldByName("id"),
+            userhash:rs.fieldByName("userhash"),
             name:rs.fieldByName("name"),
             danwei:rs.fieldByName("danwei"),
             zhiwu:rs.fieldByName("zhiwu"),
@@ -652,6 +653,7 @@ var x = new function(){
       else if(table == "activities"){
         sd.item = {
             id:rs.fieldByName("id"),
+            userhash:rs.fieldByName("userhash"),
             sqriqi:milliseconds2datestr(rs.fieldByName("sqriqi")),
             dguojia:rs.fieldByName("dguojia"),
             dgjpy:rs.fieldByName("dgjpy"),
@@ -670,6 +672,7 @@ var x = new function(){
       else if(table == "staffds"){
           sd.item = {
             id:rs.fieldByName("id"),
+            userhash:rs.fieldByName("userhash"),
             staff_id:rs.fieldByName("staff_id"),
             activity_id:rs.fieldByName("activity_id"),
             danwei:rs.fieldByName("danwei"),
