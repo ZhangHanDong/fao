@@ -9,9 +9,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081114145212) do
+ActiveRecord::Schema.define(:version => 20081117072516) do
 
   create_table "activities", :force => true do |t|
+    t.string   "userhash",                                    :null => false
     t.date     "sqriqi"
     t.string   "dguojia"
     t.string   "dgjpy"
@@ -30,6 +31,14 @@ ActiveRecord::Schema.define(:version => 20081114145212) do
 
   add_index "activities", ["id"], :name => "index_activities_on_id", :unique => true
 
+  create_table "bb_auth_users", :force => true do |t|
+    t.string   "email"
+    t.string   "displayname"
+    t.string   "userhash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "bp_requests", :force => true do |t|
     t.text     "envs"
     t.text     "params"
@@ -47,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20081114145212) do
   end
 
   create_table "staffds", :force => true do |t|
+    t.string   "userhash",                                     :null => false
     t.string   "staff_id",                                     :null => false
     t.string   "activity_id",                                  :null => false
     t.string   "danwei"
@@ -64,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20081114145212) do
   add_index "staffds", ["staff_id", "activity_id"], :name => "index_staffds_on_staff_id_and_activity_id", :unique => true
 
   create_table "staffs", :force => true do |t|
+    t.string   "userhash",                                    :null => false
     t.string   "name",                                        :null => false
     t.string   "danwei"
     t.string   "zhiwu"
