@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :bb_auth_users, :has_many=>[:activities,:staffds,:staffs]
+
   map.resources :bp_requests
 
   map.resources :staffds,:has_many=>[:activities],:collection=>{:abouttoparticipate=>:get},:member=>{:participate=>:put}

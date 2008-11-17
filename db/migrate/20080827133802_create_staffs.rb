@@ -2,6 +2,7 @@ class CreateStaffs < ActiveRecord::Migration
   def self.up
     create_table :staffs,:id=>false,:options => 'ENGINE=InnoDB DEFAULT CHARSET=utf8' do |t|
       t.string :id,:null=>false
+      t.string :userhash,:null=>false
       t.string :name,:null=>false
       t.string :danwei
       t.string :zhiwu
