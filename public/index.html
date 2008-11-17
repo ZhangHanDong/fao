@@ -33,11 +33,12 @@
 
 <body class="yui-skin-sam">
 <div id="doc" class="yui-t7">
-  <div id="hd"><h1>FengHua Foreign Affairs Office</h1></div>
+  <div id="hd"><b><h1 style="font-size:153.9%;">FengHua Foreign Affairs Office</h1></b></div>
    <div id="bd">
    <div id="loading_content"><img alt="正在加载...." border="0" src="/images/loading.gif" style="display:block">正在加载....</div> 
 	<div class="yui-g" id ="mycontent" style="visibility:hidden">
   <div id="indicator"></div> 
+  <div id="lt_menu">登录</div>
 <style>
     form label { display:block;float:left;width:45%;clear:left; }
     .clear { clear:both; }
@@ -218,6 +219,8 @@
           fao.doms.staff_panel_tab.style.display = "none";
           //because activity_id is null at init,so staffd_datatable are empty.
           fao.f.event_handlers();
+//          var rs = fao.variables.db.execute("select userhash from staffs limit 1");
+//          rs.close();
 //          alert(fao.utils.ch2py.find_pystr("我爱你"));
           new YAHOO.util.DDTarget("staff_panel");
 //          alert(Dom.getRegion("staffDataTable"));
@@ -246,13 +249,16 @@
 
         catch(e){
             var re = /no such column: (.*) EXPRESSION/;
-            var result = e.message.match(/no such column: (.*) EXPRESSION/) || e.message.match(/Field name not found/) ;
+            var result = e.message.match(/no such column: (.*) EXPRESSION/) || e.message.match(/Field name not found/) ||e.message.match(/SQLite/) ;
             if(result){
 //              fao.variables.db.execute("alter table activities add dgjpy varchar(255)");
 //             fao.variables.db.execute("alter table activities add dgjspy varchar(255)");
 //              alert("ya");
-              fao.variables.db.execute("alter table staffs add hzfzriqi date");
-              fao.variables.db.execute("alter table staffs add hzyxq date");
+//              fao.variables.db.execute("alter table staffs add hzfzriqi date");
+//              fao.variables.db.execute("alter table staffs add hzyxq date");
+              fao.variables.db.execute("alter table staffs add userhash varchar(255)");
+              fao.variables.db.execute("alter table staffds add userhash varchar(255)");
+              fao.variables.db.execute("alter table activities add userhash varchar(255)");
               alert("数据库表字段已经更新，请刷新页面，按F5");
             }else{
               alert("start error");

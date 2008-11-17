@@ -45,8 +45,8 @@ fao.classes.Staff =  function(data){
         var curTime = new Date().getTime();
         this.save = function(){
             fao.variables.db.execute("insert into staffs " +
-                " (id,name,danwei,zhiwu,hzhaoma,hzfzriqi,hzyxq,hzghriqi,pyname,spyname,sex,birthday,note,sync_state,created_at,updated_at) " +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,this.sync_state,curTime,curTime]);
+                " (id,userhash,name,danwei,zhiwu,hzhaoma,hzfzriqi,hzyxq,hzghriqi,pyname,spyname,sex,birthday,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,fao.variables.userhash,this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,this.sync_state,curTime,curTime]);
         };
         this.update = function(){
             fao.variables.db.execute("update staffs set" +

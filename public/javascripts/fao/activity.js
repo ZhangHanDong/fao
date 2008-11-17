@@ -42,8 +42,8 @@ fao.classes.Activity = function(data){
         var curTime = new Date().getTime();
         this.save = function(){
             fao.variables.db.execute("insert into activities " +
-                " (id,sqriqi,dguojia,dgjpy,dgjspy,renwu,cfshijian,tltianshu,ztdanwei,yqdanwei,rwpihao,note,sync_state,created_at,updated_at) " +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.sqriqi,this.dguojia,this.dgjpy,this.dgjspy,this.renwu,this.cfshijian,this.tltianshu,this.ztdanwei,this.yqdanwei,this.rwpihao,this.note,this.sync_state,curTime,curTime]);
+                " (id,userhash,sqriqi,dguojia,dgjpy,dgjspy,renwu,cfshijian,tltianshu,ztdanwei,yqdanwei,rwpihao,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,fao.variables.userhash,this.sqriqi,this.dguojia,this.dgjpy,this.dgjspy,this.renwu,this.cfshijian,this.tltianshu,this.ztdanwei,this.yqdanwei,this.rwpihao,this.note,this.sync_state,curTime,curTime]);
         };
         this.update = function(){
             fao.variables.db.execute("update activities set " +
