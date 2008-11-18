@@ -619,81 +619,138 @@ var  milliseconds2datestr = function(milliseconds){
       return oDate.getFullYear() + "-" + oDate.getMonth() + "-" + oDate.getDate();
      };
 
+var datestr2milliseconds = function(date_str){
+        if(!date_str){
+          return  32758707661001;
+        }
+        var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
+        var result = date_str.match(ymd);
+        if(!result){
+          result = date_str.match(/(\d{4})(\d{2})(\d{2})/);
+        }
+        if(result){
+            var date = new Date(result[1],parseInt(result[2]) - 1,result[3],1,1,1,1);
+            return date.getTime();
+        } else{
+          return 32758707661001;
+        }
+      };
+
+
+var Staff =  function(data){
+        if(!data.id){
+            var uuid =new UUID();
+            this.id = uuid.id.replace(/-/g,"").toLowerCase();
+        }else{
+            this.id = data.id;
+        }
+        this.name = data.name;
+        this.danwei = data.danwei;
+        this.zhiwu = data.zhiwu;
+        this.hzhaoma = data.hzhaoma;
+        this.hzfzriqi = datestr2milliseconds(data.hzfzriqi);
+        this.hzyxq = datestr2milliseconds(data.hzyxq);
+        this.hzghriqi = datestr2milliseconds(data.hzghriqi);
+        this.pyname = data.pyname
+        this.spyname = data.spyname
+        this.sex = data.sex;
+        this.sync_state = data.sync_state
+        this.birthday =datestr2milliseconds(data.birthday);
+        this.note = data.note;
+        this.userhash = data.userhash;
+        var curTime = new Date().getTime();
+        this.save = function(db){
+            db.execute("insert into staffs " +
+                " (id,userhash,name,danwei,zhiwu,hzhaoma,hzfzriqi,hzyxq,hzghriqi,pyname,spyname,sex,birthday,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.userhash,this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,this.sync_state,curTime,curTime]);
+        };
+        this.update = function(db){
+            db.execute("update staffs set" +
+                " name = ?,danwei =?,zhiwu=?,hzhaoma=?,hzfzriqi=?,hzyxq=?,hzghriqi=?,pyname=?,spyname =?,sex=?,birthday=?,note=?,sync_state=?,updated_at=? where id = ?",
+            [this.name,this.danwei,this.zhiwu,this.hzhaoma,this.hzfzriqi,this.hzyxq,this.hzghriqi,this.pyname,this.spyname,this.sex,this.birthday,this.note,'changed',curTime,this.id]);
+        };
+      };
+
+var Staffd = function(data){
+        if(!data.id){
+            var uuid =new UUID();
+            this.id = uuid.id.replace(/-/g,"").toLowerCase();
+        }else{
+            this.id = data.id;
+        }
+        this.staff_id = data.staff_id;
+        this.activity_id = data.activity_id;
+        this.danwei = data.danwei;
+        this.zhiwu = data.zhiwu;
+        this.hzhaoma = data.hzhaoma;
+        this.hzghriqi =datestr2milliseconds(data.hzghriqi);
+        this.isreturned = data.isreturned;
+        this.sync_state = data.sync_state;
+        this.note = data.note;
+        this.userhash = data.userhash;
+        var curTime = new Date().getTime();
+        this.save = function(db){
+            db.execute("insert into staffds " +
+                " (id,userhash,staff_id,activity_id,danwei,zhiwu,hzhaoma,hzghriqi,isreturned,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.userhash,this.staff_id,this.activity_id,this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.isreturned,this.note,this.sync_state,curTime,curTime]);
+        };
+        this.update = function(db){
+            db.execute("update staffds set " +
+                " danwei=?,zhiwu=?,hzhaoma=?,hzghriqi=?,isreturned = ?,note=?,sync_state=?,updated_at=? where id=? ",
+                [this.danwei,this.zhiwu,this.hzhaoma,this.hzghriqi,this.isreturned,this.note,'changed',curTime,this.id]);
+        };
+      };
+
+
+var Activity = function(data){
+        if(!data.id){
+            var uuid =new UUID();
+            this.id = uuid.id.replace(/-/g,"").toLowerCase();
+        }else{
+            this.id = data.id;
+        }
+        this.sqriqi = datestr2milliseconds(data.sqriqi);
+        this.dguojia = data.dguojia;
+        this.dgjpy = data.dgjpy;
+        this.dgjspy = data.dgjspy;
+        this.renwu = data.renwu;
+        this.cfshijian = datestr2milliseconds(data.cfshijian);
+        this.tltianshu = data.tltianshu;
+        this.ztdanwei = data.ztdanwei;
+        this.yqdanwei = data.yqdanwei;
+        this.rwpihao = data.rwpihao;
+        this.sync_state = data.sync_state;
+        this.note = data.note;
+        this.userhash = data.userhash;
+        var curTime = new Date().getTime();
+        this.save = function(db){
+            db.execute("insert into activities " +
+                " (id,userhash,sqriqi,dguojia,dgjpy,dgjspy,renwu,cfshijian,tltianshu,ztdanwei,yqdanwei,rwpihao,note,sync_state,created_at,updated_at) " +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[this.id,this.userhash,this.sqriqi,this.dguojia,this.dgjpy,this.dgjspy,this.renwu,this.cfshijian,this.tltianshu,this.ztdanwei,this.yqdanwei,this.rwpihao,this.note,this.sync_state,curTime,curTime]);
+        };
+        this.update = function(db){
+            db.execute("update activities set " +
+                "sqriqi =?,dguojia=?,dgjpy=?,dgjspy=?,renwu=?,cfshijian=?,tltianshu=?,ztdanwei=?,yqdanwei=?,rwpihao=?,note=?,sync_state=?,updated_at=? where id=? ",
+                [this.sqriqi,this.dguojia,this.dgjpy,this.dgjspy,this.renwu,this.cfshijian,this.tltianshu,this.ztdanwei,this.yqdanwei,this.rwpihao,this.note,"changed",curTime,this.id]);
+        };
+      }
+
+var omap={staffs:Staff,
+          staffds:Staffd,
+          activities:Activity
+          };
+
 var x = new function(){
   this.db = google.gears.factory.create('beta.database');
   this.db.open('database-fao');
-//  this.message = "";
-//  var wp = google.gears.workerPool;
+  this.message = "";
+  var wp = google.gears.workerPool;
 
-  var dsfunc= function(table){
-    var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error'  order by created_at limit 1";
-    var rs = x.db.execute(sqlstmt);
-    var sd = {item:null,count:0};
-    if(rs.isValidRow()) {
-      if(table=="staffs"){      
-        sd.item = {
-            id:rs.fieldByName("id"),
-            userhash:rs.fieldByName("userhash"),
-            name:rs.fieldByName("name"),
-            danwei:rs.fieldByName("danwei"),
-            zhiwu:rs.fieldByName("zhiwu"),
-            hzhaoma:rs.fieldByName("hzhaoma"),
-            hzfzriqi:milliseconds2datestr(rs.fieldByName("hzfzriqi")),
-            hzyxq:milliseconds2datestr(rs.fieldByName("hzyxq")),
-            hzghriqi:milliseconds2datestr(rs.fieldByName("hzghriqi")),
-            pyname:rs.fieldByName("pyname"),
-            spyname:rs.fieldByName("spyname"),
-            sex:rs.fieldByName("sex"),
-            birthday:milliseconds2datestr(rs.fieldByName("birthday")),
-            note:rs.fieldByName("note"),
-            sync_state:rs.fieldByName("sync_state"),
-            otype : table
-        };
-      }
-      else if(table == "activities"){
-        sd.item = {
-            id:rs.fieldByName("id"),
-            userhash:rs.fieldByName("userhash"),
-            sqriqi:milliseconds2datestr(rs.fieldByName("sqriqi")),
-            dguojia:rs.fieldByName("dguojia"),
-            dgjpy:rs.fieldByName("dgjpy"),
-            dgjspy:rs.fieldByName("dgjspy"),
-            renwu:(rs.fieldByName("renwu")),
-            cfshijian:milliseconds2datestr(rs.fieldByName("cfshijian")),
-            tltianshu:rs.fieldByName("tltianshu"),
-            ztdanwei:rs.fieldByName("ztdanwei"),
-            yqdanwei:rs.fieldByName("yqdanwei"),
-            rwpihao:rs.fieldByName("rwpihao"),
-            note:rs.fieldByName("note"),
-            sync_state:rs.fieldByName("sync_state"),
-            otype : table
-        };
-      }
-      else if(table == "staffds"){
-          sd.item = {
-            id:rs.fieldByName("id"),
-            userhash:rs.fieldByName("userhash"),
-            staff_id:rs.fieldByName("staff_id"),
-            activity_id:rs.fieldByName("activity_id"),
-            danwei:rs.fieldByName("danwei"),
-            zhiwu:rs.fieldByName("zhiwu"),
-            hzhaoma:rs.fieldByName("hzhaoma"),
-            hzghriqi:milliseconds2datestr(rs.fieldByName("hzghriqi")),
-            note:rs.fieldByName("note"),
-            sync_state:rs.fieldByName("sync_state"),
-            otype : table
-          };
-      }
-      else{}
+  var dsfunc= function(rt){
+    for(var i=0;i<rt.items.length;i++){
+      var item = new omap[x.message.body[2].tables[x.message.body[2].cur_table]](rt.items[i]);
+      item.save(x.db);
     }
-    rs.close();
-    var count = 0;
-    var sqlstmt1 = "select count(*) from " + table + " where sync_state != 'synchronized' and sync_state != 'sync_error'";
-    rs =x.db.execute(sqlstmt1,[]);
-    if(rs.isValidRow())count = rs.field(0);
-    rs.close();
-    sd.count = count;
-    return sd;
   };
 
   this.sy = function(){
@@ -702,7 +759,7 @@ var x = new function(){
         'limit=' + x.message.body[2].limit +
         '&offset=' + x.message.body[2].offset +
         '&orderby=' + x.message.body[2].orderby + 
-        '&table=' + x.message.body[2].table);
+        '&table=' + x.message.body[2].tables[x.message.body[2].cur_table]);
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
         //console.write(request.responseText);
@@ -712,8 +769,11 @@ var x = new function(){
         }catch(e){
           wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"popup"}], x.message.sender);
           rt={};
-          rt.item = null;
+          rt.items = [];
           rt.msg = "服务器返回未知消息"
+        }
+        if(rt.items.length > 0){
+          dsfunc(rt);
         }
       }
     };

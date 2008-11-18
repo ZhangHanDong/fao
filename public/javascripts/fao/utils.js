@@ -6,7 +6,9 @@
     fao.utils = {
       datestr2milliseconds : function(date_str){
 //        alert(YAHOO.lang.isString(date_str));
-//        alert(date_str);
+        if(!date_str){
+          return  32758707661001;
+        }
         var ymd = /(\d{4})[^\d](\d{1,2})[^\d](\d{1,2})/;
         var result = date_str.match(ymd);
         if(!result){
@@ -16,7 +18,7 @@
             var date = new Date(result[1],parseInt(result[2]) - 1,result[3],1,1,1,1);
             return date.getTime();
         } else{
-          return 32758707661001
+          return 32758707661001;
         }
       },
       milliseconds2date : function(milliseconds){

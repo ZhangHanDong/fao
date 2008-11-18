@@ -616,14 +616,14 @@ var  milliseconds2datestr = function(milliseconds){
           ms =  32758707661001;
         }
       var oDate = new Date(ms);
-      return oDate.getFullYear() + "-" + oDate.getMonth() + "-" + oDate.getDate();
+      return oDate.getFullYear() + "-" + (oDate.getMonth()+1) + "-" + oDate.getDate();
      };
 
 var x = new function(){
   this.db = google.gears.factory.create('beta.database');
   this.db.open('database-fao');
-//  this.message = "";
-//  var wp = google.gears.workerPool;
+  this.message = "";
+  var wp = google.gears.workerPool;
 
   var dsfunc= function(table){
     var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error'  order by created_at limit 1";
