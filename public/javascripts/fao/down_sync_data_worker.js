@@ -698,61 +698,31 @@ var x = new function(){
 
   this.sy = function(){
     var request = google.gears.factory.create('beta.httprequest');
-    request.open('POST', '/staffs/syncreate');
+    request.open('GET', '/staffs/synget?'+
+        'limit=' + x.message.body[2].limit +
+        '&offset=' + x.message.body[2].offset +
+        '&orderby=' + x.message.body[2].orderby + 
+        '&table=' + x.message.body[2].table);
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
-//          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.message.body[2].fatherWorkerId);
         //console.write(request.responseText);
         try{
           var rt=JSON.parse(request.responseText);
+          wp.sendMessage(["a","b",{text:rt.msg, action:"popup"}], x.message.sender);
         }catch(e){
-          wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"indicator"}], x.message.body[2].fatherWorkerId);
+          wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"popup"}], x.message.sender);
           rt={};
           rt.item = null;
           rt.msg = "服务器返回未知消息"
         }
-        if(rt.item){
-          if(rt.item.sync_state == "deleted"){
-            var rs = x.db.execute("delete from " +rt.item.otype+ " where id = ?",[rt.item.id]);
-            rs.close();
-          }else{
-            var sqlstmt2 ="update " + rt.item.otype + " set sync_state='synchronized' where id = ?"; 
-            var rs = x.db.execute(sqlstmt2,[rt.item.id]);
-            rs.close();
-          }
-          wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.message.body[2].fatherWorkerId);
-        }else{
-          var sqlstmt3 ="update "+ x.currentTable +" set sync_state='sync_error' where id = ?"; 
-          var rs = x.db.execute(sqlstmt3,[x.currentId]);
-          rs.close();
-          wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.message.body[2].fatherWorkerId);
-        }
       }
     };
-    var sd = dsfunc("staffs");
-    if(!sd.item){
-      sd=dsfunc("activities");
-    }
-    if(!sd.item){
-      sd = dsfunc("staffds");
-    }
-    if(sd.item){
-      x.clearMsg = false;
-      x.currentId = sd.item.id;
-      x.currentTable = sd.item.otype;
-      wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
-      request.send(JSON.stringify(sd));
-    }else{
-      if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
-      x.clearMsg = true;
-    }
-//    request.send("a=4&b=5&authenticity_token=" + x.message.body[2].authenticity_token);
+    request.send();
   };
 
   wp.onmessage = function(a, b, message) {
     //message obtain all arguments.a b is just for compact.
     x.message = message;
-    var timer = google.gears.factory.create('beta.timer');
-    timer.setInterval(x.sy,5000);
+    x.sy();
   }
 };

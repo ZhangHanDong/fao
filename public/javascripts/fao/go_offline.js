@@ -34,8 +34,24 @@ fao.classes.OffStore = function(){
   // absolute URL.
   this.MANIFEST_FILENAME = "../../../faomanifest.json";
   this.localServer = google.gears.factory.create("beta.localserver");
+  this.exe_onprogress = false;
+  var offline_onprogress = function(details){
+    var percent = Math.round(details.filesComplete/details.filesTotal*100);
+    fao.variables.offstore.exe_onprogress = true;
+    fao.doms.indicator.innerHTML = "离线下载完成" + percent + "%";
+  };
+   var offline_oncomplete = function(details){
+     if(fao.variables.offstore.exe_onprogress){
+       alert("系统已经自动升级到："+ details.newVersion + " 请按F5刷新浏览器。");
+     }
+   }
 
+  //return null if no store exists.
   this.store = this.localServer.openManagedStore(this.STORE_NAME);
+  if(this.store){
+    this.store.onprogress = offline_onprogress;
+    this.store.oncomplete = offline_oncomplete;
+  }
 //  // Called onload to initialize local server and store variables
   this.switch_state = function(){
     //if offline ,now start online.
@@ -48,33 +64,29 @@ fao.classes.OffStore = function(){
           }
   };
   
-  var switch_state111 = function(){
-    var sqlstmt = 'select * from linestates'; 
-    var rs = fao.variables.db.execute(sqlstmt);
-    if(rs.isValidRow()) {
-      var curstate = rs.fieldByName("state");
-      if(curstate == "offline"){
-        offline_removeStore();
-        fao.variables.db.execute("update linestates set state='online'");
-        fao.doms.switch_btn.innerHTML="go offline!";
-      }else{
-        offline_createStore();
-        fao.variables.db.execute("update linestates set state='offline'");
-        fao.doms.switch_btn.innerHTML="go online!";
-      }
-    }else{
-      offline_createStore();
-      fao.variables.db.execute("insert into linestates (state) values (?)",["offline"]);
-      fao.doms.switch_btn.innerHTML="go offline!";
-    }
-    if(rs){
-      rs.close();
-    }
-  };
-  var offline_onprogress = function(details){
-    var percent = Math.round(details.filesComplete/details.filesTotal*100);
-    fao.doms.indicator.innerHTML = "离线下载完成" + percent + "%";
-  }
+//  var switch_state111 = function(){
+//    var sqlstmt = 'select * from linestates'; 
+//    var rs = fao.variables.db.execute(sqlstmt);
+//    if(rs.isValidRow()) {
+//      var curstate = rs.fieldByName("state");
+//      if(curstate == "offline"){
+//        offline_removeStore();
+//        fao.variables.db.execute("update linestates set state='online'");
+//        fao.doms.switch_btn.innerHTML="go offline!";
+//      }else{
+//        offline_createStore();
+//        fao.variables.db.execute("update linestates set state='offline'");
+//        fao.doms.switch_btn.innerHTML="go online!";
+//      }
+//    }else{
+//      offline_createStore();
+//      fao.variables.db.execute("insert into linestates (state) values (?)",["offline"]);
+//      fao.doms.switch_btn.innerHTML="go offline!";
+//    }
+//    if(rs){
+//      rs.close();
+//    }
+//  };
   // Create the managed resource store
   this.offline_createStore = function() {
     if (!window.google || !google.gears) {
@@ -88,6 +100,7 @@ fao.classes.OffStore = function(){
     this.store.manifestUrl = this.MANIFEST_FILENAME;
     this.store.checkForUpdate();
     this.store.onprogress = offline_onprogress;
+    this.store.oncomplete = offline_oncomplete;
 // if download error occur,this function will display a note.
     var timerId = window.setInterval(function() {
       // When the currentVersion property has a value, all of the resources
@@ -118,16 +131,16 @@ fao.classes.OffStore = function(){
             "You will now see online versions of the documents.");
   }
 
-  this.hardly_removeStore=function() {
-    if (!window.google || !google.gears) {
-      alert("You must install Gears first.");
-      return;
-    }
-    alert("remove local store now");
-    this.localServer.removeManagedStore(this.STORE_NAME);
-    alert("local store has moved");
-  }
-
+//  this.hardly_removeStore=function() {
+//    if (!window.google || !google.gears) {
+//      alert("You must install Gears first.");
+//      return;
+//    }
+//    alert("remove local store now");
+//    this.localServer.removeManagedStore(this.STORE_NAME);
+//    alert("local store has moved");
+//  };
+//
   // Utility function to output some status text.
   this.textOut =function(s) {
    var elm = document.getElementById("textOut");
