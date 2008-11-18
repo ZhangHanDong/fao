@@ -58,7 +58,22 @@ class StaffsController < ApplicationController
   #get synget
   def synget
     debugger
-    render :json=>{"item"=>"","msg"=>params.to_json}
+    omap = {"staffs"=>Staff,"staffds"=>Staffd,"activities"=>Activity}
+    rt = {"items"=>[],"msg"=>""}
+    records = omap[params[:table]].find(:all,:order=>params[:orderby],:limit=>params[:limit],:offset=>params[:offset])
+    items = []
+    records.each do |record|
+      rh = record.attributes
+      rh.delete("update_at")
+      rh.delete("create_at")
+      rh.each do |key,value|
+        if value.class == Date
+          rh[key] = value.year.to_s + "-" + value.month.to_s + "-" + value.mday.to_s
+        end
+      end
+      items << rh
+    end
+    render :json=>{"items"=>items,"total"=>omap[params[:table]].count_by_sql("select count(*) from #{params[:table]}"),"msg"=>items.to_json}
   end
 
   # POST /syncreate

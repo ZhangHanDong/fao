@@ -50,7 +50,7 @@ fao.classes.Activity = function(data){
                 "sqriqi =?,dguojia=?,dgjpy=?,dgjspy=?,renwu=?,cfshijian=?,tltianshu=?,ztdanwei=?,yqdanwei=?,rwpihao=?,note=?,sync_state=?,updated_at=? where id=? ",
                 [this.sqriqi,this.dguojia,this.dgjpy,this.dgjspy,this.renwu,this.cfshijian,this.tltianshu,this.ztdanwei,this.yqdanwei,this.rwpihao,this.note,"changed",curTime,this.id]);
         };
-      }
+      };
     fao.classes.DialogActivity = function(){
 	// Define various event handlers for Dialog
         this.validate_pass = false;

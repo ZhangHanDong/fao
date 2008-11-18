@@ -22,5 +22,12 @@ fao.classes.MySync = function(){
   this.downSyncDataWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/down_sync_data_worker.js');
   this.authenticityWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/authenticity_token_worker.js');
   this.workerPool.sendMessage(["3..2..", 1, {syncWorkerId: this.syncDataWorkerId}], this.authenticityWorkerId);
-  this.workerPool.sendMessage(["3..2..", 1, {limit:5,offset:0,orderby:"abc",table:"staffs"}], this.downSyncDataWorkerId);
+
+  this.down_sync_data = function(){
+    fao.variables.db.execute("delete from staffs");
+    fao.variables.db.execute("delete from staffds");
+    fao.variables.db.execute("delete from activities");
+
+    fao.variables.mysync.workerPool.sendMessage(["3..2..", 1, {limit:5,offset:0,orderby:"id",tables:["staffs","staffds","activities"],cur_table:0}], fao.variables.mysync.downSyncDataWorkerId);
+  }
 };

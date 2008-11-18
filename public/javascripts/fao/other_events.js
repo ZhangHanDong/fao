@@ -100,5 +100,12 @@
     }
 
     Event.addListener("lt_menu_data","click",lt_menu_data);
+    
+
+    var a_data_restore = function(){
+      fao.variables.mysync.down_sync_data();
+      fao.variables.data_restore_panel.hide();
+    }
+    Event.addListener("a_data_restore","click",a_data_restore);
 
   };
