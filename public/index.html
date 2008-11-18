@@ -33,12 +33,18 @@
 
 <body class="yui-skin-sam">
 <div id="doc" class="yui-t7">
-  <div id="hd"><b><h1 style="font-size:153.9%;">FengHua Foreign Affairs Office</h1></b></div>
+  <div id="hd"><b><h1>FengHua Foreign Affairs Office</h1></b></div>
    <div id="bd">
    <div id="loading_content"><img alt="正在加载...." border="0" src="/images/loading.gif" style="display:block">正在加载....</div> 
 	<div class="yui-g" id ="mycontent" style="visibility:hidden">
   <div id="indicator"></div> 
-  <div id="lt_menu">登录</div>
+  <div id="lt_menu">
+    <table><tr>
+        <td><a href="#" id = "lt_menu_login">登录</a></td>
+        <td> | </td>
+        <td><a href="#" id = "lt_menu_data">数据恢复</a></td>
+  </tr></table>
+  </div>
 <style>
     form label { display:block;float:left;width:45%;clear:left; }
     .clear { clear:both; }
@@ -127,11 +133,11 @@
     }
 </style>
 
+<div>可以输入中文、拼音或者拼音首字母查找。</div>
 <div id="autocomplete">
    <input id="ac_input" type="text" value=""/>
     <div id="dt_ac_container"></div>
 </div>
-
 <div id="radiogroup1" class="yui-buttongroup">
     <input id="staff_radio" type="radio" name="radiofield1" value="1" checked>人员查询
     <input id="activity_radio" type="radio" name="radiofield1" value="2">出访查询
@@ -155,6 +161,15 @@
 		<div class="ft">本次出访人员表</div>
 	</div>
 </div>
+
+<div id="data_restore_panel">
+	<div class="hd">数据恢复</div>
+  <div class="bd">如果本地数据丢失或者希望在其它电脑上使用同一个系统，请使用数据恢复功能。系统将自动从服务器上获取以前上行同步的数据。请注意，恢复数据将删除本地尚未同步的数据！<br/><br/>
+    <a href="#" id="a_data_restore">点击开始恢复数据！</a>
+  </div>
+	<div class="ft"></div>
+</div>
+
 <!--
 <div id="test_button">test button</div>
 -->
@@ -242,7 +257,10 @@
           if(fao.variables.offstore.store.enabled){
             fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
           }else{
-            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
+            //every time refresh the page,wo hope the store is enabled.
+            fao.variables.offstore.store.enabled = true;
+            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
+//            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
           }
           fao.variables.mysync = new fao.classes.MySync();
         }

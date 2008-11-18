@@ -2,8 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
   fao.f.event_handlers = function(){
     var staff_radio_handler = function(ev){
       if(fao.variables.cur_table == 1){
@@ -71,4 +69,36 @@
       fao.variables.offstore.offline_removeStore();
     }
     Event.addListener("switch_btn","dblclick",my_dbl_switch_btn);
+
+    var lt_menu_login = function(){
+      var message = '请点击右边的Install按钮开始安装。';
+      var url = 'http://gears.google.com/?action=install'
+          + '&message=' + encodeURIComponent(message)
+          + '&return=' + encodeURIComponent(window.location.href);
+      var g_message = innerHTML = '<a href="' + url + '">要使用本系统需要安装来自Google(谷歌)的Gears </a>';
+
+      var g_panel = new YAHOO.widget.Panel("g_panel", {fixedcenter: true, width:"320px", visible:true, constraintoviewport:true } );
+          g_panel.setHeader("需要安装");
+          g_panel.setBody(g_message);
+          g_panel.render(document.body);
+    }
+    Event.addListener("lt_menu_login","click",lt_menu_login);
+
+    fao.variables.data_restore_panel = new YAHOO.widget.Panel("data_restore_panel",{
+	width:"320px", 
+	fixedcenter: true, 
+	constraintoviewport: true, 
+	underlay:"shadow", 
+	close:true, 
+	visible:false, 
+	draggable:true} );
+    fao.variables.data_restore_panel.render();
+//    data_restore_panel.show();
+
+    var lt_menu_data = function(){
+      fao.variables.data_restore_panel.show();
+    }
+
+    Event.addListener("lt_menu_data","click",lt_menu_data);
+
   };
