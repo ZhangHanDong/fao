@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :activities,:has_many=>[:staffds]
 
-  map.resources :staffs,:has_many=>[:staffds],:member=>{:syncreate=>:post}
+  map.resources :staffs,:has_many=>[:staffds],:member=>{:syncreate=>:post},:collection=>{:synget=>:get}
 
   map.resources :ceshi,:collection=>{:formauthenticitytoken=>:get,:testpost=>:post}
 

@@ -55,9 +55,13 @@ class StaffsController < ApplicationController
     end
   end
 
+  #get synget
+  def synget
+    debugger
+    render :json=>{"item"=>"","msg"=>params.to_json}
+  end
 
-  # POST /staffs
-  # POST /staffs.xml
+  # POST /syncreate
   def syncreate
     require 'json'
     sd_raw = request.raw_post
