@@ -623,12 +623,17 @@ var x = new function(){
   this.db = google.gears.factory.create('beta.database');
   this.db.open('database-fao');
   this.message = "";
+  this.tables = ["activities","staffs","staffds"];
+  this.cur_table = 0;
+  this.currentTable = null;
+  this.currentId = null;
+
   var wp = google.gears.workerPool;
 
   var dsfunc= function(table){
     var sqlstmt = "select * from " + table +" where sync_state != 'synchronized' and sync_state !='sync_error'  order by created_at limit 1";
     var rs = x.db.execute(sqlstmt);
-    var sd = {item:null,count:0};
+    var sd = {item:false,count:0};
     if(rs.isValidRow()) {
       if(table=="staffs"){      
         sd.item = {
@@ -729,16 +734,18 @@ var x = new function(){
         }
       }
     };
-    var sd ={item:null,count:0};
 
-    while(x.cur_table < x.tables.length -1){
-      sd = dsfunc(x.tables[x.cur_table]);
+    var sd ={item:false,count:0};
+    var c = 0;
+    while(c < x.tables.length){
+      sd = dsfunc(x.tables[c]);
       if(!sd.item){
-        x.cur_table++;
+        c++;
       }else{
         break;
       }
     }
+//    x.cur_table = 0;
 //    var sd = dsfunc("staffs");
 //    if(!sd.item){
 //      sd=dsfunc("activities");
@@ -765,8 +772,5 @@ var x = new function(){
     x.message = message;
     var timer = google.gears.factory.create('beta.timer');
     timer.setInterval(x.sy,5000);
-
-    x.tables = ["staffs","staffds","activities"];
-    x.cur_table = 0;
   }
 };
