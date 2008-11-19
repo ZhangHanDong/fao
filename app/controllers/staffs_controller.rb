@@ -58,7 +58,6 @@ class StaffsController < ApplicationController
   #get synget
   def synget
     omap = {"staffs"=>Staff,"staffds"=>Staffd,"activities"=>Activity}
-    rt = {"items"=>[],"msg"=>""}
     records = omap[params[:table]].find_all_by_userhash(params[:userhash],:order=>params[:orderby],:limit=>params[:limit],:offset=>params[:offset])
     items = []
     records.each do |record|

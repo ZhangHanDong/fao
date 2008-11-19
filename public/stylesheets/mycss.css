@@ -17,6 +17,7 @@ div#sidebar {
 	}
 */
 #data_restore_panel .hd{text-align:center;}
+#data_restore_panel .bd div {font-size:160%;}
 #indicator {
 	background-color: #663366;
 	position: absolute;

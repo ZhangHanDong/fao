@@ -12,7 +12,10 @@ fao.classes.MySync = function(){
       case 'downsync':
         var t = message.body[2].msg.offset + "/" + message.body[2].msg.total + " of " + message.body[2].msg.tables[message.body[2].msg.cur_table] + " completed! ";
         fao.doms.indicator.innerHTML =  t;
-        fao.variables.mysync.workerPool.sendMessage(["3..2..", 1, message.body[2].msg], fao.variables.mysync.downSyncDataWorkerId);
+        fao.variables.mysync.workerPool.sendMessage(["3..2..", 1, message.body[2].msg], message.sender);
+        break;
+      case 'upsync':
+        fao.variables.mysync.workerPool.sendMessage(["3..2..", 1, {}], message.sender);
         break;
       default:
         fao.doms.textout.innerHTML = message.body[2].text;
