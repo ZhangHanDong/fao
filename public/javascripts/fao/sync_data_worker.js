@@ -624,7 +624,6 @@ var x = new function(){
   this.db.open('database-fao');
   this.message = "";
   this.tables = ["activities","staffs","staffds"];
-  this.cur_table = 0;
   this.currentTable = null;
   this.currentId = null;
 
@@ -706,12 +705,12 @@ var x = new function(){
     request.open('POST', '/staffs/syncreate');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
-//          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.message.body[2].fatherWorkerId);
+//          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.fatherWorkerId);
         //console.write(request.responseText);
         try{
           var rt=JSON.parse(request.responseText);
         }catch(e){
-          wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"indicator"}], x.message.body[2].fatherWorkerId);
+          wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"indicator"}], x.fatherWorkerId);
           rt={};
           rt.item = null;
           rt.msg = "服务器返回未知消息"
@@ -725,12 +724,14 @@ var x = new function(){
             var rs = x.db.execute(sqlstmt2,[rt.item.id]);
             rs.close();
           }
-          wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.message.body[2].fatherWorkerId);
+          wp.sendMessage(["a","b",{text:"成功地与服务器同步了一条记录！", action:"indicator"}], x.fatherWorkerId);
+          wp.sendMessage(["a","b",{text:"", action:"upsync"}], x.fatherWorkerId);
+
         }else{
           var sqlstmt3 ="update "+ x.currentTable +" set sync_state='sync_error' where id = ?"; 
           var rs = x.db.execute(sqlstmt3,[x.currentId]);
           rs.close();
-          wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.message.body[2].fatherWorkerId);
+          wp.sendMessage(["a","b",{text:rt.msg, action:"indicator"}], x.fatherWorkerId);
         }
       }
     };
@@ -758,19 +759,25 @@ var x = new function(){
       x.clearMsg = false;
       x.currentId = sd.item.id;
       x.currentTable = sd.item.otype;
-      wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.fatherWorkerId);
       request.send(JSON.stringify(sd));
     }else{
-      if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.body[2].fatherWorkerId);
+      if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.fatherWorkerId);
       x.clearMsg = true;
     }
-//    request.send("a=4&b=5&authenticity_token=" + x.message.body[2].authenticity_token);
+//    request.send("a=4&b=5&authenticity_token=" + x.authenticity_token);
   };
 
   wp.onmessage = function(a, b, message) {
     //message obtain all arguments.a b is just for compact.
     x.message = message;
-    var timer = google.gears.factory.create('beta.timer');
-    timer.setInterval(x.sy,5000);
+    if(x.message.body[2].fatherWorkerId !== undefined){
+      x.fatherWorkerId = x.message.body[2].fatherWorkerId;
+      var timer = google.gears.factory.create('beta.timer');
+      timer.setInterval(x.sy,5000);
+    }else{
+      x.sy();
+    }
+//    wp.sendMessage(["a","b",{text:x.fatherWorkerId, action:"popup"}], x.fatherWorkerId);
   }
 };
