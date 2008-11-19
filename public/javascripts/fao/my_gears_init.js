@@ -13,10 +13,12 @@ fao.f.setsettings = function(){
     //init values,real value will get from db.
     var uuid =new UUID();
     var userhash = uuid.id.replace(/-/g,"").toLowerCase();
-    var settings = {pinyindb:false,
-                    offline:true,
-                    firstrun:true,
-                    userhash:userhash
+    var settings = {pinyindb:'false',
+                    offline:'true',
+                    firstrun:'true',
+                    userhash:userhash,
+                    bb_user:'false',
+                    user_changed:"false"
     };
 
     for(ps in settings){
@@ -40,6 +42,14 @@ fao.f.setsettings = function(){
         case "userhash":
           fao.variables.userhash= rs.field(1)
           settings.userhash= undefined;
+          break;
+        case "bb_user":
+          fao.variables.bb_user= rs.field(1) == "true" ? true :false
+          settings.bb_user= undefined;
+          break;
+        case "user_changed":
+          fao.variables.user_changed= rs.field(1) == "true" ? true :false
+          settings.user_changed= undefined;
           break;
      }
       rs.next();

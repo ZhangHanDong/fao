@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>D:\fao\fao\app\views\bb_auth\bb_success.html.erb.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<script type="text/javascript" src="/javascripts/gears_init.js"></script>
+<script type="text/javascript">
+var db = google.gears.factory.create('beta.database');
+db.open('database-fao');
+db.execute('update settings set myvalue=? where mykey=?', ["<%=session[:user].userhash%>","userhash"]);
+db.execute('update settings set myvalue=? where mykey =?', ["true","bb_user"]);
+
+  db.execute("update staffs set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
+  db.execute("update activities set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
+  db.execute("update staffds set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
+//db.execute('update settings set myvalue=? where mykey =?', ["true","user_changed"]);
+db.close();
+//alert("<%=session[:user].userhash%>");
+window.location.href = "/index.html";
+</script>
+</body>
+</html>

@@ -164,10 +164,10 @@
 
 <div id="data_restore_panel">
 	<div class="hd">数据恢复</div>
-  <div class="bd">如果本地数据丢失或者希望在其它电脑上使用同一个系统，请使用数据恢复功能。系统将自动从服务器上获取以前上行同步的数据。请注意，恢复数据将删除本地尚未同步的数据！<br/><br/>
+  <div class="bd">  如果本地数据丢失或者希望在其它电脑上使用同一个系统，请使用数据恢复功能。系统将自动从服务器上获取以前上行同步的数据。请注意，恢复数据将删除本地尚未同步的数据！<br/><br/>
     <a href="#" id="a_data_restore">点击开始恢复数据！</a>
   </div>
-	<div class="ft"></div>
+  <!--	<div class="ft"></div> -->
 </div>
 
 <!--
@@ -264,7 +264,6 @@
           }
           fao.variables.mysync = new fao.classes.MySync();
         }
-
         catch(e){
             var re = /no such column: (.*) EXPRESSION/;
             var result = e.message.match(/no such column: (.*) EXPRESSION/) || e.message.match(/Field name not found/) ||e.message.match(/SQLite/) ;
