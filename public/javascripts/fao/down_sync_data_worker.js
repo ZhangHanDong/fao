@@ -779,7 +779,7 @@ var x = new function(){
           var le = rt.items.length == x.message.body[2].limit ? x.message.body[2].limit : rt.items.length;
           x.message.body[2].offset = x.message.body[2].offset + le;
           wp.sendMessage(["a","b",{text:"",msg:x.message.body[2], action:"downsync"}], x.message.sender);
-        }else if(x.message.body[2].cur_table < x.message.body[2].tables.length){
+        }else if(x.message.body[2].cur_table < x.message.body[2].tables.length - 1){
           x.message.body[2].cur_table++;
           x.message.body[2].offset = 0;
           x.message.body[2].total = "NaN";
