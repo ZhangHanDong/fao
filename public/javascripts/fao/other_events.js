@@ -71,14 +71,11 @@
     Event.addListener("switch_btn","dblclick",my_dbl_switch_btn);
 
     var lt_menu_login = function(){
-      var message = '请点击右边的Install按钮开始安装。';
-      var url = 'http://gears.google.com/?action=install'
-          + '&message=' + encodeURIComponent(message)
-          + '&return=' + encodeURIComponent(window.location.href);
-      var g_message = innerHTML = '<a href="' + url + '">要使用本系统需要安装来自Google(谷歌)的Gears </a>';
+      var url = "/bb_auth"
+      var g_message = innerHTML = '<a href="' + url + '">请登录您的Yahoo账户</a>';
 
       var g_panel = new YAHOO.widget.Panel("g_panel", {fixedcenter: true, width:"320px", visible:true, constraintoviewport:true } );
-          g_panel.setHeader("需要安装");
+          g_panel.setHeader("登录");
           g_panel.setBody(g_message);
           g_panel.render(document.body);
     }

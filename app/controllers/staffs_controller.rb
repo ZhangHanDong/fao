@@ -57,10 +57,9 @@ class StaffsController < ApplicationController
 
   #get synget
   def synget
-    debugger
     omap = {"staffs"=>Staff,"staffds"=>Staffd,"activities"=>Activity}
     rt = {"items"=>[],"msg"=>""}
-    records = omap[params[:table]].find(:all,:order=>params[:orderby],:limit=>params[:limit],:offset=>params[:offset])
+    records = omap[params[:table]].find_all_by_userhash(params[:userhash],:order=>params[:orderby],:limit=>params[:limit],:offset=>params[:offset])
     items = []
     records.each do |record|
       rh = record.attributes
@@ -73,7 +72,8 @@ class StaffsController < ApplicationController
       end
       items << rh
     end
-    render :json=>{"items"=>items,"total"=>omap[params[:table]].count_by_sql("select count(*) from #{params[:table]}"),"msg"=>items.to_json}
+    count = omap[params[:table]].count_by_sql("select count(*) from #{params[:table]} where userhash = '#{params[:userhash]}'");
+    render :json=>{"items"=>items,"total"=>count,"msg"=>items.to_json}
   end
 
   # POST /syncreate
@@ -86,19 +86,6 @@ class StaffsController < ApplicationController
     case table
     when "staffs"
       case item["sync_state"]
-#      when "new" 
-#        @staff = Staff.new(item)
-#        @staff.id = item["id"]
-#        @staff.sync_state = "synchronized"
-#        begin
-#          if @staff.save
-#            render :text=>sd_raw 
-#          else
-#            render :json=>{"item"=>"","msg"=>"保存失败"}
-#          end
-#        rescue
-#            render :json=>{"item"=>"","msg"=>"插入异常"}
-#        end
       when "deleted"
         @staff = Staff.find_by_id(item["id"]);
         @staff.destroy if @staff
@@ -129,19 +116,6 @@ class StaffsController < ApplicationController
       end
     when "activities"
       case item["sync_state"]
-#      when "new" 
-#        @activity = Activity.new(item)
-#        @activity.id = item["id"]
-#        @activity.sync_state = "synchronized"
-#        begin
-#          if @activity.save
-#            render :text=>sd_raw 
-#          else
-#            render :json=>{"item"=>"","msg"=>"保存失败"}
-#          end
-#        rescue
-#            render :json=>{"item"=>"","msg"=>"插入异常"}
-#        end
       when "deleted"
         @activity = Activity.find_by_id(item["id"]);
         @activity.destroy if @activity
@@ -172,19 +146,6 @@ class StaffsController < ApplicationController
       end
     when "staffds"
       case item["sync_state"]
-#      when "new" 
-#        @staffd = Staffd.new(item)
-#        @staffd.id = item["id"]
-#        @staffd.sync_state = "synchronized"
-#        begin
-#          if @staffd.save
-#            render :text=>sd_raw 
-#          else
-#            render :json=>{"item"=>"","msg"=>"保存失败"}
-#          end
-#        rescue
-#            render :json=>{"item"=>"","msg"=>"插入异常"}
-#        end
       when "deleted"
         @staffd = Staffd.find_by_id(item["id"]);
         @staffd.destroy if @staffd

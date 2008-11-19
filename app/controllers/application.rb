@@ -4,6 +4,7 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 #  before_filter :i_own_it
+  before_filter :deny_access,:except=>[:syncreate,:synget]
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   protected
+
+  def deny_access
+    render :text=>"access denied!"
+  end
 
   def i_own_it
     if session[:user] and session[:user].userhash == params[:userhash]

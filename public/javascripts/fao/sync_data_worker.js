@@ -729,13 +729,22 @@ var x = new function(){
         }
       }
     };
-    var sd = dsfunc("staffs");
-    if(!sd.item){
-      sd=dsfunc("activities");
+    var sd ={item:null,count:0};
+
+    while(x.cur_table < x.tables.length -1){
+      sd = dsfunc(x.tables[x.cur_table]);
+      if(!sd.item){
+        x.cur_table++;
+      }
     }
-    if(!sd.item){
-      sd = dsfunc("staffds");
-    }
+//    var sd = dsfunc("staffs");
+//    if(!sd.item){
+//      sd=dsfunc("activities");
+//    }
+//    if(!sd.item){
+//      sd = dsfunc("staffds");
+//    }
+
     if(sd.item){
       x.clearMsg = false;
       x.currentId = sd.item.id;
@@ -754,5 +763,8 @@ var x = new function(){
     x.message = message;
     var timer = google.gears.factory.create('beta.timer');
     timer.setInterval(x.sy,5000);
+
+    x.tables = ["staffs","staffds","activities"];
+    x.cur_table = 0;
   }
 };
