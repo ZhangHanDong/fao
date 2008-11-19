@@ -1,3 +1,22 @@
+/*CSS 语法由三部分构成：选择器、属性和值
+selector {property: value}
+如果值为若干单词，则要给值加引号：
+p {font-family: "sans serif";}
+派生选择器: 通过依据元素在其位置的上下文关系来定义样式，你可以使标记更加简洁。
+id 选择器以 "#" 来定义。
+在 CSS 中，类选择器以一个点号显示：.center {text-align:center}
+元素也可以基于它们的类而被选择：
+td.fancy {
+	color: #f60;
+	background: #666;
+	}
+
+div#sidebar {
+	border: 1px dotted #000;
+	padding: 10px;
+	}
+*/
+#data_restore_panel .hd{text-align:center;}
 #indicator {
 	background-color: #663366;
 	position: absolute;

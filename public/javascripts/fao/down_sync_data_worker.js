@@ -759,13 +759,14 @@ var x = new function(){
         'limit=' + x.message.body[2].limit +
         '&offset=' + x.message.body[2].offset +
         '&orderby=' + x.message.body[2].orderby + 
+        '&userhash=' + x.message.body[2].userhash + 
         '&table=' + x.message.body[2].tables[x.message.body[2].cur_table]);
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
         //console.write(request.responseText);
         try{
           var rt=JSON.parse(request.responseText);
-          wp.sendMessage(["a","b",{text:rt.msg, action:"popup"}], x.message.sender);
+//          wp.sendMessage(["a","b",{text:rt.msg, action:"popup"}], x.message.sender);
         }catch(e){
           wp.sendMessage(["a","b",{text:"服务器返回未知消息", action:"popup"}], x.message.sender);
           rt={};
@@ -774,6 +775,18 @@ var x = new function(){
         }
         if(rt.items.length > 0){
           dsfunc(rt);
+          x.message.body[2].total = rt.total;
+          var le = rt.items.length == x.message.body[2].limit ? x.message.body[2].limit : rt.items.length;
+          x.message.body[2].offset = x.message.body[2].offset + le;
+          wp.sendMessage(["a","b",{text:"",msg:x.message.body[2], action:"downsync"}], x.message.sender);
+        }else if(x.message.body[2].cur_table < x.message.body[2].tables.length -1){
+          x.message.body[2].cur_table++;
+          x.message.body[2].offset = 0;
+          x.message.body[2].total = "NaN";
+          wp.sendMessage(["a","b",{text:"",msg:x.message.body[2], action:"downsync"}], x.message.sender);
+        }else{
+          wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.message.sender);
+          wp.sendMessage(["a","b",{text:"数据恢复完毕，请按F5刷新浏览器！", action:"popup"}], x.message.sender);
         }
       }
     };
