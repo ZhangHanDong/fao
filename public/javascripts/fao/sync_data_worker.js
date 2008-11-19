@@ -735,6 +735,8 @@ var x = new function(){
       sd = dsfunc(x.tables[x.cur_table]);
       if(!sd.item){
         x.cur_table++;
+      }else{
+        break;
       }
     }
 //    var sd = dsfunc("staffs");
