@@ -1,6 +1,6 @@
 {
   "betaManifestVersion": 1,
-  "version": "version 0.000005",
+  "version": "version 0.000007",
   "entries": [
       { "url": "/tools/webcachetool.html"},
       { "url": "/tools/dbquery.html"},
@@ -350,6 +350,7 @@
       { "url": "/javascripts/controls.js"},
       { "url": "/javascripts/application.js"},
       { "url": "/index.html"},
+      { "url": "/fao.html"},
       { "url": "/images/Thumbs.db"},
       { "url": "/images/spinner.gif"},
       { "url": "/images/rails.png"},
