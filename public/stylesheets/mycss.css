@@ -34,7 +34,7 @@ div#sidebar {
 #lt_menu {
 	position: absolute;
 	top: 0;
-	left: 0.5em;
+	left: 0.1em;
 	z-index: 100;
 	height: auto;
 	width: auto;
@@ -43,7 +43,7 @@ div#sidebar {
 }
 
 #lt_menu td {
-  padding-right:0.5em;
+  padding-right:0.2em;
 }
 
 

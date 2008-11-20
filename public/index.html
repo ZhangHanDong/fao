@@ -33,7 +33,7 @@
 
 <body class="yui-skin-sam">
 <div id="doc" class="yui-t7">
-  <div id="hd"><b><h1>FengHua Foreign Affairs Office</h1></b></div>
+  <div id="hd"><b><h1 id="pagetitle">MiGuo Foreign Affairs Office</h1></b></div>
    <div id="bd">
    <div id="loading_content"><img alt="正在加载...." border="0" src="/images/loading.gif" style="display:block">正在加载....</div> 
 	<div class="yui-g" id ="mycontent" style="visibility:hidden">
@@ -41,7 +41,7 @@
   <div id="lt_menu">
     <table><tr>
         <td><a href="#" id = "lt_menu_login">登录</a></td>
-        <td> | </td>
+        <td><a href="#" id = "lt_menu_setting">设置</a></td>
         <td><a href="#" id = "lt_menu_data">数据恢复</a></td>
   </tr></table>
   </div>
@@ -49,6 +49,17 @@
     form label { display:block;float:left;width:45%;clear:left; }
     .clear { clear:both; }
 </style>
+<div id="pageSettingDialog">
+<div class="hd">设置页面信息：</div>
+<div class="bd">
+<form method="POST" action="assets/post.php">
+        <label for="title">页面标题：</label><input type="textbox" size="30" name="title" id="title_ps_dlg" />
+        <label for="footer">页脚内容：</label><input type="textbox" size="30" name="footer" id="footer_ps_dlg" />
+        <label for="yaccount">yahoo帐号：</label><input type="textbox" size="30" name="yaccount" id="yaccount_ps_dlg" />
+	<div class="clear"></div>
+</form>
+</div>
+</div>
 
 <div id="addStaffDialog">
 <div class="hd">请输入人员信息：</div>
@@ -209,8 +220,10 @@
 <script src="/javascripts/fao/staff.js" type="text/javascript"></script>
 <script src="/javascripts/fao/staffd.js" type="text/javascript"></script>
 <script src="/javascripts/fao/activity.js" type="text/javascript"></script>
+<script src="/javascripts/fao/page_setting.js" type="text/javascript"></script>
 <script src="/javascripts/fao/other_events.js" type="text/javascript"></script>
 <script src="/javascripts/fao/sync.js" type="text/javascript"></script>
+<script src="/javascripts/fao/ff.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 //    YAHOO.util.Event.addListener("myelementid", "click", fnCallback2, mydata, myobj);
@@ -220,9 +233,11 @@
           fao.f.init_doms();
           fao.f.my_gear_init();
           fao.f.reset_sync_error();
+          fao.f.psf();
           fao.variables.dialog_staff = new fao.classes.DialogStaff();
           fao.variables.dialog_activity = new fao.classes.DialogActivity();
           fao.variables.dialog_staffd = new fao.classes.DialogStaffd();
+          fao.variables.dialog_pagesetting = new fao.classes.DialogPageSetting();
           fao.variables.auto_comp = new fao.classes.AutoComp();
           fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
           fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
@@ -307,7 +322,7 @@ else{
 
   <div id="ft">
     <br/><br/>
-    奉化市政府外事办管理系统<span id="fao_version"></span><br/><button name="gear_desktop" id="gear_desktop">Create desktop shortcut</button><br/><button id="switch_btn">now offline,click to go online!</button>
+    <div id="pagefooter">米国市政府外事办管理系统</div><span id="fao_version"></span><br/><button name="gear_desktop" id="gear_desktop">Create desktop shortcut</button><br/><button id="switch_btn">now offline,click to go online!</button>
  <div id="textOut"></div></div>
 </div>
 <!--END SOURCE CODE FOR EXAMPLE =============================== -->
