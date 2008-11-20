@@ -1,24 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>D:\fao\fao\app\views\bb_auth\bb_success.html.erb.html</title>
+<title>yahoo bbauth登录成功</title>
 <meta name="Generator" content="Vim/7.2">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
 <script type="text/javascript" src="/javascripts/gears_init.js"></script>
 <script type="text/javascript">
+var userhash = "<%=session[:user].userhash%>";
 var db = google.gears.factory.create('beta.database');
 db.open('database-fao');
-db.execute('update settings set myvalue=? where mykey=?', ["<%=session[:user].userhash%>","userhash"]);
-db.execute('update settings set myvalue=? where mykey =?', ["true","bb_user"]);
 
-  db.execute("update staffs set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
-  db.execute("update activities set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
-  db.execute("update staffds set sync_state='retry',userhash = ?",["<%=session[:user].userhash%>"]);
-//db.execute('update settings set myvalue=? where mykey =?', ["true","user_changed"]);
-db.close();
-//alert("<%=session[:user].userhash%>");
+var cur_userhash = null;
+var bb_user ='false';
+var rs = db.execute("select myvalue from settings where mykey = ?",["userhash"]);
+if(rs.isValidRow())cur_userhash = rs.field(0);
+rs = db.execute("select myvalue from settings where mykey = ?",["bb_user"]);
+if(rs.isValidRow())bb_user = rs.field(0);
+rs.close();
+
+if(bb_user == "true"){
+  if(cur_userhash != userhash){
+    alert("对不起，你只能以第一次登陆的帐号来登录系统！");
+  }
+}else{
+  db.execute('update settings set myvalue=? where mykey=?', [userhash,"userhash"]);
+  db.execute('update settings set myvalue=? where mykey =?', ["true","bb_user"]);
+  db.execute("update staffs set sync_state='retry',userhash = ?",[userhash]);
+  db.execute("update activities set sync_state='retry',userhash = ?",[userhash]);
+  db.execute("update staffds set sync_state='retry',userhash = ?",[userhash]);
+  db.close();
+}
 window.location.href = "/index.html";
 </script>
 </body>
