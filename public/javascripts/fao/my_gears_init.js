@@ -44,15 +44,15 @@ fao.f.setsettings = function(){
           break;
         case "pagetitle":
           fao.variables.pagetitle= rs.field(1)
-          settings.userhash= undefined;
+          settings.pagetitle= undefined;
           break;
         case "pagefooter":
           fao.variables.pagefooter= rs.field(1)
-          settings.userhash= undefined;
+          settings.pagefooter = undefined;
           break;
         case "yaccount":
           fao.variables.yaccount= rs.field(1)
-          settings.userhash= undefined;
+          settings.yaccount = undefined;
           break;
         case "userhash":
           fao.variables.userhash= rs.field(1)
@@ -155,29 +155,23 @@ fao.f.my_gear_init = function() {
             );
         fao.variables.db.execute('create table if not exists settings' + 
             ' (mykey varchar(255),' +
-            ' myvalue varchar(255))' 
+            ' myvalue varchar(255),' +
+            ' UNIQUE (mykey))'
             );
         fao.f.setsettings();
-        var rrs = fao.variables.db.execute("select myvalue from settings where mykey = 'userhash'");
-        var userhash = ""
-        if(rrs.isValidRow()){
-          userhash = rrs.fieldByName("myvalue");
-        }
-        rrs.close();
-        if(userhash){
-          fao.variables.db.execute("update staffs set userhash = ?",[userhash]);
-          fao.variables.db.execute("update staffds set userhash = ?",[userhash]);
-          fao.variables.db.execute("update activities set userhash = ?",[userhash]);
-        }
+//        var rrs = fao.variables.db.execute("select myvalue from settings where mykey = 'userhash'");
+//        var userhash = "";
+//        if(rrs.isValidRow()){
+//          userhash = rrs.fieldByName("myvalue");
+//        }
+//        rrs.close();
+//        if(userhash){
+//          fao.variables.db.execute("update staffs set userhash = ?",[userhash]);
+//          fao.variables.db.execute("update staffds set userhash = ?",[userhash]);
+//          fao.variables.db.execute("update activities set userhash = ?",[userhash]);
+//        }
       }
     } catch (ex) {
-      fao.variables.db.execute("alter table staffs add userhash varchar(255)");
-      fao.variables.db.execute("alter table staffds add userhash varchar(255)");
-      fao.variables.db.execute("alter table activities add userhash varchar(255)");
-      fao.variables.db.execute("update activities set sync_state='changed'");
-      fao.variables.db.execute("update staffs set sync_state='changed'");
-      fao.variables.db.execute("update staffds set sync_state='changed'");
-      alert("数据库表字段已经更新，请刷新页面，按F5");
       alert(ex.message);
     }
   }
