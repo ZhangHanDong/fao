@@ -18,7 +18,10 @@ fao.f.setsettings = function(){
                     firstrun:'true',
                     userhash:userhash,
                     bb_user:'false',
-                    user_changed:"false"
+                    user_changed:"false",
+                    pagetitle:"MiGuo Foreign Affairs Office",
+                    pagefooter:"米国市政府外事办管理系统",
+                    yaccount:""
     };
 
     for(ps in settings){
@@ -38,6 +41,18 @@ fao.f.setsettings = function(){
         case "firstrun":
           fao.variables.firstrun= rs.field(1) == "true" ? true :false
           settings.firstrun= undefined;
+          break;
+        case "pagetitle":
+          fao.variables.pagetitle= rs.field(1)
+          settings.userhash= undefined;
+          break;
+        case "pagefooter":
+          fao.variables.pagefooter= rs.field(1)
+          settings.userhash= undefined;
+          break;
+        case "yaccount":
+          fao.variables.yaccount= rs.field(1)
+          settings.userhash= undefined;
           break;
         case "userhash":
           fao.variables.userhash= rs.field(1)
