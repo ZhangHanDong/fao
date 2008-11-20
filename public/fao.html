@@ -1,0 +1,670 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Individual YUI CSS files -->
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/reset-fonts-grids/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/logger/assets/skins/sam/logger.css">
+<link rel="stylesheet" type="text/css" href="/javascripts/yui/build/yuitest/assets/skins/sam/yuitest.css">
+<!-- Individual YUI JS files -->
+<script type="text/javascript" src="/javascripts/yui/build/utilities/utilities.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/autocomplete/autocomplete-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/container/container-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/json/json-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/logger/logger-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/yuitest/yuitest-min.js"></script>
+
+
+
+<script type="text/javascript" src="/javascripts/uuid.js"></script>
+<script type="text/javascript" src="/javascripts/myutils/string.js"></script>
+<script type="text/javascript" src="/javascripts/fao/json2.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/mycss.css">
+</head>
+
+<body class="yui-skin-sam">
+<div id="doc" class="yui-t7">
+  <div id="hd"><b><h1 id="pagetitle">MiGuo Foreign Affairs Office</h1></b></div>
+   <div id="bd">
+   <div id="loading_content"><img alt="正在加载...." border="0" src="/images/loading.gif" style="display:block">正在加载....</div> 
+	<div class="yui-g" id ="mycontent" style="visibility:hidden">
+  <div id="indicator"></div> 
+  <div id="lt_menu">
+    <table><tr>
+        <td><a href="#" id = "lt_menu_login">登录</a></td>
+        <td><a href="#" id = "lt_menu_setting">设置</a></td>
+        <td><a href="#" id = "lt_menu_data">数据恢复</a></td>
+  </tr></table>
+  </div>
+<style>
+    form label { display:block;float:left;width:45%;clear:left; }
+    .clear { clear:both; }
+</style>
+<div id="pageSettingDialog">
+<div class="hd">设置页面信息：</div>
+<div class="bd">
+<form method="POST" action="assets/post.php">
+        <label for="title">页面标题：</label><input type="textbox" size="30" name="title" id="title_ps_dlg" />
+        <label for="footer">页脚内容：</label><input type="textbox" size="30" name="footer" id="footer_ps_dlg" />
+        <label for="yaccount">yahoo帐号：</label><input type="textbox" size="30" name="yaccount" id="yaccount_ps_dlg" />
+	<div class="clear"></div>
+</form>
+</div>
+</div>
+
+<div id="addStaffDialog">
+<div class="hd">请输入人员信息：</div>
+<div class="bd">
+<form method="POST" action="assets/post.php">
+        <input type="hidden" name="id" value="" id="id_sf_dlg" />
+	<label for="name">名字：</label><input type="textbox" name="name" id="name_sf_dlg" />
+        <label for="danwei">单位：</label><input type="textbox" name="danwei" id="danwei_sf_dlg"/>
+        <label for="zhiwu">职务：</label><input type="textbox" name="zhiwu" id="zhiwu_sf_dlg"/>
+        <label for="hzhaoma">护照号码：</label><input type="textbox" name="hzhaoma" id="hzhaoma_sf_dlg"/>
+        <label for="hzfzriqi">发照日期：</label><input type="textbox" name="hzfzriqi" id="hzfzriqi_sf_dlg"/>
+        <label for="hzyxq">护照有效期：</label><input type="textbox" name="hzyxq" id="hzyxq_sf_dlg"/>
+        <label for="hzghriqi">归还日期：</label><input type="textbox" name="hzghriqi" id="hzghriqi_sf_dlg"/>
+        <!--
+        <label for="pyname">名字拼音：</label><input type="textbox" name="pyname" id="pyname_sf_dlg"/>
+        <label for="spyname">名字短拼音：</label><input type="textbox" name="spyname" id="spyname_sf_dlg"/>
+        -->
+        <label for="birthday">生日（年龄）：</label><input type="textbox" name="birthday" id="birthday_sf_dlg"/>
+	<div class="clear"></div>
+	<label for="sex">性别：</label><input type="checkbox" name="sex" value="1" id="sex_sf_dlg"/> 女
+	<div class="clear"></div>
+	<label for="note">备注：</label><textarea name="note" id="note_sf_dlg"></textarea>
+	<div class="clear"></div>
+</form>
+</div>
+</div>
+
+<div id="addStaffdDialog">
+<div class="hd">请编辑某人某次出访的信息：</div>
+<div class="bd">
+<form method="POST" action="assets/post.php">
+        <input type="hidden" name="id" value="" id="id_sfd_dlg" />
+        <input type="hidden" name="staff_id" value="" id="staff_id_sfd_dlg" />
+        <input type="hidden" name="activity_id" value="" id="activity_id_sfd_dlg" />
+	<label for="name">名字：</label><input type="textbox" name="name" id="name_sfd_dlg" />
+        <label for="danwei">单位：</label><input type="textbox" name="danwei" id="danwei_sfd_dlg"/>
+        <label for="zhiwu">职务：</label><input type="textbox" name="zhiwu" id="zhiwu_sfd_dlg"/>
+        <label for="hzhaoma">护照：</label><input type="textbox" name="hzhaoma" id="hzhaoma_sfd_dlg"/>
+        <label for="hzghriqi">归还日期：</label><input type="textbox" name="hzghriqi" id="hzghriqi_sfd_dlg"/>
+	<div class="clear"></div>
+	<label for="isreturned">护照是否归还：</label><input type="checkbox" name="isreturned" value="1" id="isreturned_sfd_dlg"/> 已归还
+	<div class="clear"></div>
+	<label for="note">备注：</label><textarea name="note" id="note_sfd_dlg"></textarea>
+	<div class="clear"></div>
+</form>
+</div>
+</div>
+
+
+<div id="addActivityDialog">
+<div class="hd">请输入出访信息：</div>
+<div class="bd">
+<form method="POST" action="assets/post.php">
+        <input type="hidden" name="id" value="" id="id_ay_dlg">
+	<label for="sqriqi">申请日期：</label><input type="textbox" name="sqriqi" id="sqriqi_ay_dlg"/>
+        <label for="dguojia">出访国家：</label><input type="textbox" name="dguojia" id="dguojia_ay_dlg" />
+        <label for="renwu">出访任务：</label><textarea name="renwu" id="renwu_ay_dlg"></textarea>
+        <label for="cfshijian">出访时间：</label><input type="textbox" name="cfshijian"  id="cfshijian_ay_dlg"/>
+        <label for="tltianshu">停留天数：</label><input type="textbox" name="tltianshu" id="tltianshu_ay_dlg" />
+        <label for="ztdanwei">组团单位：</label><input type="textbox" name="ztdanwei" id="ztdanwei_ay_dlg" />
+        <label for="yqdanwei">邀请单位：</label><input type="textbox" name="yqdanwei" id="yqdanwei_ay_dlg" />
+        <label for="rwpihao">任务批号：</label><input type="textbox" name="rwpihao" id="rwpihao_ay_dlg" />
+        <div class="clear"></div>
+        <label for="note">备注：</label><textarea name="note" id="note_ay_dlg"></textarea>
+	<div class="clear"></div>
+</form>
+</div>
+</div>
+
+<br/>
+
+<style type="text/css">
+    #autocomplete {
+        height: 25px;
+    }
+    #ac_input {
+        position: static;
+        width: 300px;
+    }
+    #dt_ac_container {
+        display: none;
+    }
+</style>
+
+<div>可以输入中文、拼音或者拼音首字母查找。</div>
+<div id="autocomplete">
+   <input id="ac_input" type="text" value=""/>
+    <div id="dt_ac_container"></div>
+</div>
+<div id="radiogroup1" class="yui-buttongroup">
+    <input id="staff_radio" type="radio" name="radiofield1" value="1" checked>人员查询
+    <input id="activity_radio" type="radio" name="radiofield1" value="2">出访查询
+</div>
+
+<br/>
+<div id="staff_tab">
+<button id="addStaffBtn">添加人员</button>
+<div id="staffDataTable"></div>
+</div>
+
+<div id="activity_tab"  style="display:none">
+<button id="addActivityBtn">添加出访任务</button>
+<div id="ActivityDataTable"></div>
+</div>
+
+<div id="staff_panel_container">
+  	<div id="staff_panel">
+		<div class="hd">将下面表格的人员选定之后，拖到着这个窗口即可</div>
+		<div class="bd"><div id="staffdDataTable"></div></div>
+		<div class="ft">本次出访人员表</div>
+	</div>
+</div>
+
+<div id="data_restore_panel">
+	<div class="hd">数据恢复</div>
+  <div class="bd"><div>小心！请确认数据已经同步！因为本操作将删除本地数据！</div><br/>  如果本地数据丢失或者希望在其它电脑上使用同一个系统，请使用数据恢复功能。系统将自动从服务器上获取以前上行同步的数据。请注意，恢复数据将删除本地尚未同步的数据！<br/><br/>
+    <a href="#" id="a_data_restore">点击开始恢复数据！</a>
+  </div>
+  <!--	<div class="ft"></div> -->
+</div>
+
+<!--
+<div id="test_button">test button</div>
+-->
+<script type="text/javascript">
+    var Dom = YAHOO.util.Dom;
+    var Event = YAHOO.util.Event;
+    var fao = YAHOO.namespace("fao");
+    fao.classes = {};
+    fao.f = {};
+    fao.doms = {};
+    fao.f.init_doms = function(){
+      fao.doms.activity_tab = Dom.get("activity_tab");
+      fao.doms.staff_tab = Dom.get("staff_tab");
+      fao.doms.staff_radio = Dom.get("staff_radio");
+      fao.doms.activity_radio = Dom.get("activity_radio");
+      fao.doms.ac_input=Dom.get("ac_input");
+      fao.doms.staff_panel_tab = Dom.get("staff_panel_container");
+      fao.doms.switch_btn = Dom.get("switch_btn");
+      fao.doms.fao_version = Dom.get("fao_version");
+      fao.doms.textout = Dom.get("textOut");
+      fao.doms.indicator= Dom.get("indicator");
+    }
+    fao.variables = {
+      cur_table : 1,
+      db : null,
+      curactivity: {},
+      pre_staff_phase : "",
+      pre_activity_phase : ""
+    };
+</script>
+<script type="text/javascript"  src="/javascripts/fao/utils.js"></script>
+<script type="text/javascript"  src="/javascripts/gears_init.js"></script>
+<script type="text/javascript"  src="/javascripts/fao/my_gears_init.js"></script>
+<script type="text/javascript" src="/javascripts/fao/go_offline.js"></script>
+<!--event listener-->
+<script src="/javascripts/fao/myautocomplete.js" type="text/javascript"></script>
+<script src="/javascripts/fao/staff.js" type="text/javascript"></script>
+<script src="/javascripts/fao/staffd.js" type="text/javascript"></script>
+<script src="/javascripts/fao/activity.js" type="text/javascript"></script>
+<script src="/javascripts/fao/page_setting.js" type="text/javascript"></script>
+<script src="/javascripts/fao/other_events.js" type="text/javascript"></script>
+<script src="/javascripts/fao/sync.js" type="text/javascript"></script>
+<script src="/javascripts/fao/ff.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+//    YAHOO.util.Event.addListener("myelementid", "click", fnCallback2, mydata, myobj);
+//events usage. fncallback get two arguments:event object,mydata.
+    function faoinit(){
+        try{
+          fao.f.init_doms();
+          fao.f.my_gear_init();
+          fao.f.reset_sync_error();
+          fao.f.psf();
+          fao.variables.dialog_staff = new fao.classes.DialogStaff();
+          fao.variables.dialog_activity = new fao.classes.DialogActivity();
+          fao.variables.dialog_staffd = new fao.classes.DialogStaffd();
+          fao.variables.dialog_pagesetting = new fao.classes.DialogPageSetting();
+          fao.variables.auto_comp = new fao.classes.AutoComp();
+          fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
+          fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
+          fao.variables.activities_datatable = new fao.classes.ActivitiesDataTable();
+          fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.dsRequestCallback);
+          fao.variables.staffds_datatable = new fao.classes.StaffdsDataTable();
+          fao.variables.staffds_datatable.datasource.sendRequest('',fao.variables.staffds_datatable.dsRequestCallback);
+          fao.variables.staff_panel = new fao.classes.StaffPanel();
+          fao.doms.staff_panel_tab.style.display = "none";
+          //because activity_id is null at init,so staffd_datatable are empty.
+          fao.f.event_handlers();
+//          var rs = fao.variables.db.execute("select userhash from staffs limit 1");
+//          rs.close();
+//          alert(fao.utils.ch2py.find_pystr("我爱你"));
+          new YAHOO.util.DDTarget("staff_panel");
+//          alert(Dom.getRegion("staffDataTable"));
+//          var testFunc = function(){
+//            fao.variables.staffs_datatable.datatable.get("paginator").setPage(2);
+//          };
+//          Event.addListener("test_button","click",testFunc);
+          Dom.get("mycontent").style.visibility = "visible";
+          Dom.get("loading_content").style.display = "none";
+          fao.doms.ac_input.focus();
+          fao.variables.offstore = new fao.classes.OffStore();
+//          alert(fao.variables.offstore.store.enabled);
+          if(!fao.variables.offstore.store){
+//            alert("create store");
+            fao.variables.offstore.offline_createStore();
+          }else{
+            fao.doms.fao_version.innerHTML = "(" +fao.variables.offstore.store.currentVersion + ")";
+          }
+          if(fao.variables.offstore.store.enabled){
+            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
+          }else{
+            //every time refresh the page,wo hope the store is enabled.
+            fao.variables.offstore.store.enabled = true;
+            fao.doms.switch_btn.innerHTML = "offline now,click to go online!";
+//            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
+          }
+          fao.variables.mysync = new fao.classes.MySync();
+        }
+        catch(e){
+            var re = /no such column: (.*) EXPRESSION/;
+            var result = e.message.match(/no such column: (.*) EXPRESSION/) || e.message.match(/Field name not found/) ||e.message.match(/SQLite/) ;
+            if(result){
+//              fao.variables.db.execute("alter table activities add dgjpy varchar(255)");
+//             fao.variables.db.execute("alter table activities add dgjspy varchar(255)");
+//              alert("ya");
+//              fao.variables.db.execute("alter table staffs add hzfzriqi date");
+//              fao.variables.db.execute("alter table staffs add hzyxq date");
+              fao.variables.db.execute("alter table staffs add userhash varchar(255)");
+              fao.variables.db.execute("alter table staffds add userhash varchar(255)");
+              fao.variables.db.execute("alter table activities add userhash varchar(255)");
+              alert("数据库表字段已经更新，请刷新页面，按F5");
+            }else{
+              alert("start error");
+              alert(e.message);
+            }
+      }
+    }
+
+if (!window.google || !window.google.gears) {
+    var message = '请点击右边的Install按钮开始安装。';
+    var url = 'http://gears.google.com/?action=install'
+        + '&message=' + encodeURIComponent(message)
+        + '&return=' + encodeURIComponent(window.location.href);
+    var g_message = innerHTML = '<a href="' + url + '">要使用本系统需要安装来自Google(谷歌)的Gears </a>';
+
+    var g_panel = new YAHOO.widget.Panel("g_panel", { width:"320px", visible:true, constraintoviewport:true } );
+        g_panel.setHeader("需要安装");
+        g_panel.setBody(g_message);
+        g_panel.render(document.body);
+}
+else{
+    Event.onDOMReady(faoinit);
+}
+</script>
+
+<!--grid div -->
+	</div>
+</div>
+
+  <div id="ft">
+    <br/><br/>
+    <div id="pagefooter">米国市政府外事办管理系统</div><span id="fao_version"></span><br/><button name="gear_desktop" id="gear_desktop">Create desktop shortcut</button><br/><button id="switch_btn">now offline,click to go online!</button>
+ <div id="textOut"></div></div>
+</div>
+<!--END SOURCE CODE FOR EXAMPLE =============================== -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+---yuiTestBlock---
+<script type="text/javascript">
+
+    YAHOO.namespace("example.yuitest");
+
+    YAHOO.example.yuitest.shiliCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+    },
+
+    tearDown: function(){
+    },
+    testT1: function(){
+      var Assert = YAHOO.util.Assert;
+      }
+    });
+
+    YAHOO.example.yuitest.fnCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+    },
+
+    tearDown: function(){
+    },
+    testT1: function(){
+      var f= function(ap){
+        return ap;
+      };
+      var Assert = YAHOO.util.Assert;
+
+      Assert.isUndefined(f());
+      Assert.isNull(f(null));
+      }
+    });
+
+    YAHOO.example.yuitest.equalCase= new YAHOO.tool.TestCase({
+    name : "equal Tests",
+    setUp : function(){
+        this.data = "";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+    //    In JavaScript, numbers, strings, and boolean values are compared by value
+    //On the other hand, objects, arrays, and functions are compared by reference,This means that two variables are equal only if they refer to the same object.
+// If the two values have different types, they are not identical.
+    //
+
+    testT1: function(){
+      var Assert = YAHOO.util.Assert;
+      Assert.isTrue(false == "");
+      Assert.isTrue(false == 0);
+      Assert.isTrue(false == 0.0);
+      Assert.isTrue(false == " ");
+      Assert.isFalse(false === "");
+
+      Assert.isFalse(undefined === false);
+      Assert.isFalse(false == 0.1);
+      Assert.isFalse(false == "1");
+      }
+    });
+
+    YAHOO.example.yuitest.AssociativeArraysCase= new YAHOO.tool.TestCase({
+    name : "Associative Arrays Tests",
+    setUp : function(){
+        this.data = "";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+
+    testT1: function(){
+      var aa = {};
+      aa["p1"] = 55;
+      aa["p2"] = 66;
+      var Assert = YAHOO.util.Assert;
+      Assert.areEqual(55,aa.p1);
+      for(ps in aa){
+        Assert.isTrue(ps == "p1" || ps == "p2");
+      }
+      }
+    });
+
+    YAHOO.example.yuitest.jsonTestCase= new YAHOO.tool.TestCase({
+    name : "Json Tests",
+    setUp : function(){
+        this.data = "2008+09-01";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+
+    testjson: function(){
+      var str = "[1,2,3]";
+      JSON.parse(str);
+      var Assert = YAHOO.util.Assert;
+      Assert.isNotUndefined("ppyy");
+    }
+    });
+
+    YAHOO.example.yuitest.RegexTestCase = new YAHOO.tool.TestCase({
+    name : "Regex Tests",
+    setUp : function(){
+        this.data = "2008+09-01";
+    },
+
+    tearDown: function(){
+        delete this.data;
+    },
+
+    testMatchWord: function(){
+        var str = "_";
+        var re = /^[\w{1}]$/;
+        var Assert = YAHOO.util.Assert;
+        var result = str.match(re);
+        Assert.areEqual(1,result.length);
+        Assert.areEqual(str,result[0]);
+    },
+    testMatch: function(){
+        var str = "20082008-01-01";
+        var re = /\d{4}[^\d]\d{1,2}[^\d]\d{1,2}/;
+        var Assert = YAHOO.util.Assert;
+        var result = str.match(re);
+        Assert.areEqual(1,result.length);
+        Assert.areEqual("2008-01-01",result[0]);
+    },
+    testCr:function(){
+        var str = "a\rb";
+        var re=/\r\n+|\r+|\n+/
+        //if re has (),then return string will include delimiters.
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual(2,result.length);
+        Assert.areEqual("a",result[0]);
+        Assert.areEqual("b",result[1]);
+    },
+
+    testsTrip:function(){
+      var str = "a isk dlskks aa";
+      var s = "a";
+      var re=new RegExp("^" + s + "*(.*?)" + s + "*$");
+      var astr = str.replace(re, "$1");
+      var Assert = YAHOO.util.Assert;
+      Assert.areEqual(" isk dlskks ",astr);
+    },
+
+    testParams:function(){
+        var f=function(s){
+            return s;
+        };
+      var r = f();
+      var Assert = YAHOO.util.Assert;
+      Assert.isUndefined(r);
+      var str = "aa bb aa";
+      Assert.areEqual(" bb ",str.strip("a"));
+    },
+
+    testSplit0: function(){
+        var str = "a,b,c,d,";
+        var re=/,/m
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual("a",result[0]);
+        Assert.areEqual("d",result[result.length-1]);
+        Assert.areEqual(4,result.length);
+    },
+    testSplit: function(){
+        var str = "abc,usk\r\n中国或,isks\r美国 ,试试哦打开\n思考is,sisks\r";
+        var re=/\r+\n+|\r+|\n+/m
+        var result = str.split(re);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual("abc,usk",result[0]);
+        Assert.areNotEqual("",result[result.length-1]);
+        Assert.areEqual(4,result.length);
+    },
+
+    testSplit1: function(){
+        var str = "a,b,cd";
+        var result = str.split(",",2);
+        var Assert = YAHOO.util.Assert;
+        Assert.isArray(result);
+        Assert.areEqual(2,result.length);
+        Assert.areEqual("b",result[1]);
+    },
+
+    testDate:function(){
+        var aday = new Date();
+        aday.setMonth(11,11);
+        aday.setHours(11, 30, 30, 300);
+        var Assert = YAHOO.util.Assert;
+        Assert.areEqual(11,aday.getHours());
+        Assert.areEqual(3,aday.getUTCHours());
+    }
+    });
+
+    YAHOO.example.yuitest.DataTestCase = new YAHOO.tool.TestCase({
+
+        //name of the test case - if not provided, one is auto-generated
+        name : "Data Tests",
+
+        //---------------------------------------------------------------------
+        // setUp and tearDown methods - optional
+        //---------------------------------------------------------------------
+
+        /*
+         * Sets up data that is needed by each test.
+         */
+        setUp : function () {
+            this.data = {
+                name: "yuitest",
+                year: 2007,
+                beta: true
+            };
+        },
+
+        /*
+         * Cleans up everything that was created by setUp().
+         */
+        tearDown : function () {
+            delete this.data;
+        },
+
+        //---------------------------------------------------------------------
+        // Test methods - names must begin with "test"
+        //---------------------------------------------------------------------
+
+        testName : function () {
+            var Assert = YAHOO.util.Assert;
+
+            Assert.isObject(this.data);
+            Assert.isString(this.data.name);
+            Assert.areEqual("yuitest", this.data.name);
+        },
+
+        testYear : function () {
+            var Assert = YAHOO.util.Assert;
+
+            Assert.isObject(this.data);
+            Assert.isNumber(this.data.year);
+            Assert.areEqual(2007, this.data.year);
+        },
+
+        testBeta : function () {
+            var Assert = YAHOO.util.Assert;
+
+            Assert.isObject(this.data);
+            Assert.isBoolean(this.data.beta);
+            Assert.isTrue(this.data.beta);
+        }
+
+    });
+
+    YAHOO.example.yuitest.ArrayTestCase = new YAHOO.tool.TestCase({
+
+        //name of the test case - if not provided, one is auto-generated
+        name : "Array Tests",
+
+        //---------------------------------------------------------------------
+        // setUp and tearDown methods - optional
+        //---------------------------------------------------------------------
+
+        /*
+         * Sets up data that is needed by each test.
+         */
+        setUp : function () {
+            this.data = [0,1,2,3,4]
+        },
+
+        /*
+         * Cleans up everything that was created by setUp().
+         */
+        tearDown : function () {
+            delete this.data;
+        },
+
+        //---------------------------------------------------------------------
+        // Test methods - names must begin with "test"
+        //---------------------------------------------------------------------
+
+        testPop : function () {
+            var Assert = YAHOO.util.Assert;
+
+            var value = this.data.pop();
+
+            Assert.areEqual(4, this.data.length);
+            Assert.areEqual(4, value);
+        },
+
+        testPush : function () {
+            var Assert = YAHOO.util.Assert;
+
+            this.data.push(5);
+
+            Assert.areEqual(6, this.data.length);
+            Assert.areEqual(5, this.data[5]);
+        },
+
+        testSplice : function () {
+            var Assert = YAHOO.util.Assert;
+
+            this.data.splice(2, 1, 6, 7);
+
+            Assert.areEqual(6, this.data.length);
+            Assert.areEqual(6, this.data[2]);
+            Assert.areEqual(7, this.data[3]);
+        }
+
+    });
+
+    YAHOO.example.yuitest.ExampleSuite = new YAHOO.tool.TestSuite("Example Suite");
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.DataTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.ArrayTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.RegexTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.jsonTestCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.AssociativeArraysCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.equalCase);
+    YAHOO.example.yuitest.ExampleSuite.add(YAHOO.example.yuitest.fnCase);
+
+
+    Event.onDOMReady(function (){
+        //create the logger
+        var logger = new YAHOO.tool.TestLogger("testLogger");
+        YAHOO.tool.TestRunner.add(YAHOO.example.yuitest.ExampleSuite);
+
+        //run the tests
+        YAHOO.tool.TestRunner.run();
+    });
+</script>
+<div id="testLogger"></div>
+---yuiTestBlock---
+ </body>
+</html>
+
