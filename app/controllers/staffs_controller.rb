@@ -72,7 +72,7 @@ class StaffsController < ApplicationController
       items << rh
     end
     count = omap[params[:table]].count_by_sql("select count(*) from #{params[:table]} where userhash = '#{params[:userhash]}'");
-    render :json=>{"items"=>items,"total"=>count,"msg"=>items.to_json}
+    render :json=>{"items"=>items,"total"=>count,"msg"=>""}
   end
 
   # POST /syncreate
