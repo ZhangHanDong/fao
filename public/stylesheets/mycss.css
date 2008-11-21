@@ -42,12 +42,14 @@ div#sidebar {
         margin-right: 0px;
 }
 
-#lt_menu td {
+#lt_menu tr,td {
+  padding:0;
   padding-right:0.2em;
+  border:0;
 }
 
 
 h1 {
-  font-size: 153.9%;
-  margin-top: 0.8em;
+/*  font-size: 153.9%; */
+/*  margin-top: 0.8em;*/
 }
