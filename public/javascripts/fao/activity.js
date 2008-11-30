@@ -318,6 +318,7 @@ fao.classes.Activity = function(data){
               if(answer){
                   this.deleteRow(targetRow);
                   fao.variables.db.execute("update activities set sync_state = 'deleted' where id = ?", [targetRecordData.id]);
+                  fao.variables.db.execute("update staffds set sync_state = 'deleted' where activity_id = ?", [targetRecordData.id]);
 //                  fao.variables.db.execute("delete from activities where id = ?", [targetRecordData.id]);
               }
             }

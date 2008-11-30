@@ -473,6 +473,9 @@ fao.classes.DialogStaff = function() {
 //                alert(targetRecordData.id);
 //                fao.variables.db.execute("delete from staffs where id = ?", [targetRecordData.id]);
                 fao.variables.db.execute("update staffs set sync_state = 'deleted' where id = ?", [targetRecordData.id]);
+                fao.variables.db.execute("update staffds set sync_state = 'deleted' where staff_id = ?", [targetRecordData.id]);
+                
+
 //                fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
             }
         }
