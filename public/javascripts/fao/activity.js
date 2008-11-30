@@ -181,8 +181,8 @@ fao.classes.Activity = function(data){
       this.datasource = null;
       this.datatable = null;
       var columnDefs = [
-          { key:"dguojia",label:"出访国家"},
-          { key:"sqriqi",label:"申请日期",formatter:fao.utils.formatDate},
+          {key:"dguojia",label:"出访国家"},
+          {key:"sqriqi",label:"申请日期",formatter:fao.utils.formatDate},
           {key:"renwu",label:"任务"},
           {key:"cfshijian",label:"出访时间",formatter:fao.utils.formatDate},
           {key:"tltianshu",label:"停留天数"},
@@ -190,16 +190,18 @@ fao.classes.Activity = function(data){
           {key:"yqdanwei",label:"邀请单位"},
           {key:"rwpihao",label:"任务批号"},
           {key:"note",label:"备注"},
-          {key:"id",label:"删除",formatter:fao.utils.formatDeleteButton},
-          {key:"id",label:"人员",formatter:fao.utils.formatStaffsButton}
+          {key:"sc",label:"删除",formatter:"button"},
+          {key:"ry",label:"人员",formatter:"button"}
       ];
 
         var dsfunc= function(condi){
           var offset = condi ? (condi.offset || 0) : 0;
           var rowspp = condi ? (condi.rowspp || 4) : 4;
-          var phrase = "%" + fao.doms.ac_input.value + "%";
-          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
-          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
+          var phrase = fao.doms.ac_input.value;
+          var sqlstmt = fao.utils.sqldsl("activities",phrase);
+//          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
+//          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
+          var rs = fao.variables.db.execute(sqlstmt,[rowspp,offset]);
           var results = {activities:[]};
           while(rs.isValidRow()) {
             results.activities.push({
@@ -213,6 +215,8 @@ fao.classes.Activity = function(data){
                 yqdanwei:rs.fieldByName("yqdanwei"),
                 rwpihao:rs.fieldByName("rwpihao"),
                 note:rs.fieldByName("note"),
+                sc:"删除",
+                ry:"参加人员",
                 sync_state:rs.fieldByName("sync_state")
             });
             rs.next();
@@ -249,6 +253,8 @@ fao.classes.Activity = function(data){
                 "yqdanwei",
                 "rwpihao",
                 "note",
+                "sc",
+                "ry",
                 "sync_state"
             ],
             metaFields :{totalRecords:"totalRecords"}
@@ -322,7 +328,7 @@ fao.classes.Activity = function(data){
 //                  fao.variables.db.execute("delete from activities where id = ?", [targetRecordData.id]);
               }
             }
-            else if(targetEl.innerHTML == "人员"){
+            else if(targetEl.innerHTML == "参加人员"){
                 fao.variables.curactivity = targetRecordData;
                 fao.doms.staff_radio.click();
                 fao.variables.staffds_datatable.datatable.set("caption",fao.utils.chDate(fao.variables.curactivity.cfshijian) + "出访" + fao.variables.curactivity.dguojia  + "的人员列表");
