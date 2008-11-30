@@ -271,7 +271,8 @@ fao.classes.Activity = function(data){
             paginator: new YAHOO.widget.Paginator({
                 rowsPerPage:4
             }),
-            generateRequest : buildQueryString
+            generateRequest : buildQueryString,
+            caption: "出访目的地包含'" + fao.doms.ac_input.value + "'的出行"
 //            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
         };

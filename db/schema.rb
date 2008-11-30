@@ -12,19 +12,19 @@
 ActiveRecord::Schema.define(:version => 20081117072516) do
 
   create_table "activities", :force => true do |t|
-    t.string   "userhash",                                    :null => false
+    t.string   "userhash",                      :null => false
     t.date     "sqriqi"
     t.string   "dguojia"
     t.string   "dgjpy"
     t.string   "dgjspy"
     t.text     "renwu"
     t.date     "cfshijian"
-    t.integer  "tltianshu",  :limit => 11
+    t.integer  "tltianshu"
     t.string   "ztdanwei"
     t.string   "yqdanwei"
     t.string   "rwpihao"
     t.text     "note"
-    t.string   "sync_state",               :default => "new"
+    t.string   "sync_state", :default => "new"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -56,16 +56,16 @@ ActiveRecord::Schema.define(:version => 20081117072516) do
   end
 
   create_table "staffds", :force => true do |t|
-    t.string   "userhash",                                     :null => false
-    t.string   "staff_id",                                     :null => false
-    t.string   "activity_id",                                  :null => false
+    t.string   "userhash",                       :null => false
+    t.string   "staff_id",                       :null => false
+    t.string   "activity_id",                    :null => false
     t.string   "danwei"
     t.string   "zhiwu"
-    t.integer  "isreturned",  :limit => 11
+    t.integer  "isreturned"
     t.string   "hzhaoma"
     t.date     "hzghriqi"
     t.text     "note"
-    t.string   "sync_state",                :default => "new"
+    t.string   "sync_state",  :default => "new"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(:version => 20081117072516) do
   add_index "staffds", ["staff_id", "activity_id"], :name => "index_staffds_on_staff_id_and_activity_id", :unique => true
 
   create_table "staffs", :force => true do |t|
-    t.string   "userhash",                                    :null => false
-    t.string   "name",                                        :null => false
+    t.string   "userhash",                      :null => false
+    t.string   "name",                          :null => false
     t.string   "danwei"
     t.string   "zhiwu"
     t.string   "hzhaoma"
@@ -84,9 +84,9 @@ ActiveRecord::Schema.define(:version => 20081117072516) do
     t.date     "hzghriqi"
     t.string   "pyname"
     t.string   "spyname"
-    t.string   "sync_state",               :default => "new"
+    t.string   "sync_state", :default => "new"
     t.date     "birthday"
-    t.integer  "sex",        :limit => 11
+    t.integer  "sex"
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
