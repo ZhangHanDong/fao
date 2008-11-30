@@ -703,7 +703,6 @@ var x = new function(){
   this.sy = function(){
 //    wp.sendMessage(["a","b",{text:x.fatherWorkerId, action:"popup"}], x.fatherWorkerId);
     var request = google.gears.factory.create('beta.httprequest');
-    request.open('POST', '/staffs/syncreate');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
 //          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.fatherWorkerId);
@@ -761,6 +760,7 @@ var x = new function(){
       x.currentId = sd.item.id;
       x.currentTable = sd.item.otype;
       wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.fatherWorkerId);
+      request.open('POST', '/staffs/' + sd.item.id + '/syncreate');
       request.send(JSON.stringify(sd));
     }else{
       if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.fatherWorkerId);
