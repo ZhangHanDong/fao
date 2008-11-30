@@ -244,7 +244,8 @@ fao.classes.DialogStaff = function() {
         },
         {key:"birthday",label:"出生日期",formatter:fao.utils.formatDate},
         {key:"note",label:"备注"},
-        {key:"id",label:"删除",formatter:fao.utils.formatDeleteButton}
+        {key:"cfls",label:"出访历史",formatter:"button"},
+        {key:"sc",label:"删除",formatter:"button"}
     ];
 
     var dsfunc= function(condi){
@@ -270,7 +271,10 @@ fao.classes.DialogStaff = function() {
             birthday:fao.utils.milliseconds2date(rs.fieldByName("birthday")),
             note:rs.fieldByName("note"),
             sync_state:rs.fieldByName("sync_state"),
+            cfls:"出访历史",
+            sc:"删除",
             age : fao.utils.milliseconds2age(rs.fieldByName("birthday"))
+
         });
         rs.next();
       }
@@ -304,6 +308,8 @@ fao.classes.DialogStaff = function() {
             "birthday",
             "note",
             "age",
+            "cfls",
+            "sc",
             "sync_state"
         ],
         metaFields :{totalRecords:"totalRecords"}
@@ -478,6 +484,27 @@ fao.classes.DialogStaff = function() {
 
 //                fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
             }
+        }
+        if(targetEl.tagName.toUpperCase() == "BUTTON" && targetEl.innerHTML == "出访历史"){
+          try{
+            if(fao.variables.cur_table == 2){
+                return;
+            }
+            else{
+              fao.variables.pre_staff_phase = fao.doms.ac_input.value;
+              fao.doms.ac_input.value = targetRecordData.id + ":";
+              fao.variables.cur_table = 2;
+              fao.doms.activity_tab.style.display="block";
+              fao.doms.staff_tab.style.display="none";
+//              fao.variables.activities_datatable.datatable.get("paginator").setPage(fao.variables.activities_datatable.datatable.get("paginator").getCurrentPage(),false);
+               fao.variables.activities_datatable.datasource.sendRequest('', fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
+              fao.doms.activity_radio.checked = true;
+              fao.variables.activities_datatable.datatable.render();
+            }
+          }
+          catch(e){
+              alert(e.message);
+          }
         }
     };
     this.datatable.subscribe('rowClickEvent', onRowClick,this.datatable,true);
