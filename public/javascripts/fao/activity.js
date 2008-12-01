@@ -272,7 +272,7 @@ fao.classes.Activity = function(data){
                 rowsPerPage:4
             }),
             generateRequest : buildQueryString,
-            caption: "出访目的地包含'" + fao.doms.ac_input.value + "'的出行"
+            caption: fao.doms.ac_input.value ? "出访目的地包含 '" + fao.doms.ac_input.value + "' 的出行" : "所有出访国家列表"
 //            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
         };
@@ -332,7 +332,7 @@ fao.classes.Activity = function(data){
             else if(targetEl.innerHTML == "参加人员"){
                 fao.variables.curactivity = targetRecordData;
                 fao.doms.staff_radio.click();
-                fao.variables.staffds_datatable.datatable.set("caption",fao.utils.chDate(fao.variables.curactivity.cfshijian) + "出访" + fao.variables.curactivity.dguojia  + "的人员列表");
+                fao.variables.staffds_datatable.datatable.set("caption",fao.utils.chDate(fao.variables.curactivity.cfshijian) + "出访 '" + fao.variables.curactivity.dguojia  + "' 的人员列表");
 //                fao.variables.activities_datatable.datatable.render();
                 fao.variables.staffds_datatable.datasource.sendRequest('', fao.variables.staffds_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffds_datatable.datatable);
                 fao.doms.staff_panel_tab.style.display = "block";
