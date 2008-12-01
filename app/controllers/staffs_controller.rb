@@ -77,7 +77,6 @@ class StaffsController < ApplicationController
 
   # POST /syncreate
   def syncreate
-    debugger
     sd_raw = request.raw_post
     sd = JSON.parse(sd_raw)
     item = sd["item"]
