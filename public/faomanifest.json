@@ -335,6 +335,7 @@
       { "url": "/javascripts/fao/sync.js"},
       { "url": "/javascripts/fao/staffd.js"},
       { "url": "/javascripts/fao/staff.js"},
+      { "url": "/javascripts/fao/ff.js"},
       { "url": "/javascripts/fao/pagedoms.js"},
       { "url": "/javascripts/fao/other_events.js"},
       { "url": "/javascripts/fao/my_gears_init.js"},
