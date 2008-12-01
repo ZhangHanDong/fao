@@ -701,8 +701,8 @@ var x = new function(){
   };
 
   this.sy = function(){
+//    wp.sendMessage(["a","b",{text:x.fatherWorkerId, action:"popup"}], x.fatherWorkerId);
     var request = google.gears.factory.create('beta.httprequest');
-    request.open('POST', '/staffs/syncreate');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
 //          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.fatherWorkerId);
@@ -760,6 +760,7 @@ var x = new function(){
       x.currentId = sd.item.id;
       x.currentTable = sd.item.otype;
       wp.sendMessage(["a","b",{text:sd.count + "条记录需要与服务器同步", action:"indicator"}], x.fatherWorkerId);
+      request.open('POST', '/staffs/' + sd.item.id + '/syncreate');
       request.send(JSON.stringify(sd));
     }else{
       if(!x.clearMsg)wp.sendMessage(["a","b",{text:"", action:"indicator"}], x.fatherWorkerId);
@@ -771,13 +772,16 @@ var x = new function(){
   wp.onmessage = function(a, b, message) {
     //message obtain all arguments.a b is just for compact.
     x.message = message;
+    if(!(x.timer)){
+      x.timer = google.gears.factory.create('beta.timer');
+      x.timer.setInterval(x.sy,10000);
+    }
     if(x.message.body[2].fatherWorkerId !== undefined){
       x.fatherWorkerId = x.message.body[2].fatherWorkerId;
-      var timer = google.gears.factory.create('beta.timer');
-      timer.setInterval(x.sy,5000);
-    }else{
-      x.sy();
+//      var timer = google.gears.factory.create('beta.timer');
+//      timer.setInterval(x.sy,5000);
     }
+    x.sy();
 //    wp.sendMessage(["a","b",{text:x.fatherWorkerId, action:"popup"}], x.fatherWorkerId);
   }
 };

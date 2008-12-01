@@ -3,7 +3,26 @@
  * and open the template in the editor.
  */
 
-    fao.utils = {
+fao.utils = {
+sqldsl : function(table,phrase){
+          var sqlstmt = "";
+          if(table == "activities"){
+            var result = phrase.match(/^(\w{32}):/);
+            if(result){ 
+              sqlstmt = "select a.* from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted' order by a.created_at desc limit ? offset ?";
+            }
+            else{
+             sqlstmt = "select * from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted' order by created_at desc limit ? offset ?";
+             }
+          }
+          else if(table == "staffs"){
+
+          }
+          else{
+
+          }
+          return sqlstmt;
+         },
       datestr2milliseconds : function(date_str){
 //        alert(YAHOO.lang.isString(date_str));
         if(!date_str){
@@ -74,12 +93,6 @@
             }catch(e){
               elCell.innerHTML = ""; 
             }
-      },
-      formatDeleteButton : function(el, oRecord, oColumn, oData) {
-        el.innerHTML = "<button type=\"button\">删除</button>";
-      },
-      formatStaffsButton : function(el, oRecord, oColumn, oData) {
-          el.innerHTML = "<button type=\"button\">人员</button>";
       },
       chDate : function(oDate){
           var date =oDate;

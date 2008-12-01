@@ -161,9 +161,9 @@ fao.classes.Staffd = function(data){
             el.innerHTML = '<input type="checkbox" disabled/>';
     };
     
-    var formatDelete = function(el, oRecord, oColumn, oData) {
-        el.innerHTML = "<button type=\"button\">删除</button>";
-    };
+//    var formatDelete = function(el, oRecord, oColumn, oData) {
+//        el.innerHTML = "<button type=\"button\">删除</button>";
+//    };
     
     var columnDefs = [
         { key:"name",sortable:true,label:"姓名"},
@@ -173,7 +173,7 @@ fao.classes.Staffd = function(data){
         {key:"hzghriqi",label:"归还日期",formatter : fao.utils.formatDate},
         {key:"isreturned",label:"护照归还",formatter:formathzgh,sortable:true},
         {key:"note",label:"备注"},
-        {key:"id",label:"删除",formatter:formatDelete}
+        {key:"sc",label:"删除",formatter:"button"}
     ];
     var dsfunc= function(condi){
 //          alert("argument one:" + arguments[0]);
@@ -205,6 +205,7 @@ fao.classes.Staffd = function(data){
                 hzhaoma:rs.fieldByName("hzhaoma"),
                 hzghriqi:fao.utils.milliseconds2date(rs.fieldByName("hzghriqi")),
                 isreturned:rs.fieldByName("isreturned"),
+                sc:"删除",
                 sync_state:rs.fieldByName("sync_state")
             });
             rs.next();
@@ -241,6 +242,7 @@ fao.classes.Staffd = function(data){
                 "hzghriqi",
                 "isreturned",
                 "note",
+                "sc",
                 "sync_state"
             ],
             metaFields :{totalRecords:"totalRecords"}
