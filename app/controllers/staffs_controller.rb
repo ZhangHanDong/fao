@@ -71,7 +71,7 @@ class StaffsController < ApplicationController
       end
       items << rh
     end
-    count = omap[params[:table]].count_by_sql("select count(*) from #{params[:table]} where userhash = '#{params[:userhash]}'");
+    count = omap[params[:table]].count_by_sql("select count(*) from #{params[:table]} where userhash = '#{params[:userhash]}'")
     render :json=>{"items"=>items,"total"=>count,"msg"=>""}
   end
 
@@ -86,7 +86,7 @@ class StaffsController < ApplicationController
     when "staffs"
       case item["sync_state"]
       when "deleted"
-        @staff = Staff.find_by_id(item["id"]);
+        @staff = Staff.find_by_id(item["id"])
         @staff.destroy if @staff
         render :text=>sd_raw
       else
@@ -116,7 +116,7 @@ class StaffsController < ApplicationController
     when "activities"
       case item["sync_state"]
       when "deleted"
-        @activity = Activity.find_by_id(item["id"]);
+        @activity = Activity.find_by_id(item["id"])
         @activity.destroy if @activity
         render :text=>sd_raw
       else
@@ -146,7 +146,7 @@ class StaffsController < ApplicationController
     when "staffds"
       case item["sync_state"]
       when "deleted"
-        @staffd = Staffd.find_by_id(item["id"]);
+        @staffd = Staffd.find_by_id(item["id"])
         @staffd.destroy if @staffd
         render :text=>sd_raw
       else
