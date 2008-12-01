@@ -1,6 +1,6 @@
 {
   "betaManifestVersion": 1,
-  "version": "version 0.000008",
+  "version": "version 0.000009",
   "entries": [
       { "url": "/tools/webcachetool.html"},
       { "url": "/tools/dbquery.html"},
@@ -346,6 +346,9 @@
       { "url": "/javascripts/fao/go_offline.js"},
       { "url": "/javascripts/fao/authenticity_token_worker.js"},
       { "url": "/javascripts/fao/activity.js"},
+      { "url": "/javascripts/fao/page_setting.js"},
+      { "url": "/javascripts/fao/ff.js"},
+      { "url": "/javascripts/fao/sync_data_worker.js"},
       { "url": "/javascripts/effects.js"},
       { "url": "/javascripts/dragdrop.js"},
       { "url": "/javascripts/controls.js"},

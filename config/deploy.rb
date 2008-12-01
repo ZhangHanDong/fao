@@ -1,5 +1,6 @@
 default_run_options[:pty] = true
 set :application, "bp1"
+set :secretspath, "/usr/local/www/vhosts/secrets"
 set :repository,  "git@github.com:jianglibo/fao.git"
 set :scm, "git"
 set :user, "jianglibo"
@@ -28,33 +29,22 @@ namespace :deploy do
   end
 end
 
-task :restart_mongrel_cluster do
-  run "mongrel_rails cluster::stop -C /usr/local/www/vhosts/rails/bp1/current/config/fao_mongrel_cluster.yml"
-  run "mongrel_rails cluster::start -C /usr/local/www/vhosts/rails/bp1/current/config/fao_mongrel_cluster.yml"
-end
 
 task :copy_secret_files do
-  run "cp /usr/local/www/vhosts/secrets/#{application}/database.yml /usr/local/www/vhosts/rails/#{application}/current/config/"
-  run "cp /usr/local/www/vhosts/secrets/#{application}/version_succ.rb /usr/local/www/vhosts/rails/#{application}/current/myutils/"
+  run "cp #{secretspath}/#{application}/database.yml #{deploy_to}/current/config/"
+  run "cp #{secretspath}/#{application}/version_succ.rb #{deploy_to}/current/myutils/"
 end
 
-#task :set_showtime_img_permission do
-#  run "chown -R wwwrun:www /usr/local/www/vhosts/rails/movieshowtimes/current/public/showtimeimgs"
-#  run "chown -R wwwrun:www /usr/local/www/vhosts/rails/movieshowtimes/current/tmp"
-#  run "rm -rvf /usr/local/www/vhosts/rails/movieshowtimes/current/public/my_attachments"
-#  run "ln -s /usr/local/www/vhosts/rails/movieshowtimes/my_attachments/ /usr/local/www/vhosts/rails/movieshowtimes/current/public"
-#  
-#end
 
 task :remove_test_code do
-  run "/usr/local/bin/ruby /usr/local/www/vhosts/rails/#{application}/current/myutils/cut_test_code.rb"
+  run "/usr/local/bin/ruby #{deploy_to}/current/myutils/cut_test_code.rb"
 end
 
 task :fao_version_succ do
-  run "/usr/local/bin/ruby /usr/local/www/vhosts/rails/#{application}/current/myutils/version_succ.rb"
+  run "/usr/local/bin/ruby #{deploy_to}/current/myutils/version_succ.rb"
 end
 
-after "deploy:restart",:copy_secret_files, :remove_test_code,:fao_version_succ
+after "deploy:update",:copy_secret_files, :remove_test_code,:fao_version_succ
 
 # after "deploy:update" do
 #    run "cp #{current_path}/config/deploy.rb #{current_path}/config/deploy.rb.bak"
