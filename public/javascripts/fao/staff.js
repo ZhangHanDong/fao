@@ -331,7 +331,8 @@ fao.classes.DialogStaff = function() {
 //            rowsPerPage:4,
 //            totalRecords:20
 //        }),
-        generateRequest : buildQueryString
+        generateRequest : buildQueryString,
+        caption: fao.doms.ac_input.value ? "人员姓名中 '" + fao.doms.ac_input.value + "' 的人员" : "所有人员列表"
 //        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
 //            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
     };
@@ -497,6 +498,7 @@ fao.classes.DialogStaff = function() {
               fao.doms.activity_tab.style.display="block";
               fao.doms.staff_tab.style.display="none";
 //              fao.variables.activities_datatable.datatable.get("paginator").setPage(fao.variables.activities_datatable.datatable.get("paginator").getCurrentPage(),false);
+              fao.variables.activities_datatable.datatable.set("caption",targetRecordData.name + "-曾出访过的国家");
                fao.variables.activities_datatable.datasource.sendRequest('', fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
               fao.doms.activity_radio.checked = true;
               fao.variables.activities_datatable.datatable.render();

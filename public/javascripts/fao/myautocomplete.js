@@ -17,10 +17,12 @@ fao.classes.AutoComp = function(){
 //                  alert(fao.variables.staffs_datatable.dsRequestCallback[name]);
 //                }
 //                               alert(fao.variables.staffs_datatable.dsRequestCallback.success);   
+                fao.variables.staffs_datatable.datatable.set("caption",fao.doms.ac_input.value ? "人员名字中包含 '" + fao.doms.ac_input.value + "' 的人员列表" : "所有人员列表");
                  fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
                  
     }
     else{
+        fao.variables.activities_datatable.datatable.set("caption",fao.doms.ac_input.value ? "出访国家名称包含 '" + fao.doms.ac_input.value  + "' 的出访列表" : "所有国家出访列表");
         fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
     }
   };
