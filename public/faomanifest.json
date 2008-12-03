@@ -1,6 +1,6 @@
 {
   "betaManifestVersion": 1,
-  "version": "version 0.000009",
+  "version": "version 0.000011",
   "entries": [
       { "url": "/tools/webcachetool.html"},
       { "url": "/tools/dbquery.html"},
@@ -347,6 +347,7 @@
       { "url": "/javascripts/fao/activity.js"},
       { "url": "/javascripts/fao/page_setting.js"},
       { "url": "/javascripts/fao/ff.js"},
+      { "url": "/javascripts/fao/down_sync_data_worker.js"},
       { "url": "/javascripts/fao/sync_data_worker.js"},
       { "url": "/javascripts/effects.js"},
       { "url": "/javascripts/dragdrop.js"},
@@ -368,6 +369,8 @@
       { "url": "/images/geardesk/16x16.ico"},
       { "url": "/images/geardesk/128x128.png"},
       { "url": "/images/geardesk/128x128.ico"},
+      { "url": "/images/mail.png"},
+      { "url": "/images/freebsdlogo.gif"},
       { "url": "/gears_init.js"},
       { "url": "/gearhttp.html"},
       { "url": "/favicon.ico"},
