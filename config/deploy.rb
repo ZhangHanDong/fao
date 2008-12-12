@@ -49,3 +49,9 @@ after "deploy:update",:copy_secret_files, :remove_test_code,:fao_version_succ
 # after "deploy:update" do
 #    run "cp #{current_path}/config/deploy.rb #{current_path}/config/deploy.rb.bak"
 # end
+
+task :restart_apache2 do
+  sudo "apachectl restart"
+#    run "sudo -p 'sudo password:' apachectl restart"
+end
+
