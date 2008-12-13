@@ -78,7 +78,7 @@ class StaffsController < ApplicationController
   # POST /syncreate
   def syncreate
     sd_raw = request.raw_post
-    sd = JSON.parse(sd_raw)
+    sd = ActiveSupport::JSON.decode(sd_raw)
     item = sd["item"]
     table = item.delete("otype")
     case table

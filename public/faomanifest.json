@@ -1,6 +1,6 @@
 {
   "betaManifestVersion": 1,
-  "version": "version 0.000011",
+  "version": "version 0.000012",
   "entries": [
       { "url": "/tools/webcachetool.html"},
       { "url": "/tools/dbquery.html"},
@@ -141,6 +141,7 @@
       { "url": "/javascripts/yui/build/layout/assets/layout-core.css"},
       { "url": "/javascripts/yui/build/json/json.js"},
       { "url": "/javascripts/yui/build/json/json-min.js"},
+      { "url": "/javascripts/yui/build/get/get-min.js"},
       { "url": "/javascripts/yui/build/imageloader/imageloader.js"},
       { "url": "/javascripts/yui/build/imageloader/imageloader-min.js"},
       { "url": "/javascripts/yui/build/imagecropper/imagecropper-beta.js"},

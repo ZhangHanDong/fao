@@ -111,7 +111,21 @@ sqldsl : function(table,phrase){
       this.pyc = [];
       this.pyd = [];
 
-      this.find_pinyin111= function(c){
+//      this.find_pinyin111= function(c){
+//        for(var i=0;i<pinyin_ary.length;i++){
+//          var py = pinyin_ary[i].split(",");
+//          if(py[0] == c){
+//            return py[1];
+//          }else{
+//            false;
+//          }
+//        }
+//      };
+
+      this.find_pinyin_mem = function(c){
+        if(c.match(/^\w{1}$/)){
+            return c;
+        };
         for(var i=0;i<pinyin_ary.length;i++){
           var py = pinyin_ary[i].split(",");
           if(py[0] == c){
@@ -121,7 +135,8 @@ sqldsl : function(table,phrase){
           }
         }
       };
-     this.find_pinyin = function(c){
+
+     this.find_pinyin_db = function(c){
        if(c.match(/^\w{1}$/)){
            return c;
        };
@@ -139,7 +154,7 @@ sqldsl : function(table,phrase){
           this.pya = [""];
           this.pyc = [""];
           for(var i=0;i<str.length;i++){
-            var py = this.find_pinyin(str.charAt(i));
+            var py = fao.variables.pinyindb ? this.find_pinyin_db(str.charAt(i)) : this.find_pinyin_mem(str.charAt(i));
             if(py){
               var pys = py.split(/\s/);
               for(var j=0;j<pys.length;j++){
