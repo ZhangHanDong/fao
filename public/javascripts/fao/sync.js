@@ -21,9 +21,12 @@ fao.classes.MySync = function(){
         fao.doms.textout.innerHTML = message.body[2].text;
     }
   };
-  if(!fao.variables.pinyindb){
-    this.insertpyWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/insert_pys.js');
-    this.workerPool.sendMessage(["3..2..", 1, {}],this.insertpyWorkerId);
+
+  this.start_insert_py = function(){
+    if(!fao.variables.pinyindb){
+      this.insertpyWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/insert_pys.js');
+      this.workerPool.sendMessage(["3..2..", 1, {}],this.insertpyWorkerId);
+    }
   }
 
   this.syncDataWorkerId = this.workerPool.createWorkerFromUrl('/javascripts/fao/sync_data_worker.js');

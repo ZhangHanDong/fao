@@ -38,7 +38,7 @@ fao.classes.Staff =  function(data){
         this.hzghriqi = fao.utils.datestr2milliseconds(data.hzghriqi);
         this.pyname = fao.utils.ch2py.find_pystr(this.name)[0].join(",");
         this.spyname = fao.utils.ch2py.find_pystr(this.name)[1].join(",");
-        this.sex = data.sex;
+        this.sex = (data.sex == false ? 1 : 0);
         this.sync_state = 'new';
         this.birthday = fao.utils.datestr2milliseconds(data.birthday);
         this.note = data.note;
@@ -105,7 +105,7 @@ fao.classes.DialogStaff = function() {
               var birthday = "";
               Dom.get("birthday_sf_dlg").value = "";
 //              alert(oData.birthday instanceof Date);
-              Dom.get("sex_sf_dlg").checked = "";
+              Dom.get("sex_sf_dlg").checked = false;
               Dom.get("note_sf_dlg").value = "";
             } catch(e){
                 alert(e.message);
@@ -127,7 +127,7 @@ fao.classes.DialogStaff = function() {
               var birthday = oData.birthday;
               Dom.get("birthday_sf_dlg").value =  fao.utils.date2str(oData.birthday);
 //              alert(oData.birthday instanceof Date);
-              Dom.get("sex_sf_dlg").checked = oData.sex == "false" ? false : true;
+              Dom.get("sex_sf_dlg").checked = oData.sex == 1 ? false : true;
               Dom.get("note_sf_dlg").value = oData.note;
             }
             catch(e){
@@ -235,7 +235,7 @@ fao.classes.DialogStaff = function() {
 //        {key:"spyname",label:"名字首拼音"},
         {key:"age",label:"年龄"},
         {key:"sex",label:"性别",formatter:function(elCell, oRecord, oColumn, oData){
-                                                    if(oData == "false"){
+                                                    if(oData == 1){
                                                       elCell.innerHTML = "男";
                                                     }else{
                                                       elCell.innerHTML = "女";

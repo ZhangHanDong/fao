@@ -705,7 +705,7 @@ var x = new function(){
     var request = google.gears.factory.create('beta.httprequest');
     request.onreadystatechange = function() {
       if (request.readyState == 4) {
-//          wp.sendMessage(["a","b",{text:request.status, action:"popup"}], x.fatherWorkerId);
+//          wp.sendMessage(["a","b",{text:request.responseText, action:"popup"}], x.fatherWorkerId);
         //console.write(request.responseText);
         try{
           var rt=JSON.parse(request.responseText);

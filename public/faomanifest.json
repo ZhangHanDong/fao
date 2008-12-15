@@ -141,6 +141,7 @@
       { "url": "/javascripts/yui/build/layout/assets/layout-core.css"},
       { "url": "/javascripts/yui/build/json/json.js"},
       { "url": "/javascripts/yui/build/json/json-min.js"},
+      { "url": "/javascripts/yui/build/get/get-min.js"},
       { "url": "/javascripts/yui/build/imageloader/imageloader.js"},
       { "url": "/javascripts/yui/build/imageloader/imageloader-min.js"},
       { "url": "/javascripts/yui/build/imagecropper/imagecropper-beta.js"},

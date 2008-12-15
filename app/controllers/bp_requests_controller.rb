@@ -99,9 +99,9 @@ class BpRequestsController < ApplicationController
   def show_log_env
     bpr = BpRequest.first
     require 'json'
-    @bp_envs = JSON.parse(bpr.envs)
-    @bp_params = JSON.parse(bpr.params)
-    @bp_cookies = JSON.parse(bpr.cookies)
+    @bp_envs = ActiveSupport::JSON.parse(bpr.envs)
+    @bp_params = ActiveSupport::JSON.parse(bpr.params)
+    @bp_cookies = ActiveSupport::JSON.parse(bpr.cookies)
   end
 
 end

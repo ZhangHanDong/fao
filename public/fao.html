@@ -20,6 +20,7 @@
 <script type="text/javascript" src="/javascripts/yui/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="/javascripts/yui/build/datatable/datatable-min.js"></script>
 <script type="text/javascript" src="/javascripts/yui/build/json/json-min.js"></script>
+<script type="text/javascript" src="/javascripts/yui/build/get/get-min.js"></script>
 <script type="text/javascript" src="/javascripts/yui/build/logger/logger-min.js"></script>
 <script type="text/javascript" src="/javascripts/yui/build/yuitest/yuitest-min.js"></script>
 
@@ -224,6 +225,9 @@
 <script src="/javascripts/fao/sync.js" type="text/javascript"></script>
 <script src="/javascripts/fao/ff.js" type="text/javascript"></script>
 
+
+	
+
 <script type="text/javascript">
 //    YAHOO.util.Event.addListener("myelementid", "click", fnCallback2, mydata, myobj);
 //events usage. fncallback get two arguments:event object,mydata.
@@ -277,6 +281,10 @@
 //            fao.doms.switch_btn.innerHTML = "online now,click to go offline!";
           }
           fao.variables.mysync = new fao.classes.MySync();
+	  if(fao.variables.pinyindb == false){
+            YAHOO.util.Get.script("/javascripts/pinyin_ary.js",
+			    { onSuccess: function(){},data: {a:1}});
+	  }
         }
         catch(e){
             var re = /no such column: (.*) EXPRESSION/;

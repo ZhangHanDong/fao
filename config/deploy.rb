@@ -45,7 +45,6 @@ task :fao_version_succ do
 end
 
 after "deploy:update",:copy_secret_files, :remove_test_code,:fao_version_succ
-
 # after "deploy:update" do
 #    run "cp #{current_path}/config/deploy.rb #{current_path}/config/deploy.rb.bak"
 # end
@@ -55,3 +54,4 @@ task :restart_apache2 do
 #    run "sudo -p 'sudo password:' apachectl restart"
 end
 
+after "deploy:restart","deploy:cleanup",:restart_apache2
