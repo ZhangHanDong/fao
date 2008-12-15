@@ -19,9 +19,9 @@ set :deploy_to, "/usr/local/www/vhosts/rails/#{application}"
 # your SCM below:
 # set :scm, :subversion
 
-role :app, "m.m3958.com"
+#role :app, "m.m3958.com"
 role :web, "m.m3958.com"
-role :db,  "m.m3958.com", :primary => true
+#role :db,  "m.m3958.com", :primary => true
 #
 #override the default deploy:restart task ,because we don't need.
 namespace :deploy do

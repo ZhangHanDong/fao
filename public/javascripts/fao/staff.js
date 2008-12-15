@@ -21,7 +21,7 @@
 </div>
 </div>
  */
-try{
+//try{
 fao.classes.Staff =  function(data){
         if(!data.id){
             var uuid =new UUID();
@@ -181,8 +181,7 @@ fao.classes.DialogStaff = function() {
                 else
                      staff.save();
 
-//                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.datatable.onDataReturnInitializeTable, fao.variables.staffs_datatable.datatable);
-                 fao.variables.staffs_datatable.datasource.sendRequest('', fao.variables.staffs_datatable.dsRequestCallback);
+                 fao.variables.staffs_datatable.datasource.sendRequest(fao.variables.stf_condi, fao.variables.staffs_datatable.dsRequestCallback);
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -225,16 +224,16 @@ fao.classes.DialogStaff = function() {
 //    }
     var columnDefs = [
         {key:"name",label:"名字",sortable:true},
-        {key:"danwei",label:"单位"},
-        {key:"zhiwu",label:"职务"},
-        {key:"hzhaoma",label:"护照号码"},
-        {key:"hzfzriqi",label:"发照日期",formatter:fao.utils.formatDate},
-        {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate},
-        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate},
+        {key:"danwei",label:"单位",sortable:true},
+        {key:"zhiwu",label:"职务",sortable:true},
+        {key:"hzhaoma",label:"护照号码",sortable:true},
+        {key:"hzfzriqi",label:"发照日期",sortable:true,formatter:fao.utils.formatDate},
+        {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate,sortable:true},
+        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate,sortable:true},
 //        {key:"pyname",label:"名字拼音"},
 //        {key:"spyname",label:"名字首拼音"},
         {key:"age",label:"年龄"},
-        {key:"sex",label:"性别",formatter:function(elCell, oRecord, oColumn, oData){
+        {key:"sex",label:"性别",sortable:true,formatter:function(elCell, oRecord, oColumn, oData){
                                                     if(oData == 1){
                                                       elCell.innerHTML = "男";
                                                     }else{
@@ -242,19 +241,28 @@ fao.classes.DialogStaff = function() {
                                                     }
                                                     }
         },
-        {key:"birthday",label:"出生日期",formatter:fao.utils.formatDate},
-        {key:"note",label:"备注"},
+        {key:"birthday",label:"出生日期",sortable:true,formatter:fao.utils.formatDate},
+        {key:"note",label:"备注",sortable:true},
         {key:"cfls",label:"出访历史",formatter:"button"},
         {key:"sc",label:"删除",formatter:"button"}
     ];
 
     var dsfunc= function(condi){
-      var offset = condi ? (condi.offset || 0) : 0;
-      var rowspp = condi ? (condi.rowspp || 4) : 4;
+          if(!condi){
+            condi = {startIndex:0,results:4,sort:"name",dir:"asc"};
+          }
       var phrase = fao.doms.ac_input.value;
-      var sqlstmts = fao.utils.sqldsl("staffs",phrase);
+      var sqlstmts = fao.utils.sqldsl("staffs",phrase,condi);
 //      var sqlstmt = 'select * from staffs where (name like ? or pyname like ? or spyname like ?) and sync_state != ? order by created_at desc limit ? offset ?';
-      var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
+//          var startIndex = condi.startIndex ? condi.startIndex : 0;
+//          var results= condi.results ? condi.results : 4;
+//          var sort = condi.sort ? condi.sort : "name";
+//          var dir = condi.dir ? condi.dir : "asc";
+//          alert(startIndex);
+//          alert(results);
+//          alert(sort);
+//          alert(dir);
+      var rs = fao.variables.db.execute(sqlstmts[0]);
       //var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
       var results = {staffs:[]};
       while(rs.isValidRow()) {
@@ -320,12 +328,20 @@ fao.classes.DialogStaff = function() {
     var buildQueryString = function(state,dt){
 //        alert(fao.variables.staffs_datatable.paginator.getState().page);
 //        alert(state.currentPage);
-        var offset = state.pagination.recordOffset;
-        var rowspp = state.pagination.rowsPerPage;
-        return {offset:offset,rowspp:rowspp};
+//        var offset = state.pagination.recordOffset;
+//        var rowspp = state.pagination.rowsPerPage;
+        state = state || {pagination:null, sortedBy:null};
+        var sort = (state.sortedBy) ? state.sortedBy.key : "name";
+        var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+        var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
+        var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+        var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
+        fao.variables.stf_condi = condi;
+        return condi;
     };
     var dataTableConfig = {
 //        initialLoad: {request:'',argument:"12345"},
+//      initialRequest:{}
         initialLoad: false,
         dynamicData:true,
         paginator : this.paginator,
@@ -512,9 +528,9 @@ fao.classes.DialogStaff = function() {
 
 //-------------------------------------------------------------------------------------------
   }
-}catch(e){
-  alert(e.message);
-  alert("from staff.js");
-}
+//}catch(e){
+//  alert(e.message);
+//  alert("from staff.js");
+//}
 
 

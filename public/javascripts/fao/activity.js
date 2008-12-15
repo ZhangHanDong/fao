@@ -151,7 +151,7 @@ fao.classes.Activity = function(data){
                      activity.update();
                  else
                      activity.save();
-                 fao.variables.activities_datatable.datasource.sendRequest('', fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
+                 fao.variables.activities_datatable.datasource.sendRequest(fao.variables.act_condi, fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
                  fao.variables.dialog_activity.validate_pass = true;
                  return true;
             }
@@ -183,27 +183,36 @@ fao.classes.Activity = function(data){
       this.paginator = new YAHOO.widget.Paginator({rowsPerPage:4});
 
       var columnDefs = [
-          {key:"dguojia",label:"出访国家"},
-          {key:"sqriqi",label:"申请日期",formatter:fao.utils.formatDate},
-          {key:"renwu",label:"任务"},
-          {key:"cfshijian",label:"出访时间",formatter:fao.utils.formatDate},
-          {key:"tltianshu",label:"停留天数"},
-          {key:"ztdanwei",label:"组团单位"},
-          {key:"yqdanwei",label:"邀请单位"},
-          {key:"rwpihao",label:"任务批号"},
-          {key:"note",label:"备注"},
+          {key:"dguojia",label:"出访国家",sortable:true},
+          {key:"sqriqi",label:"申请日期",sortable:true,formatter:fao.utils.formatDate},
+          {key:"renwu",label:"任务",sortable:true},
+          {key:"cfshijian",label:"出访时间",sortable:true,formatter:fao.utils.formatDate},
+          {key:"tltianshu",label:"停留天数",sortable:true},
+          {key:"ztdanwei",label:"组团单位",sortable:true},
+          {key:"yqdanwei",label:"邀请单位",sortable:true},
+          {key:"rwpihao",label:"任务批号",sortable:true},
+          {key:"note",label:"备注",sortable:true},
           {key:"sc",label:"删除",formatter:"button"},
           {key:"ry",label:"人员",formatter:"button"}
       ];
 
         var dsfunc= function(condi){
-          var offset = condi ? (condi.offset || 0) : 0;
-          var rowspp = condi ? (condi.rowspp || 4) : 4;
+          if(!condi){
+            condi = {startIndex:0,results:4,sort:"dguojia",dir:"asc"};
+          }
+
           var phrase = fao.doms.ac_input.value;
-          var sqlstmts = fao.utils.sqldsl("activities",phrase);
+          var sqlstmts = fao.utils.sqldsl("activities",phrase,condi);
 //          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
 //          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
-          var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
+//          var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
+//
+//          var startIndex = condi.startIndex ? condi.startIndex : 0;
+//          var results= condi.results ? condi.results : 4;
+//          var sort = condi.sort ? condi.sort : "name";
+//          var dir = condi.dir ? condi.dir : "asc";
+
+          var rs = fao.variables.db.execute(sqlstmts[0]);
           var results = {activities:[]};
           while(rs.isValidRow()) {
             results.activities.push({
@@ -233,12 +242,6 @@ fao.classes.Activity = function(data){
         };
 
 
-        try{
-            dsfunc();
-        }
-        catch(e){
-            alert(e.message);
-        }
 
         this.datasource = new YAHOO.util.DataSource(dsfunc);
         this.datasource.responseType = YAHOO.util.DataSource.TYPE_JSON;
@@ -264,9 +267,14 @@ fao.classes.Activity = function(data){
 
         var buildQueryString = function(state,dt){
 //            return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
-          var offset = state.pagination.recordOffset;
-          var rowspp = state.pagination.rowsPerPage;
-          return {offset:offset,rowspp:rowspp};
+          state = state || {pagination:null, sortedBy:null};
+          var sort = (state.sortedBy) ? state.sortedBy.key : "dguojia";
+          var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+          var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
+          var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+          var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
+          fao.variables.act_condi = condi;
+          return condi;
         };
 
         var dataTableConfig = {

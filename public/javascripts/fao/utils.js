@@ -4,23 +4,23 @@
  */
 
 fao.utils = {
-sqldsl : function(table,phrase){
+sqldsl : function(table,phrase,condi){
           var sqlstmts = ["",""];
           if(table == "activities"){
             var result = phrase.match(/^(\w{32}):/);
             if(result){ 
-              sqlstmt = "select a.* from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted' order by a.created_at desc limit ? offset ?";
+              sqlstmt = "select a.* from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted' order by a." + condi.sort + " " + condi.dir + " limit " + condi.results + " offset " + condi.startIndex;
               sqlstmt_count = "select count(*) from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted'";
               return [sqlstmt,sqlstmt_count];
             }
             else{
-             sqlstmt = "select * from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted' order by created_at desc limit ? offset ?";
+             sqlstmt = "select * from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted' order by " + condi.sort + " " + condi.dir + " limit " + condi.results + " offset " + condi.startIndex;
              sqlstmt_count = "select count(*) from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted'";
               return [sqlstmt,sqlstmt_count];
              }
           }
           else if(table == "staffs"){
-             sqlstmt = "select * from staffs where (name like '%" + phrase + "%' or pyname like '%" + phrase + "%' or spyname like '%" + phrase + "%') and sync_state != 'deleted' order by created_at desc limit ? offset ?";
+             sqlstmt = "select * from staffs where (name like '%" + phrase + "%' or pyname like '%" + phrase + "%' or spyname like '%" + phrase + "%') and sync_state != 'deleted' order by " + condi.sort + " " + condi.dir + " limit " + condi.results + " offset " + condi.startIndex;
              sqlstmt_count = "select count(*) from staffs where (name like '%" + phrase + "%' or pyname like '%" + phrase + "%' or spyname like '%" + phrase + "%') and sync_state != 'deleted'";
               return [sqlstmt,sqlstmt_count];
           }
