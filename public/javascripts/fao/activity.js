@@ -152,6 +152,7 @@ fao.classes.Activity = function(data){
                  else
                      activity.save();
                  fao.variables.activities_datatable.datasource.sendRequest(fao.variables.act_condi, fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
+                 fao.variables.manual_page = true;
                  fao.variables.activities_datatable.paginator.setPage(fao.variables.cur_page);
                  fao.variables.activities_datatable.paginator.render();
                  fao.variables.dialog_activity.validate_pass = true;
@@ -205,14 +206,6 @@ fao.classes.Activity = function(data){
 
           var phrase = fao.doms.ac_input.value;
           var sqlstmts = fao.utils.sqldsl("activities",phrase,condi);
-//          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
-//          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
-//          var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
-//
-//          var startIndex = condi.startIndex ? condi.startIndex : 0;
-//          var results= condi.results ? condi.results : 4;
-//          var sort = condi.sort ? condi.sort : "name";
-//          var dir = condi.dir ? condi.dir : "asc";
 
           var rs = fao.variables.db.execute(sqlstmts[0]);
           var results = {activities:[]};
@@ -268,16 +261,20 @@ fao.classes.Activity = function(data){
         };
 
         var buildQueryString = function(state,dt){
-//            return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
-          state = state || {pagination:null, sortedBy:null};
-          var sort = (state.sortedBy) ? state.sortedBy.key : "dguojia";
-          var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
-          var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-          var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
-          var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
-          fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
-          fao.variables.act_condi = condi;
-          return condi;
+          if(fao.variables.manual_page){
+            fao.variables.manual_page = false;
+            return fao.variables.act_condi;
+          }else{
+            state = state || {pagination:null, sortedBy:null};
+            var sort = (state.sortedBy) ? state.sortedBy.key : "dguojia";
+            var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+            var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
+            var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+            var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
+            fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
+            fao.variables.act_condi = condi;
+            return condi;
+          }
         };
 
         var dataTableConfig = {

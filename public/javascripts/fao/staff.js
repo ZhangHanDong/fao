@@ -182,10 +182,10 @@ fao.classes.DialogStaff = function() {
                      staff.save();
 
                  fao.variables.staffs_datatable.datasource.sendRequest(fao.variables.stf_condi, fao.variables.staffs_datatable.dsRequestCallback);
+                 fao.variables.manual_page = true;
                  fao.variables.staffs_datatable.paginator.setPage(fao.variables.cur_page);
                  fao.variables.staffs_datatable.paginator.render();
 
-//                 fao.variables.cur_page = 0;
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -257,17 +257,7 @@ fao.classes.DialogStaff = function() {
           }
       var phrase = fao.doms.ac_input.value;
       var sqlstmts = fao.utils.sqldsl("staffs",phrase,condi);
-//      var sqlstmt = 'select * from staffs where (name like ? or pyname like ? or spyname like ?) and sync_state != ? order by created_at desc limit ? offset ?';
-//          var startIndex = condi.startIndex ? condi.startIndex : 0;
-//          var results= condi.results ? condi.results : 4;
-//          var sort = condi.sort ? condi.sort : "name";
-//          var dir = condi.dir ? condi.dir : "asc";
-//          alert(startIndex);
-//          alert(results);
-//          alert(sort);
-//          alert(dir);
       var rs = fao.variables.db.execute(sqlstmts[0]);
-      //var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
       var results = {staffs:[]};
       while(rs.isValidRow()) {
         results.staffs.push({
@@ -330,30 +320,27 @@ fao.classes.DialogStaff = function() {
     };
 
     var buildQueryString = function(state,dt){
-//        alert(fao.variables.staffs_datatable.paginator.getState().page);
-//        alert(state.currentPage);
-//        var offset = state.pagination.recordOffset;
-//        var rowspp = state.pagination.rowsPerPage;
-        state = state || {pagination:null, sortedBy:null};
-        var sort = (state.sortedBy) ? state.sortedBy.key : "name";
-        var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
-        var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-        var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
-        var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
-        fao.variables.stf_condi = condi;
-        fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
-        return condi;
+        if(fao.variables.manual_page){
+          fao.variables.manual_page = false;
+          return fao.variables.stf_condi;
+        }else{
+          state = state || {pagination:null, sortedBy:null};
+          var sort = (state.sortedBy) ? state.sortedBy.key : "name";
+          var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+          var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
+          var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+          var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
+          fao.variables.stf_condi = condi;
+          fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
+          return condi;
+        }
     };
     var dataTableConfig = {
-//        initialLoad: {request:'',argument:"12345"},
-//      initialRequest:{}
         initialLoad: false,
         dynamicData:true,
         paginator : this.paginator,
         generateRequest : buildQueryString,
         caption: fao.doms.ac_input.value ? "人员姓名中 '" + fao.doms.ac_input.value + "' 的人员" : "所有人员列表"
-//        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
-//            paginationEventHandler : YAHOO.widget.DataTable.handleSimplePagination
     };
 
     this.datatable = new YAHOO.widget.DataTable("staffDataTable", columnDefs,
