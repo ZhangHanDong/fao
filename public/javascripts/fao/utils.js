@@ -5,23 +5,29 @@
 
 fao.utils = {
 sqldsl : function(table,phrase){
-          var sqlstmt = "";
+          var sqlstmts = ["",""];
           if(table == "activities"){
             var result = phrase.match(/^(\w{32}):/);
             if(result){ 
               sqlstmt = "select a.* from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted' order by a.created_at desc limit ? offset ?";
+              sqlstmt_count = "select count(*) from activities as a join staffds as sd on a.id = sd.activity_id where sd.staff_id = '" + result[1]  + "' and a.sync_state != 'deleted'";
+              return [sqlstmt,sqlstmt_count];
             }
             else{
              sqlstmt = "select * from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted' order by created_at desc limit ? offset ?";
+             sqlstmt_count = "select count(*) from activities where (dguojia like  '%" + phrase  + "%'  or dgjpy like  '%" + phrase + "%'  or dgjspy like  '%" + phrase + "%' ) and sync_state != 'deleted'";
+              return [sqlstmt,sqlstmt_count];
              }
           }
           else if(table == "staffs"){
-
+             sqlstmt = "select * from staffs where (name like '%" + phrase + "%' or pyname like '%" + phrase + "%' or spyname like '%" + phrase + "%') and sync_state != 'deleted' order by created_at desc limit ? offset ?";
+             sqlstmt_count = "select count(*) from staffs where (name like '%" + phrase + "%' or pyname like '%" + phrase + "%' or spyname like '%" + phrase + "%') and sync_state != 'deleted'";
+              return [sqlstmt,sqlstmt_count];
           }
           else{
 
           }
-          return sqlstmt;
+          return sqlstmts;
          },
       datestr2milliseconds : function(date_str){
 //        alert(YAHOO.lang.isString(date_str));
@@ -34,7 +40,13 @@ sqldsl : function(table,phrase){
           result = date_str.match(/(\d{4})(\d{2})(\d{2})/);
         }
         if(result){
-            var date = new Date(result[1],parseInt(result[2]) - 1,result[3],1,1,1,1);
+          var y = result[1];
+          y = y.replace(/^0+/,"");
+          var m = result[2];
+          m = m.replace(/^0+/,"");
+          var d = result[3];
+          d = d.replace(/^0+/,"");
+            var date = new Date(parseInt(y),parseInt(m) - 1,parseInt(d),1,1,1,1);
             return date.getTime();
         } else{
           return 32758707661001;

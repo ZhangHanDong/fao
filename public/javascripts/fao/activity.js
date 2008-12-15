@@ -180,6 +180,8 @@ fao.classes.Activity = function(data){
   fao.classes.ActivitiesDataTable = function(){
       this.datasource = null;
       this.datatable = null;
+      this.paginator = new YAHOO.widget.Paginator({rowsPerPage:4});
+
       var columnDefs = [
           {key:"dguojia",label:"出访国家"},
           {key:"sqriqi",label:"申请日期",formatter:fao.utils.formatDate},
@@ -198,10 +200,10 @@ fao.classes.Activity = function(data){
           var offset = condi ? (condi.offset || 0) : 0;
           var rowspp = condi ? (condi.rowspp || 4) : 4;
           var phrase = fao.doms.ac_input.value;
-          var sqlstmt = fao.utils.sqldsl("activities",phrase);
+          var sqlstmts = fao.utils.sqldsl("activities",phrase);
 //          var sqlstmt = 'select * from activities where (dguojia like ? or dgjpy like ? or dgjspy like ?) and sync_state != ? order by created_at desc limit ? offset ?';
 //          var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
-          var rs = fao.variables.db.execute(sqlstmt,[rowspp,offset]);
+          var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
           var results = {activities:[]};
           while(rs.isValidRow()) {
             results.activities.push({
@@ -223,7 +225,7 @@ fao.classes.Activity = function(data){
           }
           rs.close();
           var count = 0;
-          rs = fao.variables.db.execute("select count(*) from activities where dguojia like ?",[phrase]);
+          rs = fao.variables.db.execute(sqlstmts[1]);
           if(rs.isValidRow())count = rs.field(0);
           rs.close();
           results.totalRecords = count;
@@ -261,16 +263,17 @@ fao.classes.Activity = function(data){
         };
 
         var buildQueryString = function(state,dt){
-            return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
+//            return {offset:state.pagination.recordOffset,rowspp:state.pagination.rowsPerPage};
+          var offset = state.pagination.recordOffset;
+          var rowspp = state.pagination.rowsPerPage;
+          return {offset:offset,rowspp:rowspp};
         };
 
         var dataTableConfig = {
-            initialRequest : "",
+//            initialRequest : "",
             initialLoad : false,
             dynamicData : true,
-            paginator: new YAHOO.widget.Paginator({
-                rowsPerPage:4
-            }),
+            paginator: this.paginator,
             generateRequest : buildQueryString,
             caption: fao.doms.ac_input.value ? "出访目的地包含 '" + fao.doms.ac_input.value + "' 的出行" : "所有出访国家列表"
 //            paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination

@@ -251,9 +251,11 @@ fao.classes.DialogStaff = function() {
     var dsfunc= function(condi){
       var offset = condi ? (condi.offset || 0) : 0;
       var rowspp = condi ? (condi.rowspp || 4) : 4;
-      var phrase = "%" + fao.doms.ac_input.value + "%";
-      var sqlstmt = 'select * from staffs where (name like ? or pyname like ? or spyname like ?) and sync_state != ? order by created_at desc limit ? offset ?';
-      var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
+      var phrase = fao.doms.ac_input.value;
+      var sqlstmts = fao.utils.sqldsl("staffs",phrase);
+//      var sqlstmt = 'select * from staffs where (name like ? or pyname like ? or spyname like ?) and sync_state != ? order by created_at desc limit ? offset ?';
+      var rs = fao.variables.db.execute(sqlstmts[0],[rowspp,offset]);
+      //var rs = fao.variables.db.execute(sqlstmt,[phrase,phrase,phrase,'deleted',rowspp,offset]);
       var results = {staffs:[]};
       while(rs.isValidRow()) {
         results.staffs.push({
@@ -280,7 +282,7 @@ fao.classes.DialogStaff = function() {
       }
       rs.close();
       var count = 0;
-      rs = fao.variables.db.execute("select count(*) from staffs where name like ? or pyname like ? or spyname like ?",[phrase,phrase,phrase]);
+      rs = fao.variables.db.execute(sqlstmts[1]);
       if(rs.isValidRow())count = rs.field(0);
       rs.close();
       results.totalRecords = count;
@@ -327,10 +329,6 @@ fao.classes.DialogStaff = function() {
         initialLoad: false,
         dynamicData:true,
         paginator : this.paginator,
-//        paginator: new YAHOO.widget.Paginator({
-//            rowsPerPage:4,
-//            totalRecords:20
-//        }),
         generateRequest : buildQueryString,
         caption: fao.doms.ac_input.value ? "人员姓名中 '" + fao.doms.ac_input.value + "' 的人员" : "所有人员列表"
 //        paginationEventHandler : YAHOO.widget.DataTable.handleDataSourcePagination
