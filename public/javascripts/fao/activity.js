@@ -152,6 +152,8 @@ fao.classes.Activity = function(data){
                  else
                      activity.save();
                  fao.variables.activities_datatable.datasource.sendRequest(fao.variables.act_condi, fao.variables.activities_datatable.datatable.onDataReturnInitializeTable, fao.variables.activities_datatable.datatable);
+                 fao.variables.activities_datatable.paginator.setPage(fao.variables.cur_page);
+                 fao.variables.activities_datatable.paginator.render();
                  fao.variables.dialog_activity.validate_pass = true;
                  return true;
             }
@@ -273,6 +275,7 @@ fao.classes.Activity = function(data){
           var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
           var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
           var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
+          fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
           fao.variables.act_condi = condi;
           return condi;
         };

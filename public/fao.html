@@ -210,7 +210,8 @@
       curactivity: {},
       pre_staff_phase : "",
       pre_activity_phase : "",
-      condi : null
+      condi : null,
+      cur_page : 0
     };
 </script>
 <script type="text/javascript"  src="/javascripts/fao/utils.js"></script>
@@ -245,7 +246,8 @@
           fao.variables.dialog_pagesetting = new fao.classes.DialogPageSetting();
           fao.variables.auto_comp = new fao.classes.AutoComp();
           fao.variables.staffs_datatable = new fao.classes.StaffsDataTable();
-          fao.variables.staffs_datatable.datasource.sendRequest('',fao.variables.staffs_datatable.dsRequestCallback);
+	  //alert(fao.variables.staffs_datatable.paginator.getCurrentPage());
+          fao.variables.staffs_datatable.datasource.sendRequest(null,fao.variables.staffs_datatable.dsRequestCallback);
           fao.variables.activities_datatable = new fao.classes.ActivitiesDataTable();
           fao.variables.activities_datatable.datasource.sendRequest('',fao.variables.activities_datatable.dsRequestCallback);
           fao.variables.staffds_datatable = new fao.classes.StaffdsDataTable();

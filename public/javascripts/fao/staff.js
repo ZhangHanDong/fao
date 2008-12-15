@@ -182,6 +182,10 @@ fao.classes.DialogStaff = function() {
                      staff.save();
 
                  fao.variables.staffs_datatable.datasource.sendRequest(fao.variables.stf_condi, fao.variables.staffs_datatable.dsRequestCallback);
+                 fao.variables.staffs_datatable.paginator.setPage(fao.variables.cur_page);
+                 fao.variables.staffs_datatable.paginator.render();
+
+//                 fao.variables.cur_page = 0;
                  fao.variables.dialog_staff.validate_pass = true;
                  return true;
             }
@@ -337,6 +341,7 @@ fao.classes.DialogStaff = function() {
         var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
         var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
         fao.variables.stf_condi = condi;
+        fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
         return condi;
     };
     var dataTableConfig = {
