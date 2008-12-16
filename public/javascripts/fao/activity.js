@@ -183,7 +183,7 @@ fao.classes.Activity = function(data){
   fao.classes.ActivitiesDataTable = function(){
       this.datasource = null;
       this.datatable = null;
-      this.paginator = new YAHOO.widget.Paginator({rowsPerPage:4});
+      this.paginator = new YAHOO.widget.Paginator({rowsPerPage:6});
 
       var columnDefs = [
           {key:"dguojia",label:"出访国家",sortable:true},
@@ -201,7 +201,7 @@ fao.classes.Activity = function(data){
 
         var dsfunc= function(condi){
           if(!condi){
-            condi = {startIndex:0,results:4,sort:"dguojia",dir:"asc"};
+            condi = {startIndex:0,results:6,sort:"created_at",dir:"desc"};
           }
 
           var phrase = fao.doms.ac_input.value;
@@ -266,10 +266,10 @@ fao.classes.Activity = function(data){
             return fao.variables.act_condi;
           }else{
             state = state || {pagination:null, sortedBy:null};
-            var sort = (state.sortedBy) ? state.sortedBy.key : "dguojia";
-            var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+            var sort = (state.sortedBy) ? state.sortedBy.key : "created_at";
+            var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_ASC) ? "asc" : "desc";
             var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-            var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+            var results = (state.pagination) ? state.pagination.rowsPerPage : 6;
             var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
             fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
             fao.variables.act_condi = condi;

@@ -216,7 +216,7 @@ fao.classes.DialogStaff = function() {
   fao.classes.StaffsDataTable = function(){
     this.datasource = null;
     this.datatable = null;
-    this.paginator = new YAHOO.widget.Paginator({rowsPerPage:4});
+    this.paginator = new YAHOO.widget.Paginator({rowsPerPage:6});
 
 //    this.initializeTable = function( sRequest , oResponse , oPayload ){
 //        this.datatable.onDataReturnInitializeTable(sRequest , oResponse , oPayload);
@@ -253,7 +253,7 @@ fao.classes.DialogStaff = function() {
 
     var dsfunc= function(condi){
           if(!condi){
-            condi = {startIndex:0,results:4,sort:"name",dir:"asc"};
+            condi = {startIndex:0,results:6,sort:"created_at",dir:"desc"};
           }
       var phrase = fao.doms.ac_input.value;
       var sqlstmts = fao.utils.sqldsl("staffs",phrase,condi);
@@ -325,10 +325,10 @@ fao.classes.DialogStaff = function() {
           return fao.variables.stf_condi;
         }else{
           state = state || {pagination:null, sortedBy:null};
-          var sort = (state.sortedBy) ? state.sortedBy.key : "name";
-          var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "";
+          var sort = (state.sortedBy) ? state.sortedBy.key : "created_at";
+          var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_ASC) ? "asc" : "desc";
           var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-          var results = (state.pagination) ? state.pagination.rowsPerPage : 4;
+          var results = (state.pagination) ? state.pagination.rowsPerPage : 6;
           var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
           fao.variables.stf_condi = condi;
           fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
