@@ -183,25 +183,25 @@ fao.classes.Activity = function(data){
   fao.classes.ActivitiesDataTable = function(){
       this.datasource = null;
       this.datatable = null;
-      this.paginator = new YAHOO.widget.Paginator({rowsPerPage:6});
+      this.paginator = new YAHOO.widget.Paginator({rowsPerPage:8});
 
       var columnDefs = [
-          {key:"dguojia",label:"出访国家",sortable:true},
-          {key:"sqriqi",label:"申请日期",sortable:true,formatter:fao.utils.formatDate},
-          {key:"renwu",label:"任务",sortable:true},
-          {key:"cfshijian",label:"出访时间",sortable:true,formatter:fao.utils.formatDate},
-          {key:"tltianshu",label:"停留天数",sortable:true},
-          {key:"ztdanwei",label:"组团单位",sortable:true},
-          {key:"yqdanwei",label:"邀请单位",sortable:true},
-          {key:"rwpihao",label:"任务批号",sortable:true},
-          {key:"note",label:"备注",sortable:true},
-          {key:"sc",label:"删除",formatter:"button"},
-          {key:"ry",label:"人员",formatter:"button"}
+          {key:"dguojia",label:"出访国家",sortable:true,resizeable:true},
+          {key:"sqriqi",label:"申请日期",sortable:true,resizeable:true,formatter:fao.utils.formatDate},
+          {key:"renwu",label:"任务",sortable:true,resizeable:true,width:3},
+          {key:"cfshijian",label:"出访时间",sortable:true,resizeable:true,formatter:fao.utils.formatDate},
+          {key:"tltianshu",label:"停留天数",sortable:true,resizeable:true},
+          {key:"ztdanwei",label:"组团单位",sortable:true,resizeable:true},
+          {key:"yqdanwei",label:"邀请单位",sortable:true,resizeable:true},
+          {key:"rwpihao",label:"任务批号",sortable:true,resizeable:true,width:3},
+          {key:"note",label:"备注",sortable:true,resizeable:true},
+          {key:"sc",label:"删除",formatter:"button",resizeable:true},
+          {key:"ry",label:"人员",formatter:"button",resizeable:true}
       ];
 
         var dsfunc= function(condi){
           if(!condi){
-            condi = {startIndex:0,results:6,sort:"created_at",dir:"desc"};
+            condi = {startIndex:0,results:8,sort:"created_at",dir:"desc"};
           }
 
           var phrase = fao.doms.ac_input.value;
@@ -269,7 +269,7 @@ fao.classes.Activity = function(data){
             var sort = (state.sortedBy) ? state.sortedBy.key : "created_at";
             var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_ASC) ? "asc" : "desc";
             var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-            var results = (state.pagination) ? state.pagination.rowsPerPage : 6;
+            var results = (state.pagination) ? state.pagination.rowsPerPage : 8;
             var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
             fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;
             fao.variables.act_condi = condi;

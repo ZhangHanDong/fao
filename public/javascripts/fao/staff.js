@@ -216,7 +216,7 @@ fao.classes.DialogStaff = function() {
   fao.classes.StaffsDataTable = function(){
     this.datasource = null;
     this.datatable = null;
-    this.paginator = new YAHOO.widget.Paginator({rowsPerPage:6});
+    this.paginator = new YAHOO.widget.Paginator({rowsPerPage:8});
 
 //    this.initializeTable = function( sRequest , oResponse , oPayload ){
 //        this.datatable.onDataReturnInitializeTable(sRequest , oResponse , oPayload);
@@ -227,17 +227,15 @@ fao.classes.DialogStaff = function() {
 //        }
 //    }
     var columnDefs = [
-        {key:"name",label:"名字",sortable:true},
-        {key:"danwei",label:"单位",sortable:true},
-        {key:"zhiwu",label:"职务",sortable:true},
-        {key:"hzhaoma",label:"护照号码",sortable:true},
-        {key:"hzfzriqi",label:"发照日期",sortable:true,formatter:fao.utils.formatDate},
-        {key:"hzyxq",label:"护照有效期",formatter:fao.utils.formatDate,sortable:true},
-        {key:"hzghriqi",label:"护照归还日期",formatter:fao.utils.formatDate,sortable:true},
-//        {key:"pyname",label:"名字拼音"},
-//        {key:"spyname",label:"名字首拼音"},
-        {key:"age",label:"年龄"},
-        {key:"sex",label:"性别",sortable:true,formatter:function(elCell, oRecord, oColumn, oData){
+        {key:"name",label:"名字",sortable:true,resizeable:true},
+        {key:"danwei",label:"单位",sortable:true,resizeable:true},
+        {key:"zhiwu",label:"职务",sortable:true,resizeable:true},
+        {key:"hzhaoma",label:"护照号码",sortable:true,resizeable:true},
+        {key:"hzfzriqi",label:"发照日期",sortable:true,resizeable:true,formatter:fao.utils.formatDate,width:3},
+        {key:"hzyxq",label:"有效期",formatter:fao.utils.formatDate,sortable:true,resizeable:true,width:3},
+        {key:"hzghriqi",label:"归还日期",formatter:fao.utils.formatDate,sortable:true,resizeable:true,width:3},
+        {key:"age",label:"年龄",resizeable:true},
+        {key:"sex",label:"性别",sortable:true,resizeable:true,formatter:function(elCell, oRecord, oColumn, oData){
                                                     if(oData == 1){
                                                       elCell.innerHTML = "男";
                                                     }else{
@@ -245,15 +243,15 @@ fao.classes.DialogStaff = function() {
                                                     }
                                                     }
         },
-        {key:"birthday",label:"出生日期",sortable:true,formatter:fao.utils.formatDate},
-        {key:"note",label:"备注",sortable:true},
-        {key:"cfls",label:"出访历史",formatter:"button"},
-        {key:"sc",label:"删除",formatter:"button"}
+        {key:"birthday",label:"出生日期",sortable:true,resizeable:true,formatter:fao.utils.formatDate,hidden:true},
+        {key:"note",label:"备注",sortable:true,resizeable:true},
+        {key:"cfls",label:"出访历史",formatter:"button",resizeable:true},
+        {key:"sc",label:"删除",formatter:"button",resizeable:true}
     ];
 
     var dsfunc= function(condi){
           if(!condi){
-            condi = {startIndex:0,results:6,sort:"created_at",dir:"desc"};
+            condi = {startIndex:0,results:8,sort:"created_at",dir:"desc"};
           }
       var phrase = fao.doms.ac_input.value;
       var sqlstmts = fao.utils.sqldsl("staffs",phrase,condi);
@@ -328,7 +326,7 @@ fao.classes.DialogStaff = function() {
           var sort = (state.sortedBy) ? state.sortedBy.key : "created_at";
           var dir = (state.sortedBy && state.sortedBy.dir === YAHOO.widget.DataTable.CLASS_ASC) ? "asc" : "desc";
           var startIndex = (state.pagination) ? state.pagination.recordOffset : 0;
-          var results = (state.pagination) ? state.pagination.rowsPerPage : 6;
+          var results = (state.pagination) ? state.pagination.rowsPerPage : 8;
           var condi =  {startIndex:startIndex,results:results,sort:sort,dir:dir};
           fao.variables.stf_condi = condi;
           fao.variables.cur_page = (state.pagination) ? state.pagination.page : 0;

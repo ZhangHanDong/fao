@@ -212,7 +212,7 @@ fao.classes.Staffd = function(data){
           }
           rs.close();
           var count = 0;
-          rs = fao.variables.db.execute("select count(*) from staffds where activity_id = ?",[activity_id]);
+          rs = fao.variables.db.execute("select count(*) from staffds where activity_id = ? and sync_state != 'deleted'",[activity_id]);
           if(rs.isValidRow())count = rs.field(0);
           rs.close();
 //          alert(count);
